@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import { InputForm } from "../../components/inputForm/inputForm.component";
 import { SwitchCheckboxComponent } from "../../components/switchCheckbox/switchCheckbox.component";
 import { ButtonsFormComponent } from "../../components/buttonsForm/buttonsForm.component";
-import { getUserById, saveUser, updateUser } from "../../services/users.api";
+import { getUserById, saveUser, updateUser } from "../../services/user.api";
 import { useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 import { emitWarnToast } from "../../utils/toast.utils";
@@ -18,20 +18,22 @@ type UserEditParams = {
 };
 
 export type UserForm = {
-  company_id: string,
-  fullName: string,
+  name: string,
   email: string,
   password: string,
   passwordConfirm?: string,
+  document: string,
+  birthDate: string,
   active: boolean,
-  admin: boolean,
 };
 
 export type ErrorUserForm = {
-  fullName?: string,
+  name?: string,
   email?: string,
   password?: string,
   passwordConfirm?: string,
+  document?: string;
+  birthDate?: string;
 };
 
 
@@ -42,13 +44,13 @@ export function UserEditPage() {
   
   const { id } = useParams<UserEditParams>();
   const [initialValues, setInitialValues] = useState<UserForm>({
-    company_id: '',
-    fullName: '',
+    name: '',
     email: '',
     password: '',
     passwordConfirm: '',
+    document: '',
+    birthDate: '',
     active: true,
-    admin: false
   });
 
   useEffect(() =>{
@@ -64,23 +66,27 @@ export function UserEditPage() {
   }
 
   const usersSchema = yup.object().shape({
+    name: yup
+      .string()
+      .required(),
     email: yup
       .string()
       .email()
-      .required(),
-    fullName: yup
-      .string()
       .required(),
     password: yup
       .string(),
     passwordConfirm: yup
       .string(),
+    document: yup
+    .string(),
+    birthDate: yup
+    .string(),
   });
 
   const validateForm = (values: UserForm) => {
     const errors: ErrorUserForm = {};
-    if (!values.fullName) {
-      errors.fullName = 'Nome do usuário é necessário!';
+    if (!values.name) {
+      errors.name = 'Nome do usuário é necessário!';
     } 
 
     if (!values.email) {
@@ -100,6 +106,14 @@ export function UserEditPage() {
     } else if (values.password !== values.passwordConfirm) {
       errors.passwordConfirm = 'As senhas não são identicas!';
     }
+
+    if (!values.document) {
+      errors.document = 'Documento é necessário!';
+    } 
+
+    if (!values.birthDate) {
+      errors.birthDate = 'Data Nascimento é necessária!';
+    } 
   
     return errors;
   };
@@ -124,7 +138,7 @@ export function UserEditPage() {
               emitWarnToast('Preencha os dados corretamente!');
             }
 
-            actions.setSubmitting(false);
+            actions.setSubmitting(true);
           })
       }}
     >
@@ -132,13 +146,12 @@ export function UserEditPage() {
         <Form>
           <div className="form-row">
             <SwitchCheckboxComponent name="active" description="Ativo" />
-            <SwitchCheckboxComponent name="admin" description="Admin" />
           </div>
 
           <div className="form-row">
             <div className="col-md-6 mb-3">
               <InputForm 
-                name="fullName" 
+                name="name" 
                 label="Nome"
                 errors={errors}
                 touched={touched}
@@ -170,6 +183,25 @@ export function UserEditPage() {
                 type="password" 
                 name="passwordConfirm" 
                 label="Confirmação da Senha"
+                errors={errors}
+                touched={touched}
+              />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="col-md-3 mb-3">
+              <InputForm 
+                type="date" 
+                name="birthDate" 
+                label="Data Nascimento"
+                errors={errors}
+                touched={touched}
+              />
+            </div>
+            <div className="col-md-3 mb-3">
+              <InputForm 
+                name="document" 
+                label="Documento"
                 errors={errors}
                 touched={touched}
               />

@@ -2,7 +2,7 @@ import { ToastOptions } from "react-toastify";
 
 
 //URL Section
-const usersUrl = '/users';
+const usersUrl = '/user';
 const companyUrl = '/company';
 const urlForEdit = '/edit/:id';
 const urlForNew = '/new';
@@ -35,6 +35,4 @@ export const toastConfig: ToastOptions = {
 }
 
 
-export const storageTokenName = '@smart:token';
-export const storageCurrentUser = '@smart:currentUser';
-export const storageCompanyId = '@smart:companyId';
+export const storageTokenName = '@personal:token';

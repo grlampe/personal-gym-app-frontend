@@ -12,7 +12,7 @@ import { urls } from '../../utils/consts';
 
 
 export type LoginForm = {
-  email?: string;
+  username?: string;
   password?: string;
 }
 
@@ -20,17 +20,17 @@ function SignInPage() {
   const { signIn } = useContext(AuthContext);
   const history = useHistory();
 
-  const [initialValues, setInitialValues] = useState<LoginForm>({
-    email: '',
-    password: '',
+  const [initialValues] = useState<LoginForm>({
+    username: 'grlampe@hotmail.com',
+    password: '123123',
   });
 
   const validateForm = (values: LoginForm) => {
     const errors: LoginForm = {};
-    if (!values.email) {
-      errors.email = 'O email é necessário!';
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-      errors.email = 'Email inválido!';
+    if (!values.username) {
+      errors.username = 'O email é necessário!';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.username)) {
+      errors.username = 'Email inválido!';
     }
   
     if (!values.password) {
@@ -43,7 +43,7 @@ function SignInPage() {
   };
 
   const loginSchema = yup.object().shape({
-    email: yup
+    username: yup
       .string()
       .email()
       .required(),
@@ -94,13 +94,13 @@ function SignInPage() {
                                 <span className="login100-form-subtitle m-b-16"> Entre com seus dados </span>
                                     <div className="wrap-input100 validate-input m-b-16"> 
                                       <Field 
-                                        className={`input100 ${errors.email && touched.email ? styles.errorField : ''}`} 
+                                        className={`input100 ${errors.username && touched.username ? styles.errorField : ''}`} 
                                         type="text" 
-                                        name="email" 
+                                        name="username" 
                                         placeholder="Email"
                                       />
-                                      {errors.email && touched.email ? 
-                                        <div className={styles.error}>{errors.email}</div> 
+                                      {errors.username && touched.username ? 
+                                        <div className={styles.error}>{errors.username}</div> 
                                         : null
                                       }
                                       <span className="focus-input100"></span> 
@@ -126,10 +126,7 @@ function SignInPage() {
                                     </div>
                                     <div className="flex-sb-m w-full p-b-30">
                                         <div className="contact100-form-checkbox"> 
-                                          {/* <input className="input-checkbox100" id="ckb1" type="checkbox" name="remember-me" />  */}
-                                          {/* <label className="label-checkbox100"> Remember me </label>  */}
                                         </div>
-                                        {/* <div> <a href="#" className="txt1"> Forgot Password? </a> </div> */}
                                     </div>
                                     <div className="container-login100-form-btn p-t-25"> 
                                       <button type="submit" className="btn btn-outline-primary btn-lg" style={{width: '100%'}} disabled={isSubmitting}> 

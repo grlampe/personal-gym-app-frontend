@@ -1,20 +1,18 @@
 import { createContext, ReactNode, useState } from "react";
 import { LoginData, signInApi } from "../services/auth.api";
-import { storageCompanyId, storageCurrentUser, storageTokenName } from "../utils/consts";
+import { storageTokenName } from "../utils/consts";
 
 export const AuthContext = createContext({} as AuthContextData);
 
 export type User = {
-  companyId: string;
-  companyName: string;
   id: string;
-  fullName: string;
+  name: string;
   email: string;
-  accessToken: string;
+  active: string;
 }
 
 type UserSignInForm = {
-  email?: string;
+  username?: string;
   password?: string;
 }
 
@@ -35,20 +33,11 @@ export const AuthProvider = (props: AuthProvider) => {
   function signOut() {
     setCurrentUser(null);
     localStorage.removeItem(storageTokenName);
-    localStorage.removeItem(storageCurrentUser);
-    localStorage.removeItem(storageCompanyId);
   }
 
   async function setUserData(data: LoginData) {
-    localStorage.setItem(storageTokenName, '123');
-    localStorage.setItem(storageCurrentUser, JSON.stringify({name: 'User'}));
-    localStorage.setItem(storageCompanyId, '213123');
-    
-    setCurrentUser(data.user); 
-    if(!!data){
-      localStorage.setItem(storageTokenName, '123');
-      localStorage.setItem(storageCurrentUser, JSON.stringify({name: 'User'}));
-      localStorage.setItem(storageCompanyId, '213123');
+    if(!!data?.access_token){
+      localStorage.setItem(storageTokenName, data.access_token);
       
       setCurrentUser(data.user); 
     }

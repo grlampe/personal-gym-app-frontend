@@ -5,14 +5,13 @@ import { VscEdit } from 'react-icons/vsc';
 import { FcOk } from 'react-icons/fc';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { ButtonMenuContext } from "../../contexts/buttonMenu.context";
-import { Screens } from "../../utils/enums";
 import { Link } from "react-router-dom";
 import { urls } from "../../utils/consts";
-import { searchUsers } from "../../services/users.api";
+import { searchUsers } from "../../services/user.api";
 
 export type UsersList = {
   id: string;
-  fullName: string;
+  name: string;
   email: string;
   active: boolean;
 }
@@ -56,7 +55,7 @@ export function UserListPage() {
           { users.map(data => {
             return (
               <tr key={data.email}>
-                <td>{data.fullName}</td>
+                <td>{data.name}</td>
                 <td>{data.email}</td>
                 <td>
                   {data.active? 
@@ -76,8 +75,7 @@ export function UserListPage() {
             )
           })}
         </tbody> : <tbody><tr><td>Nenhum dado encontrado...</td></tr></tbody>
-        }
-        
+        }      
       </StripedTableComponent>
     </>
   )

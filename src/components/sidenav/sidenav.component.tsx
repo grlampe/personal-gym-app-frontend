@@ -25,15 +25,10 @@ export function SideNavComponent() {
             </li>
             <li className="nav-item has-submenu">
 		          <a className="nav-link" href="#"> 
-                <VscGear className={styles.menuIcon}/>Configurações 
+                <VscGear className={styles.menuIcon}/>
+                Cadastros 
               </a>
               <ul className="submenu collapse">
-              <li>
-                <NavLink  activeClassName={styles.active} to={urls.companyList}>
-                    <BiBuilding className={styles.menuIcon} />
-                    Empresas
-                </NavLink>
-              </li>
               <li>
                 <NavLink  activeClassName={styles.active} to={urls.userList}>
                     <VscPerson className={styles.menuIcon} />

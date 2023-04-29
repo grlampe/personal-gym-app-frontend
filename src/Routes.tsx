@@ -4,7 +4,6 @@ import { Switch, Route } from "react-router-dom";
 import { HomePage } from "./pages/home/home.page";
 import { UserEditPage } from "./pages/user/userEdit.page";
 import { urls } from "./utils/consts";
-import { CompanyListPage } from './pages/company/companyList.page';
 import { isAuthenticated } from './services/auth.api';
 import { Redirect } from 'react-router-dom';
 import SignInPage from './pages/signIn/signIn.page';
@@ -43,9 +42,7 @@ export function Routes() {
 
   return (
     <Switch>
-      {/* EMPRESA */}
-      <PrivateRoute exact path={urls.companyList} comp={() => <CompanyListPage/> }/>
-
+      {/*  TO-DO -- TIRAR A CONSTANTE E PASSAR AS ROTAS DIRETO NO PATH  */}
       {/*  USUARIOS  */}
       <PrivateRoute exact path={urls.userEdit} comp={() => <UserEditPage/>}/>
       <PrivateRoute exact path={urls.userNew} comp={() =>  <UserEditPage/>}/>
