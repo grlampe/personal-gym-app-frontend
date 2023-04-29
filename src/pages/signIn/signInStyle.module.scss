@@ -1,0 +1,14 @@
+.error {
+  font-size: 10px;
+  color: red;
+}
+
+.errorField {
+  border: rgb(241, 167, 167) 1px solid;
+  background-color: rgb(241, 167, 167);
+
+}
+
+.errorField::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;  
+}

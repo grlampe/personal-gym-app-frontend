@@ -1,0 +1,28 @@
+.filterButton {
+  border: 2px solid #66c4de;
+  background-color: white;
+  color: #66c4de;
+  padding: 2px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 0px 6px 6px 0px;
+  outline: none;
+
+  &:hover, &:focus{
+    border: 2px solid #3ab6d8;
+    color: white;
+    background-color: #3ab6d8;
+    outline: none;
+    -webkit-transition: 0.2s ease-in;
+    -moz-transition: 0.2s ease-in;
+    -o-transition: 0.2s ease-in;
+    transition: 0.2s ease-in;
+  }
+}
+
+.inputFilter {
+  border: 0.5px solid #1baad1;
+  &:hover, &:focus  {
+    border: 2px solid #66c4de;
+  }
+}
