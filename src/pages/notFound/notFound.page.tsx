@@ -1,6 +1,5 @@
 import './notFound.style.css';
 import { Link } from "react-router-dom";
-import { urls } from "../../utils/consts";
 
 export function NotFoundPage() {
 
@@ -20,7 +19,7 @@ export function NotFoundPage() {
               </div>
               <div>
                 <br/>
-                <Link to={urls.home}>
+                <Link to={'/home'}>
                   <button className="btn btn-outline-primary btn-lg">Voltar</button>
                 </Link>
               </div>

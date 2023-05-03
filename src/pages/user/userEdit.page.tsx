@@ -12,7 +12,7 @@ import {
   Formik,
   Form,
 } from 'formik';
-import { urls } from "../../utils/consts";
+
 type UserEditParams = {
   id: string,
 };
@@ -133,7 +133,7 @@ export function UserEditPage() {
               } else {
                 saveUser(values);
               }
-              history.push(urls.userList);
+              history.push('/user');
             } else {
               emitWarnToast('Preencha os dados corretamente!');
             }

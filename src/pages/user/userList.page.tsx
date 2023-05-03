@@ -6,7 +6,6 @@ import { FcOk } from 'react-icons/fc';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { ButtonMenuContext } from "../../contexts/buttonMenu.context";
 import { Link } from "react-router-dom";
-import { urls } from "../../utils/consts";
 import { searchUsers } from "../../services/user.api";
 
 export type UsersList = {
@@ -25,7 +24,7 @@ export function UserListPage() {
   useEffect(() =>{
     setUsers([]);
     setPageTitle('Usuários');
-    setUrlToNew(urls.userNew);
+    setUrlToNew('/user/new');
   },[]);
 
   useEffect(() =>{
@@ -64,7 +63,7 @@ export function UserListPage() {
                 </td>
                 <td>
                   <div className="btn-group" role="group" aria-label="Basic example">
-                    <Link to={urls.userEdit.replace(urls.idParam, data.id)}>
+                    <Link to={'user/edit/:id'.replace(':id', data.id)}>
                       <button type="button" className="btn btn-outline-info">
                         <VscEdit size="14"/>
                       </button>

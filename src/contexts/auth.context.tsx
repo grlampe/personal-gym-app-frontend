@@ -38,7 +38,7 @@ export const AuthProvider = (props: AuthProvider) => {
   async function setUserData(data: LoginData) {
     if(!!data?.access_token){
       localStorage.setItem(storageTokenName, data.access_token);
-      
+      console.log(data);
       setCurrentUser(data.user); 
     }
   }

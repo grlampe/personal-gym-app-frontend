@@ -5,7 +5,6 @@ import styles from './horizontalBar.module.scss';
 import { AuthContext } from "../../contexts/auth.context";
 import { ConfirmModalComponent } from "../modals/confirmModal.component";
 import { withRouter, useHistory } from "react-router-dom";
-import { urls } from "../../utils/consts";
 
 function HorizontalBarComponent() {
   const { pageTitle } = useContext(TitlePageContext);
@@ -32,16 +31,6 @@ function HorizontalBarComponent() {
             <span className="navbar-toggler-bar navbar-kebab"></span>
           </button>
           <div className="collapse navbar-collapse justify-content-end" id="navigation">
-
-            <div className="d-flex flex-column bd-highlight text-right" style={{padding: '0px 30px', height: '40px'}}>
-              <p className="p-1 bd-highlight text-primary"style={{margin: '0 !important', padding: '5px 2px !important', height: '12px'}}>
-                <strong>{currentUser?.companyName}</strong>
-                </p>
-              <p className="p-1 bd-highlight text-primary"style={{margin: '0 !important', padding: '5px 2px !important', height: '12px'}}>
-                <strong>{currentUser?.fullName}</strong>
-              </p>
-            </div>
-
             <button 
               type="button" 
               className="btn btn-outline-danger"
@@ -58,7 +47,7 @@ function HorizontalBarComponent() {
       <ConfirmModalComponent
         funcToExc={() => { 
           signOut();
-          history.push(urls.login);
+          history.push('/');
           window.location.reload();
         }}
         idModal="logoutSystem"

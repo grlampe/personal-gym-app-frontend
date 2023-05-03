@@ -8,7 +8,6 @@ import { emitWarnToast } from '../../utils/toast.utils';
 import styles from './signInStyle.module.scss';
 import { AuthContext } from '../../contexts/auth.context';
 import { withRouter, useHistory } from 'react-router-dom';
-import { urls } from '../../utils/consts';
 
 
 export type LoginForm = {
@@ -77,7 +76,7 @@ function SignInPage() {
                                   if(valid){
                                     await signIn(values);
 
-                                    history.push(urls.home);
+                                    history.push('/home');
                                   } else {
                                     emitWarnToast('Preencha os dados corretamente!');
                                   }

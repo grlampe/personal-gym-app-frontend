@@ -3,8 +3,6 @@ import miniLogoWithoutBg from '/assets/img/app-logo.png';
 import { NavLink } from 'react-router-dom';
 import styles from './sidenav.module.scss';
 import { VscHome, VscPerson, VscGear } from 'react-icons/vsc';
-import { BiBuilding } from 'react-icons/bi';
-import { urls } from '../../utils/consts';
 
 export function SideNavComponent() {
 
@@ -18,7 +16,7 @@ export function SideNavComponent() {
         <div className="sidebar-wrapper">
           <ul className="nav">
             <li>
-                <NavLink exact activeClassName={styles.active} to={urls.home}>
+                <NavLink exact activeClassName={styles.active} to={'/home'}>
                   <VscHome className={styles.menuIcon} />
                   Início
                 </NavLink>
@@ -30,7 +28,7 @@ export function SideNavComponent() {
               </a>
               <ul className="submenu collapse">
               <li>
-                <NavLink  activeClassName={styles.active} to={urls.userList}>
+                <NavLink  activeClassName={styles.active} to={'/user'}>
                     <VscPerson className={styles.menuIcon} />
                     Usuários
                 </NavLink>
