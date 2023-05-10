@@ -12,6 +12,7 @@ import {
   Formik,
   Form,
 } from 'formik';
+import { DateUtils } from "../../utils/date";
 
 type UserEditParams = {
   id: string,
@@ -43,6 +44,7 @@ export function UserEditPage() {
   const { setPageTitle } = useContext(TitlePageContext);
   
   const { id } = useParams<UserEditParams>();
+
   const [initialValues, setInitialValues] = useState<UserForm>({
     name: '',
     email: '',
@@ -59,8 +61,9 @@ export function UserEditPage() {
   },[]);
 
   const setUserData = async () => {
-    if(id){
+    if (id) {
       const data = await getUserById(id);
+      data.birthDate = DateUtils.formatDateToBackend(data.birthDate)
       setInitialValues({...data, password: '', passwordConfirm: ''});
     }
   }
@@ -78,9 +81,10 @@ export function UserEditPage() {
     passwordConfirm: yup
       .string(),
     document: yup
-    .string(),
+      .string(),
     birthDate: yup
-    .string(),
+      .string()
+      .required(),
   });
 
   const validateForm = (values: UserForm) => {
@@ -190,8 +194,8 @@ export function UserEditPage() {
           </div>
           <div className="form-row">
             <div className="col-md-3 mb-3">
-              <InputForm 
-                type="date" 
+              <InputForm
+                type="date"
                 name="birthDate" 
                 label="Data Nascimento"
                 errors={errors}
