@@ -11,8 +11,10 @@ import { emitWarnToast } from "../../utils/toast.utils";
 import {
   Formik,
   Form,
+  Field,
 } from 'formik';
 import { DateUtils } from "../../utils/date";
+import styles from '../../components/inputForm/inputFormStyle.module.scss';
 
 type UserEditParams = {
   id: string,
@@ -23,8 +25,15 @@ export type UserForm = {
   email: string,
   password: string,
   passwordConfirm?: string,
-  document: string,
+  cpf: string,
   birthDate: string,
+  addressStreet: string,
+  addressNumber: string,
+  addressZipCode: string,
+  addressDistrict: string,
+  addressCity: string,
+  addressState: string,
+  addressComplement: string,
   active: boolean,
 };
 
@@ -33,8 +42,14 @@ export type ErrorUserForm = {
   email?: string,
   password?: string,
   passwordConfirm?: string,
-  document?: string;
-  birthDate?: string;
+  cpf?: string,
+  birthDate?: string,
+  addressStreet?: string,
+  addressNumber?: string,
+  addressZipCode?: string,
+  addressDistrict?: string,
+  addressCity?: string,
+  addressState?: string,
 };
 
 
@@ -50,8 +65,15 @@ export function UserEditPage() {
     email: '',
     password: '',
     passwordConfirm: '',
-    document: '',
+    cpf: '',
     birthDate: '',
+    addressZipCode: '',
+    addressStreet: '',
+    addressNumber: '',
+    addressDistrict: '',
+    addressCity: '',
+    addressState: '',
+    addressComplement: '',
     active: true,
   });
 
@@ -71,20 +93,40 @@ export function UserEditPage() {
   const usersSchema = yup.object().shape({
     name: yup
       .string()
-      .required(),
+      .required(), 
     email: yup
       .string()
-      .email()
-      .required(),
+      .required(),  
     password: yup
       .string(),
     passwordConfirm: yup
-      .string(),
-    document: yup
-      .string(),
+      .string(), 
+    cpf: yup
+      .string()
+      .required(),  
     birthDate: yup
       .string()
-      .required(),
+      .required(),  
+    addressStreet: yup
+      .string()
+      .required(),  
+    addressNumber: yup
+      .string()
+      .required(), 
+    addressZipCode: yup
+      .string()
+      .required(),  
+    addressDistrict: yup
+      .string()
+      .required(),  
+    addressCity: yup
+      .string()
+      .required(),  
+    addressState: yup
+      .string()
+      .required(),  
+    addressComplement: yup
+      .string(), 
   });
 
   const validateForm = (values: UserForm) => {
@@ -98,25 +140,54 @@ export function UserEditPage() {
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
       errors.email = 'Email inválido!';
     }
-  
-    if (!values.password) {
-      errors.password = 'A senha é necessária!';
-    } else if (values.password.length < 6 || values.password.length > 8) {
-      errors.password = 'A senha deve ter de 6 a 8 digitos!';
+    
+    if (!id) {
+      if (!values.password) {
+        errors.password = 'A senha é necessária!';
+      } 
     }
 
-    if (!values.passwordConfirm) {
+    if ((values.password) && (values.password.length < 6 || values.password.length > 8)) {
+      errors.password = 'A senha deve ter de 6 a 8 digitos!';
+    }
+    
+
+    if ((values.password) && (!values.passwordConfirm)) {
       errors.passwordConfirm = 'Confirme a senha por gentileza.';
     } else if (values.password !== values.passwordConfirm) {
       errors.passwordConfirm = 'As senhas não são identicas!';
     }
 
-    if (!values.document) {
-      errors.document = 'Documento é necessário!';
-    } 
-
     if (!values.birthDate) {
       errors.birthDate = 'Data Nascimento é necessária!';
+    } 
+
+    if (!values.cpf) {
+      errors.cpf = 'CPF é necessário!';
+    } 
+
+    if (!values.addressZipCode) {
+      errors.addressZipCode = 'CEP é necessário!';
+    } 
+
+    if (!values.addressStreet) {
+      errors.addressStreet = 'Logradouro é necessário!';
+    } 
+
+    if (!values.addressNumber) {
+      errors.addressNumber = 'Número é necessário!';
+    } 
+
+    if (!values.addressDistrict) {
+      errors.addressDistrict = 'Bairro é necessário!';
+    } 
+
+    if (!values.addressCity) {
+      errors.addressCity = 'Cidade é necessária!';
+    } 
+
+    if (!values.addressState) {
+      errors.addressState = 'Bairro é necessário!';
     } 
   
     return errors;
@@ -203,14 +274,78 @@ export function UserEditPage() {
               />
             </div>
             <div className="col-md-3 mb-3">
+              <label>CPF</label>
+              <Field 
+                className={`form-control form-control-sm ${errors["cpf"] && touched["cpf"] ? styles.errorField : ''}`}
+                name="cpf"
+                maxLength={11}
+              />
+              <div className={styles.error}>{errors["cpf"]}</div>
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="col-md-2 mb-3">
+            <label>CEP</label>
+              <Field 
+                className={`form-control form-control-sm ${errors["addressZipCode"] && touched["addressZipCode"] ? styles.errorField : ''}`}
+                name="addressZipCode"
+                maxLength={8}
+              />
+              <div className={styles.error}>{errors["addressZipCode"]}</div>
+            </div>
+            <div className="col-md-4 mb-3">
               <InputForm 
-                name="document" 
-                label="Documento"
+                name="addressStreet" 
+                label="Logradouro"
                 errors={errors}
                 touched={touched}
               />
             </div>
           </div>
+          <div className="form-row">
+              <div className="col-md-1 mb-3">
+                <InputForm 
+                  name="addressNumber" 
+                  label="Número"
+                  errors={errors}
+                  touched={touched}
+                />
+              </div>
+              <div className="col-md-3 mb-3">
+                <InputForm 
+                  name="addressDistrict" 
+                  label="Bairro"
+                  errors={errors}
+                  touched={touched}
+                />
+              </div>
+              <div className="col-md-2 mb-3">
+                <InputForm 
+                  name="addressCity" 
+                  label="Cidade"
+                  errors={errors}
+                  touched={touched}
+                />
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="col-md-2 mb-3">
+                <InputForm 
+                  name="addressState" 
+                  label="Estado"
+                  errors={errors}
+                  touched={touched}
+                />
+              </div>  
+              <div className="col-md-4 mb-3">
+                <InputForm 
+                  name="complement" 
+                  label="Complemento"
+                  errors={errors}
+                  touched={touched}
+                />
+              </div> 
+            </div>
           <ButtonsFormComponent isSubmitting={isSubmitting}/>
         </Form>
       )} 

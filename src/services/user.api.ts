@@ -40,7 +40,6 @@ export async function updateUser(data: UserForm){
 }
 
 export async function saveUser(data: UserForm){
-  console.log('aqui');
   delete data.passwordConfirm;
   await api.post('user', data).then( res => {
     if(res.status){

@@ -7,7 +7,7 @@ export class DateUtils {
         }
 
 
-        return moment(date).format('DD/MM/YYYY HH:mm');
+        return moment.utc(date).format('DD/MM/YYYY HH:mm');
     }
 
     static formatDateWithoutTime(date: string): string {
@@ -16,7 +16,7 @@ export class DateUtils {
         }
 
 
-        return moment(date).format('DD/MM/YYYY');
+        return moment.utc(date).format('DD/MM/YYYY');
     }
 
     static formatDateToBackend(date: string): string {
@@ -24,6 +24,6 @@ export class DateUtils {
             return '';
         }
 
-        return moment(new Date(date)).format('YYYY-MM-DD');
+        return moment.utc(date).format('YYYY-MM-DD');
     }
 }

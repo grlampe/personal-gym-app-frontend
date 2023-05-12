@@ -1,6 +1,6 @@
 export function FooterComponent() {
   return (
-    <footer className="footer" style={{position: 'absolute', bottom: 0, width: '-webkit-fill-available',}}>
+    <footer className="footer" style={{position: 'absolute', width: '-webkit-fill-available',}}>
       <div className="container-fluid">
         <div className="row">
           <nav className="footer-nav">
