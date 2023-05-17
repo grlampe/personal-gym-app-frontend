@@ -85,7 +85,7 @@ export function UserEditPage() {
   const setUserData = async () => {
     if (id) {
       const data = await getUserById(id);
-      data.birthDate = DateUtils.formatDateToBackend(data.birthDate)
+      data.birthDate = DateUtils.formatUTCDateToBackend(data.birthDate)
       setInitialValues({...data, password: '', passwordConfirm: ''});
     }
   }
