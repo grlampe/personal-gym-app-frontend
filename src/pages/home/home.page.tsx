@@ -10,8 +10,6 @@ export function HomePage() {
     titlePageContext.setPageTitle('Início');
   },[])
 
-  
-
   return (
     <>
       <div className="d-flex flex-column bd-highlight text-right" style={{padding: '0px 30px', height: '40px'}}>

@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { emitWarnToast } from '../../utils/toast.utils';
 import styles from './signInStyle.module.scss';
 import { AuthContext } from '../../contexts/auth.context';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 
 export type LoginForm = {
@@ -25,13 +25,12 @@ function SignInPage() {
   });
 
   const loginSchema = yup.object().shape({
-    username: yup
-      .string()
-      .email('Email inválido!')
-      .required('O email é necessário!'),
+    username: yup.string().email('Email inválido!').required('O email é necessário!'),
     password: yup
       .string()
-      .required('A senha é necessária!').min(6, 'A senha deve ter pelo menos 6 caracteres!').max(8, 'A senha deve ter no máximo 8 caracteres!'),
+      .required('A senha é necessária!')
+      .min(6, 'A senha deve ter pelo menos 6 caracteres!')
+      .max(8, 'A senha deve ter no máximo 8 caracteres!'),
   });
 
   return (
@@ -53,19 +52,17 @@ function SignInPage() {
                             validationSchema={loginSchema}
                             enableReinitialize
                             onSubmit={(values, actions) => {
-                              loginSchema
-                                .isValid(values)
-                                .then(async valid => {
-                                  if(valid){
-                                    await signIn(values);
-
-                                    history.push('/home');
-                                  } else {
-                                    emitWarnToast('Preencha os dados corretamente!');
-                                  }
-
-                                  actions.setSubmitting(false);
-                                })
+                              loginSchema.isValid(values).then(async (valid) => {
+                                if (valid) {
+                                  await signIn(values);
+                      
+                                  history.push('/home');
+                                } else {
+                                  emitWarnToast('Preencha os dados corretamente!');
+                                }
+                      
+                                actions.setSubmitting(false);
+                              });
                             }}
                           >
                             {({isSubmitting, errors, touched})=>(
@@ -131,4 +128,4 @@ function SignInPage() {
     </>
   )
 }
-export default withRouter(SignInPage);
+export default SignInPage;

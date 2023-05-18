@@ -25,6 +25,8 @@ export function UserListPage() {
     setUsers([]);
     setPageTitle('Usuários');
     setUrlToNew('/user/new');
+
+    executeOnPageLoad();
   },[]);
 
   useEffect(() =>{
@@ -37,6 +39,12 @@ export function UserListPage() {
     }
     
   },[searchPressed]);
+
+  const executeOnPageLoad = () => {
+    searchUsers((data: UsersList[]) => {
+      setUsers(data);
+    });
+  };
 
   return (
     <>
