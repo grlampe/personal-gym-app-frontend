@@ -20,35 +20,18 @@ function SignInPage() {
   const history = useHistory();
 
   const [initialValues] = useState<LoginForm>({
-    username: 'grlampe@hotmail.com',
+    username: 'adm@personalgymapp.com',
     password: '123123',
   });
-
-  const validateForm = (values: LoginForm) => {
-    const errors: LoginForm = {};
-    if (!values.username) {
-      errors.username = 'O email é necessário!';
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.username)) {
-      errors.username = 'Email inválido!';
-    }
-  
-    if (!values.password) {
-      errors.password = 'A senha é necessária!';
-    } else if (values.password.length < 6 || values.password.length > 8) {
-      errors.password = 'A senha deve ter de 6 a 8 digitos!';
-    }
-
-    return errors;
-  };
 
   const loginSchema = yup.object().shape({
     username: yup
       .string()
-      .email()
-      .required(),
+      .email('Email inválido!')
+      .required('O email é necessário!'),
     password: yup
       .string()
-      .required(),
+      .required('A senha é necessária!').min(6, 'A senha deve ter pelo menos 6 caracteres!').max(8, 'A senha deve ter no máximo 8 caracteres!'),
   });
 
   return (
@@ -67,7 +50,7 @@ function SignInPage() {
                     <div className="wrap-login100">
                           <Formik
                             initialValues={initialValues}
-                            validate={validateForm}
+                            validationSchema={loginSchema}
                             enableReinitialize
                             onSubmit={(values, actions) => {
                               loginSchema

@@ -6,7 +6,7 @@ import { SwitchCheckboxComponent } from "../../components/switchCheckbox/switchC
 import { ButtonsFormComponent } from "../../components/buttonsForm/buttonsForm.component";
 import { getUserById, saveUser, updateUser } from "../../services/user.api";
 import { useHistory } from 'react-router-dom';
-import * as yup from 'yup';
+import * as Yup from 'yup';
 import { emitWarnToast } from "../../utils/toast.utils";
 import {
   Formik,
@@ -90,116 +90,36 @@ export function UserEditPage() {
     }
   }
 
-  const usersSchema = yup.object().shape({
-    name: yup
-      .string()
-      .required(), 
-    email: yup
-      .string()
-      .required(),  
-    password: yup
-      .string(),
-    passwordConfirm: yup
-      .string(), 
-    cpf: yup
-      .string()
-      .required(),  
-    birthDate: yup
-      .string()
-      .required(),  
-    addressStreet: yup
-      .string()
-      .required(),  
-    addressNumber: yup
-      .string()
-      .required(), 
-    addressZipCode: yup
-      .string()
-      .required(),  
-    addressDistrict: yup
-      .string()
-      .required(),  
-    addressCity: yup
-      .string()
-      .required(),  
-    addressState: yup
-      .string()
-      .required(),  
-    addressComplement: yup
-      .string(), 
+  const userSchema = Yup.object().shape({
+    name: Yup.string().required('Nome do usuário é necessário!'),
+    email: Yup.string().email('Email inválido!').required('O email é necessário!'),
+    password: Yup.string().when('id', {
+      is: (id: string) => !id,
+      then: Yup.string().required('A senha é necessária!').min(6, 'A senha deve ter pelo menos 6 caracteres!').max(8, 'A senha deve ter no máximo 8 caracteres!'),
+      otherwise: Yup.string(),
+    }),
+    passwordConfirm: Yup.string().when('password', {
+      is: (password: string) => !!password,
+      then: Yup.string().required('Confirme a senha por gentileza.').oneOf([Yup.ref('password'), null], 'As senhas não são identicas!'),
+      otherwise: Yup.string(),
+    }),
+    cpf: Yup.string().required('CPF é necessário!'),
+    birthDate: Yup.string().required('Data Nascimento é necessária!'),
+    addressZipCode: Yup.string().required('CEP é necessário!'),
+    addressStreet: Yup.string().required('Logradouro é necessário!'),
+    addressNumber: Yup.string().required('Número é necessário!'),
+    addressDistrict: Yup.string().required('Bairro é necessário!'),
+    addressCity: Yup.string().required('Cidade é necessária!'),
+    addressState: Yup.string().required('Estado é necessária!'),
   });
-
-  const validateForm = (values: UserForm) => {
-    const errors: ErrorUserForm = {};
-    if (!values.name) {
-      errors.name = 'Nome do usuário é necessário!';
-    } 
-
-    if (!values.email) {
-      errors.email = 'O email é necessário!';
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-      errors.email = 'Email inválido!';
-    }
-    
-    if (!id) {
-      if (!values.password) {
-        errors.password = 'A senha é necessária!';
-      } 
-    }
-
-    if ((values.password) && (values.password.length < 6 || values.password.length > 8)) {
-      errors.password = 'A senha deve ter de 6 a 8 digitos!';
-    }
-    
-
-    if ((values.password) && (!values.passwordConfirm)) {
-      errors.passwordConfirm = 'Confirme a senha por gentileza.';
-    } else if (values.password !== values.passwordConfirm) {
-      errors.passwordConfirm = 'As senhas não são identicas!';
-    }
-
-    if (!values.birthDate) {
-      errors.birthDate = 'Data Nascimento é necessária!';
-    } 
-
-    if (!values.cpf) {
-      errors.cpf = 'CPF é necessário!';
-    } 
-
-    if (!values.addressZipCode) {
-      errors.addressZipCode = 'CEP é necessário!';
-    } 
-
-    if (!values.addressStreet) {
-      errors.addressStreet = 'Logradouro é necessário!';
-    } 
-
-    if (!values.addressNumber) {
-      errors.addressNumber = 'Número é necessário!';
-    } 
-
-    if (!values.addressDistrict) {
-      errors.addressDistrict = 'Bairro é necessário!';
-    } 
-
-    if (!values.addressCity) {
-      errors.addressCity = 'Cidade é necessária!';
-    } 
-
-    if (!values.addressState) {
-      errors.addressState = 'Bairro é necessário!';
-    } 
-  
-    return errors;
-  };
 
   return (
     <Formik
       initialValues={initialValues}
-      validate={validateForm}
       enableReinitialize
+      validationSchema={userSchema}
       onSubmit={(values, actions) => {
-        usersSchema
+        userSchema
           .isValid(values)
           .then(valid => {
             if(valid){
@@ -212,7 +132,6 @@ export function UserEditPage() {
             } else {
               emitWarnToast('Preencha os dados corretamente!');
             }
-
             actions.setSubmitting(true);
           })
       }}
