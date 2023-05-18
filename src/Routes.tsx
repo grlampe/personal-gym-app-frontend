@@ -1,5 +1,5 @@
 import 'react-toastify/dist/ReactToastify.css';
-import { UserListPage } from "./pages/user/userList.page"
+import { UserListPage } from "./pages/user/userList.page";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { HomePage } from "./pages/home/home.page";
 import { UserEditPage } from "./pages/user/userEdit.page";
@@ -40,6 +40,17 @@ export function Routes() {
 
   return (
     <Switch>
+
+      {/*  Exercicio  */}
+      <PrivateRoute exact path={'/exercise/edit/:id'} comp={() => <UserEditPage/>}/>
+      <PrivateRoute exact path={'/exercise/new'} comp={() =>  <UserEditPage/>}/>
+      <PrivateRoute exact path={'/exercise'} comp={() => <UserListPage/>}/>
+
+      {/*  Categoria de Exercicio  */}
+      <PrivateRoute exact path={'/exerciseCategory/edit/:id'} comp={() => <UserEditPage/>}/>
+      <PrivateRoute exact path={'/exerciseCategory/new'} comp={() =>  <UserEditPage/>}/>
+      <PrivateRoute exact path={'/exerciseCategory'} comp={() => <UserListPage/>}/>
+
       {/*  USUARIOS  */}
       <PrivateRoute exact path={'/user/edit/:id'} comp={() => <UserEditPage/>}/>
       <PrivateRoute exact path={'/user/new'} comp={() =>  <UserEditPage/>}/>
