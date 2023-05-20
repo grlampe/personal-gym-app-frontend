@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { BsCheck2Circle } from 'react-icons/bs';
 import { ImCancelCircle } from 'react-icons/im';
 import { useHistory } from 'react-router-dom';
+import { AuthContext } from '../../contexts/auth.context';
 
 type ConfirmModalProps = {
   title?: string;
@@ -14,6 +15,7 @@ type ConfirmModalProps = {
 
 export function ConfirmModalComponent(props: ConfirmModalProps) {
   const history = useHistory();
+  useContext(AuthContext);
 
 
   return (

@@ -17,7 +17,6 @@ export async function signInApi(login: LoginForm, funcToExcAfter: any) {
      funcToExcAfter(res.data);
    })
    .catch(error => {
-     console.error(error);
      if(error.response.data.message){
        emitErrorToast(error.response.data.message);
      } else {

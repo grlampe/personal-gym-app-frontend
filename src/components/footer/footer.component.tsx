@@ -12,5 +12,4 @@ export function FooterComponent() {
       </div>
     </footer>
   )
-
 }

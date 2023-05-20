@@ -1,14 +1,14 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useState, useEffect } from "react";
 import { LoginData, signInApi } from "../services/auth.api";
-import { storageTokenName } from "../utils/consts";
+import { storageCurrentUser, storageTokenName } from "../utils/consts";
 
 export const AuthContext = createContext({} as AuthContextData);
 
 export type User = {
-  id: string;
-  name: string;
-  email: string;
-  active: string;
+  id : string; 
+  email : string; 
+  name : string;
+  active : boolean;  
 }
 
 type UserSignInForm = {
@@ -28,18 +28,22 @@ type AuthProvider = {
 
 
 export const AuthProvider = (props: AuthProvider) => {
-  const [ currentUser , setCurrentUser ] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(() => {
+    const storedUser = localStorage.getItem(storageCurrentUser);
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   
   function signOut() {
     setCurrentUser(null);
+    localStorage.removeItem(storageCurrentUser);
     localStorage.removeItem(storageTokenName);
   }
 
   async function setUserData(data: LoginData) {
-    if(!!data?.access_token){
+    if (!!data) {
       localStorage.setItem(storageTokenName, data.access_token);
-      console.log(data);
-      setCurrentUser(data.user); 
+      localStorage.setItem(storageCurrentUser, JSON.stringify(data.user));
+      setCurrentUser(data.user);
     }
   }
   
