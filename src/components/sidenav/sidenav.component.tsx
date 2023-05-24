@@ -3,10 +3,11 @@ import miniLogoWithoutBg from '/assets/img/app-logo.png';
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import styles from './sidenav.module.scss';
-import { VscHome, VscPerson, VscChevronDown, VscChevronUp } from 'react-icons/vsc';
+import { VscHome, VscChevronDown, VscChevronUp, VscChevronRight } from 'react-icons/vsc';
 
 export function SideNavComponent() {
   const [isCadastroOpen, setIsCadastroOpen] = useState(false);
+  const [activeSubMenu, setActiveSubMenu] = useState(null);
   const [cadastroIcon, setCadastroIcon] = useState(<VscChevronDown className={styles.menuIcon} />);
 
   const handleCadastroToggle = () => {
@@ -14,6 +15,14 @@ export function SideNavComponent() {
     setCadastroIcon(
       isCadastroOpen ? <VscChevronDown className={styles.menuIcon} /> : <VscChevronUp className={styles.menuIcon} />
     );
+  };
+
+  const handleSubMenuClick = (submenuName: any) => {
+    setActiveSubMenu(submenuName);
+  };
+
+  const isSubMenuActive = (submenuName: any) => {
+    return activeSubMenu === submenuName;
   };
 
   return (
@@ -38,9 +47,36 @@ export function SideNavComponent() {
             </a>
             <ul className={`submenu collapse ${isCadastroOpen ? 'show' : ''}`}>
               <li>
-                <NavLink activeClassName={styles.active} to="/user">
-                  <VscPerson className={styles.menuIcon} />
+                <NavLink
+                  exact
+                  activeClassName={isSubMenuActive('usuarios') ? styles.active : ''}
+                  to="/user"
+                  onClick={() => handleSubMenuClick('usuarios')}
+                >
+                  <VscChevronRight className={styles.menuIcon} />
                   Usuários
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  exact
+                  activeClassName={isSubMenuActive('categoriaExercicios') ? styles.active : ''}
+                  to="/exerciseCategory"
+                  onClick={() => handleSubMenuClick('categoriaExercicios')}
+                >
+                  <VscChevronRight className={styles.menuIcon} />
+                  Categ. de Exercícios
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  exact
+                  activeClassName={isSubMenuActive('exercicios') ? styles.active : ''}
+                  to="/exercise"
+                  onClick={() => handleSubMenuClick('exercicios')}
+                >
+                  <VscChevronRight className={styles.menuIcon} />
+                  Exercícios
                 </NavLink>
               </li>
             </ul>

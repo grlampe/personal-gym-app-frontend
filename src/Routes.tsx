@@ -7,6 +7,8 @@ import { isAuthenticated } from './services/auth.api';
 import SignInPage from './pages/signIn/signIn.page';
 import { ContainerComponent } from './components/container/container.component';
 import { NotFoundPage } from './pages/notFound/notFound.page';
+import { CategoryExerciseListPage } from './pages/categoryExercise/categoryExerciseList.page';
+import { CategoryExerciseEditPage } from './pages/categoryExercise/categoryExerciseEdit.page';
 
 const PrivateRoute = (rest: any) => (
   <Route
@@ -47,9 +49,9 @@ export function Routes() {
       <PrivateRoute exact path={'/exercise'} comp={() => <UserListPage/>}/>
 
       {/*  Categoria de Exercicio  */}
-      <PrivateRoute exact path={'/exerciseCategory/edit/:id'} comp={() => <UserEditPage/>}/>
-      <PrivateRoute exact path={'/exerciseCategory/new'} comp={() =>  <UserEditPage/>}/>
-      <PrivateRoute exact path={'/exerciseCategory'} comp={() => <UserListPage/>}/>
+      <PrivateRoute exact path={'/exerciseCategory/edit/:id'} comp={() => <CategoryExerciseEditPage/>}/>
+      <PrivateRoute exact path={'/exerciseCategory/new'} comp={() =>  <CategoryExerciseEditPage/>}/>
+      <PrivateRoute exact path={'/exerciseCategory'} comp={() => <CategoryExerciseListPage/>}/>
 
       {/*  USUARIOS  */}
       <PrivateRoute exact path={'/user/edit/:id'} comp={() => <UserEditPage/>}/>
@@ -63,6 +65,8 @@ export function Routes() {
       <LoginRoute exact path="/" comp={() => <SignInPage />} />
 
       <Route path="*" component={() => <NotFoundPage/>} />  
+
+
     </Switch>
   )
 }

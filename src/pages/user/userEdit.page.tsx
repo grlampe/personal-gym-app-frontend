@@ -37,22 +37,6 @@ export type UserForm = {
   active: boolean,
 };
 
-export type ErrorUserForm = {
-  name?: string,
-  email?: string,
-  password?: string,
-  passwordConfirm?: string,
-  cpf?: string,
-  birthDate?: string,
-  addressStreet?: string,
-  addressNumber?: string,
-  addressZipCode?: string,
-  addressDistrict?: string,
-  addressCity?: string,
-  addressState?: string,
-};
-
-
 export function UserEditPage() {
   const history = useHistory();
 
@@ -195,22 +179,26 @@ export function UserEditPage() {
             <div className="col-md-3 mb-3">
               <label>CPF</label>
               <Field 
-                className={`form-control form-control-sm ${errors["cpf"] && touched["cpf"] ? styles.errorField : ''}`}
+                className={`form-control form-control-sm ${errors.cpf && touched.cpf ? styles.errorField : ''}`}
                 name="cpf"
                 maxLength={11}
               />
-              <div className={styles.error}>{errors["cpf"]}</div>
+              {touched.cpf && errors.cpf && (
+               <div className={styles.error}>{errors.cpf}</div>
+              )}
             </div>
           </div>
           <div className="form-row">
             <div className="col-md-2 mb-3">
             <label>CEP</label>
               <Field 
-                className={`form-control form-control-sm ${errors["addressZipCode"] && touched["addressZipCode"] ? styles.errorField : ''}`}
+                className={`form-control form-control-sm ${errors.addressZipCode && touched.addressZipCode ? styles.errorField : ''}`}
                 name="addressZipCode"
                 maxLength={8}
               />
-              <div className={styles.error}>{errors["addressZipCode"]}</div>
+              {touched.addressZipCode && errors.addressZipCode && (
+                <div className={styles.error}>{errors.addressZipCode}</div>
+              )}
             </div>
             <div className="col-md-4 mb-3">
               <InputForm 
