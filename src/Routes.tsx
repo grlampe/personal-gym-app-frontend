@@ -9,6 +9,8 @@ import { ContainerComponent } from './components/container/container.component';
 import { NotFoundPage } from './pages/notFound/notFound.page';
 import { CategoryExerciseListPage } from './pages/categoryExercise/categoryExerciseList.page';
 import { CategoryExerciseEditPage } from './pages/categoryExercise/categoryExerciseEdit.page';
+import { ExerciseEditPage } from './pages/exercise/exerciseEdit.page';
+import { ExerciseListPage } from './pages/exercise/exerciseList.page';
 
 const PrivateRoute = (rest: any) => (
   <Route
@@ -44,9 +46,9 @@ export function Routes() {
     <Switch>
 
       {/*  Exercicio  */}
-      <PrivateRoute exact path={'/exercise/edit/:id'} comp={() => <UserEditPage/>}/>
-      <PrivateRoute exact path={'/exercise/new'} comp={() =>  <UserEditPage/>}/>
-      <PrivateRoute exact path={'/exercise'} comp={() => <UserListPage/>}/>
+      <PrivateRoute exact path={'/exercise/edit/:id'} comp={() => <ExerciseEditPage/>}/>
+      <PrivateRoute exact path={'/exercise/new'} comp={() =>  <ExerciseEditPage/>}/>
+      <PrivateRoute exact path={'/exercise'} comp={() => <ExerciseListPage/>}/>
 
       {/*  Categoria de Exercicio  */}
       <PrivateRoute exact path={'/categoryExercise/edit/:id'} comp={() => <CategoryExerciseEditPage/>}/>
