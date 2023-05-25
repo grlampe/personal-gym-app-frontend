@@ -49,9 +49,9 @@ export function Routes() {
       <PrivateRoute exact path={'/exercise'} comp={() => <UserListPage/>}/>
 
       {/*  Categoria de Exercicio  */}
-      <PrivateRoute exact path={'/exerciseCategory/edit/:id'} comp={() => <CategoryExerciseEditPage/>}/>
-      <PrivateRoute exact path={'/exerciseCategory/new'} comp={() =>  <CategoryExerciseEditPage/>}/>
-      <PrivateRoute exact path={'/exerciseCategory'} comp={() => <CategoryExerciseListPage/>}/>
+      <PrivateRoute exact path={'/categoryExercise/edit/:id'} comp={() => <CategoryExerciseEditPage/>}/>
+      <PrivateRoute exact path={'/categoryExercise/new'} comp={() =>  <CategoryExerciseEditPage/>}/>
+      <PrivateRoute exact path={'/categoryExercise'} comp={() => <CategoryExerciseListPage/>}/>
 
       {/*  USUARIOS  */}
       <PrivateRoute exact path={'/user/edit/:id'} comp={() => <UserEditPage/>}/>

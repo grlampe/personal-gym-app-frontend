@@ -65,7 +65,7 @@ export function CategoryExerciseEditPage() {
               } else {
                 saveCategoryExercise(values);
               }
-              history.push('/exerciseCategory');
+              history.push('/categoryExercise');
             } else {
               emitWarnToast('Preencha os dados corretamente!');
             }

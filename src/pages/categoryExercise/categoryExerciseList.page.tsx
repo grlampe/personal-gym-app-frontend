@@ -23,7 +23,7 @@ export function CategoryExerciseListPage() {
   useEffect(() =>{
     setCategoryExercise([]);
     setPageTitle('Categoria de Exercícios');
-    setUrlToNew('/exerciseCategory/new');
+    setUrlToNew('/categoryExercise/new');
 
     executeOnPageLoad();
   },[]);
@@ -68,7 +68,7 @@ export function CategoryExerciseListPage() {
                 </td>
                 <td>
                   <div className="btn-group" role="group" aria-label="Basic example">
-                    <Link to={'user/edit/:id'.replace(':id', data.id)}>
+                    <Link to={'categoryExercise/edit/:id'.replace(':id', data.id)}>
                       <button type="button" className="btn btn-outline-info">
                         <VscEdit size="14"/>
                       </button>

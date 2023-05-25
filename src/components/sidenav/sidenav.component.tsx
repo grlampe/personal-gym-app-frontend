@@ -61,7 +61,7 @@ export function SideNavComponent() {
                 <NavLink
                   exact
                   activeClassName={isSubMenuActive('categoriaExercicios') ? styles.active : ''}
-                  to="/exerciseCategory"
+                  to="/categoryExercise"
                   onClick={() => handleSubMenuClick('categoriaExercicios')}
                 >
                   <VscChevronRight className={styles.menuIcon} />
