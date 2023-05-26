@@ -4,7 +4,6 @@ import { RiLoginCircleLine } from 'react-icons/ri';
 import { Formik, Form, Field } from 'formik';
 import { useContext, useState } from 'react';
 import * as yup from 'yup';
-import { emitWarnToast } from '../../utils/toast.utils';
 import styles from './signInStyle.module.scss';
 import { AuthContext } from '../../contexts/auth.context';
 import { useHistory } from 'react-router-dom';
@@ -52,15 +51,9 @@ function SignInPage() {
                             validationSchema={loginSchema}
                             enableReinitialize
                             onSubmit={(values, actions) => {
-                              loginSchema.isValid(values).then(async (valid) => {
-                                if (valid) {
-                                  await signIn(values);
-                      
-                                  history.push('/home');
-                                } else {
-                                  emitWarnToast('Preencha os dados corretamente!');
-                                }
-                      
+                              loginSchema.isValid(values).then(async () => {
+                                await signIn(values);
+                                history.push('/home');
                                 actions.setSubmitting(false);
                               });
                             }}

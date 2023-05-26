@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState, useEffect } from "react";
+import { createContext, ReactNode, useState } from "react";
 import { LoginData, signInApi } from "../services/auth.api";
 import { storageCurrentUser, storageTokenName } from "../utils/consts";
 
