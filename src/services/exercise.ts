@@ -1,4 +1,4 @@
-import { ExerciseForm } from "../pages/exercise/exerciseEdit.page";
+import { ExerciseForm, ExerciseOnCategoryExerciseList } from "../pages/exercise/exerciseEdit.page";
 import { ExerciseList } from "../pages/exercise/exerciseList.page";
 import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
 import { api } from "./api";
@@ -25,6 +25,22 @@ export async function searchExercise(funcToExc: (data:ExerciseList[])=>void): Pr
 export async function getExerciseById(id: string) {
   const result = await api.get<ExerciseForm>(`exercise/${id}`);
   return result.data;
+}
+
+export async function getExerciseOnCategoryExerciseByExerciseId(id: string) {
+  const result = await api.get<ExerciseOnCategoryExerciseList[]>(`exerciseOnCategoryExercise/exercideId/${id}`);
+  return result.data;
+}
+
+export async function deleteExerciseOnCategoryExerciseById(id: string) {
+  await api.delete(`exerciseOnCategoryExercise/${id}`).then( res => {
+    if(res.status){
+      emitSuccessToast('Categoria de Exercício desnviculada!');
+    }
+  })
+  .catch(error => {
+    handleError(error);
+  });
 }
 
 export async function updateExercise(data: ExerciseForm){ 

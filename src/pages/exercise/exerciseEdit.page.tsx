@@ -11,8 +11,9 @@ import {
   Formik,
   Form,
 } from 'formik';
-import { getExerciseById, saveExercise, updateExercise } from "../../services/exercise";
+import { deleteExerciseOnCategoryExerciseById, getExerciseById, getExerciseOnCategoryExerciseByExerciseId, saveExercise, updateExercise } from "../../services/exercise";
 import { VscPersonAdd, VscRemove } from "react-icons/vsc";
+import { CategoryExerciseList } from "../categoryExercise/categoryExerciseList.page";
 
 type ExerciseEditParams = {
   id: string,
@@ -21,6 +22,13 @@ type ExerciseEditParams = {
 export type ExerciseForm = {
   name: string,
   active: boolean,
+};
+
+export type ExerciseOnCategoryExerciseList = {
+  id: string,
+  exerciseId: string,
+  categoryExerciseId: string
+  categoryExercise: CategoryExerciseList
 };
 
 export function ExerciseEditPage() {
@@ -35,6 +43,8 @@ export function ExerciseEditPage() {
     active: true,
   });
 
+  const [exerciseOnCategoryExercise, setExerciseOnCategoryExercise] = useState<ExerciseOnCategoryExerciseList[]>([]);
+
   useEffect(() =>{
     setPageTitle(id ? 'Editando Exercícios' : 'Cadastrando Exercícios');
     setExerciseData();
@@ -44,7 +54,13 @@ export function ExerciseEditPage() {
     if (id) {
       const data = await getExerciseById(id);
       setInitialValues({...data});
+      getExerciseOnCategoryExerciseData(id)
     }
+  }
+
+  const getExerciseOnCategoryExerciseData = async (id: string) => {
+    const exerciseOnCategory = await getExerciseOnCategoryExerciseByExerciseId(id)
+      setExerciseOnCategoryExercise(exerciseOnCategory);
   }
 
   const userSchema = Yup.object().shape({
@@ -52,6 +68,8 @@ export function ExerciseEditPage() {
   });
 
   const handleDelete = async (id: string) => {
+    await deleteExerciseOnCategoryExerciseById(id);
+    await getExerciseOnCategoryExerciseData(id)
   };
 
   return (
@@ -92,22 +110,24 @@ export function ExerciseEditPage() {
             touched={touched}
           />
         </div>
-    
+      </div>
+
+      <div className="form-row"> 
         <div className="col-md-6 mb-3">
           <div className="card">
             <div className="card-header">
               <h4 className="card-title">
-                <div className="row">
-                  <div className="col-sm-3">
-                    <button 
-                      type="button" 
-                      className="btn btn-outline-info bt-sm"
-                    >
-                      <VscPersonAdd size="18" style={{ marginRight: '3px' }} />
-                      Vincular
-                    </button>
+                <div className="col-sm-3">
+                  <div className="row">
+                      <button 
+                        type="button" 
+                        className="btn btn-outline-info bt-sm"
+                      >
+                        <VscPersonAdd size="18" style={{ marginRight: '3px' }} />
+                        Vincular
+                      </button>
                   </div>
-                </div>
+                </div>  
               </h4>
             </div>
             <div className="card-body">
@@ -115,41 +135,37 @@ export function ExerciseEditPage() {
                 <table className="table table-hover">
                   <thead className="text-primary">
                     <tr>
-                      <th>Categorias</th>
+                      <th>Categorias Vinculadas</th>
                       <th></th>
                     </tr>
                   </thead>
-                  {initialValues.length > 0 ? (
+                  {exerciseOnCategoryExercise.length > 0 ?
                     <tbody>
-                      {initialValues.map(data => (
+                    { exerciseOnCategoryExercise.map(data => {
+                      return (
                         <tr key={data.id}>
-                          <td>{data.name}</td>
+                          <td>{data.categoryExercise.name}</td>
                           <td>
                             <div className="btn-group" role="group" aria-label="Basic example">
                               <button
-                                type="button"
-                                className="btn btn-outline-info"
-                                onClick={() => handleDelete(data.id)}
-                              >
+                                  type="button"
+                                  className="btn btn-outline-info"
+                                  onClick={() => handleDelete(data.id)}
+                                >
                                 <VscRemove size="14" />
                               </button>
-                            </div>
+                            </div>  
                           </td>
                         </tr>
-                      ))}
-                    </tbody>
-                  ) : (
-                    <tbody>
-                      <tr>
-                        <td>Nenhum dado encontrado...</td>
-                      </tr>
-                    </tbody>
-                  )}
+                      )
+                    })}
+                  </tbody> : <tbody><tr><td>Nenhum dado encontrado...</td></tr></tbody>
+                  }
                 </table>
               </div>
             </div>
           </div>
-        </div>
+        </div> 
       </div>
       <ButtonsFormComponent isSubmitting={isSubmitting} />
     </Form>  
