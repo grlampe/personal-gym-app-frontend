@@ -14,6 +14,7 @@ import {
 import { deleteExerciseOnCategoryExerciseById, getExerciseById, getExerciseOnCategoryExerciseByExerciseId, saveExercise, updateExercise } from "../../services/exercise";
 import { VscPersonAdd, VscRemove } from "react-icons/vsc";
 import { CategoryExerciseList } from "../categoryExercise/categoryExerciseList.page";
+import { ExerciseVinculateModalComponent } from "./modals/exerciseVinculate.page";
 
 type ExerciseEditParams = {
   id: string,
@@ -72,6 +73,19 @@ export function ExerciseEditPage() {
     await getExerciseOnCategoryExerciseData(id)
   };
 
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  
+  const openModalAssign = async (data: any) => {
+    if (!!id) {
+      handleShow();
+    } else {
+      emitWarnToast('O Exercício deve ser salvo antes de realizar os vínculos!')
+    }  
+  };
+
   return (
     <Formik
       initialValues={initialValues}
@@ -97,6 +111,9 @@ export function ExerciseEditPage() {
     >
       {({isSubmitting, errors, touched})=>(
       <Form>
+
+      <ExerciseVinculateModalComponent show={show} exerciseId={id} />
+            
       <div className="form-row">
         <SwitchCheckboxComponent name="active" description="Ativo" />
       </div>
@@ -122,6 +139,7 @@ export function ExerciseEditPage() {
                       <button 
                         type="button" 
                         className="btn btn-outline-info bt-sm"
+                        onClick={() => openModalAssign(id)}
                       >
                         <VscPersonAdd size="18" style={{ marginRight: '3px' }} />
                         Vincular
