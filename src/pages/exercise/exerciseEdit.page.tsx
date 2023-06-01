@@ -112,7 +112,7 @@ export function ExerciseEditPage() {
       {({isSubmitting, errors, touched})=>(
       <Form>
 
-      <ExerciseVinculateModalComponent show={show} exerciseId={id} />
+      <ExerciseVinculateModalComponent show={show} exerciseId={id} handleClose={handleClose} />
             
       <div className="form-row">
         <SwitchCheckboxComponent name="active" description="Ativo" />
