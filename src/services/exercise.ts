@@ -1,11 +1,10 @@
-import { ExerciseForm, ExerciseOnCategoryExerciseList } from "../pages/exercise/exerciseEdit.page";
+import { ExerciseForm, ExerciseOnCategoryExerciseForm, ExerciseOnCategoryExerciseList } from "../pages/exercise/exerciseEdit.page";
 import { ExerciseList } from "../pages/exercise/exerciseList.page";
 import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
 import { api } from "./api";
 
 
-function handleError(error: any){
-  console.error(error);
+export function handleError(error: any){
   if(error.response.data.message){
     emitErrorToast(error.response.data.message);
   } else {
@@ -39,6 +38,12 @@ export async function deleteExerciseOnCategoryExerciseById(id: string) {
     }
   })
   .catch(error => {
+    handleError(error);
+  });
+}
+
+export async function saveExerciseOnCategoryExercise(data: ExerciseOnCategoryExerciseForm){
+  await api.post('exerciseOnCategoryExercise', data).catch(error => {
     handleError(error);
   });
 }

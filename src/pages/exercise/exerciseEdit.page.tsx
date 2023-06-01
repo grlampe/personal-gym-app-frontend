@@ -1,26 +1,22 @@
 import { useContext, useEffect, useState } from "react";
 import { TitlePageContext } from "../../contexts/titlePage.context";
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
+import { deleteExerciseOnCategoryExerciseById, getExerciseById, getExerciseOnCategoryExerciseByExerciseId, saveExercise, updateExercise } from "../../services/exercise";
+import { VscPersonAdd, VscRemove } from "react-icons/vsc";
+import { ExerciseVinculateModalComponent } from "./modals/exerciseVinculate.page";
 import { InputForm } from "../../components/inputForm/inputForm.component";
 import { SwitchCheckboxComponent } from "../../components/switchCheckbox/switchCheckbox.component";
 import { ButtonsFormComponent } from "../../components/buttonsForm/buttonsForm.component";
-import { useHistory } from 'react-router-dom';
-import * as Yup from 'yup';
 import { emitWarnToast } from "../../utils/toast.utils";
-import {
-  Formik,
-  Form,
-} from 'formik';
-import { deleteExerciseOnCategoryExerciseById, getExerciseById, getExerciseOnCategoryExerciseByExerciseId, saveExercise, updateExercise } from "../../services/exercise";
-import { VscPersonAdd, VscRemove } from "react-icons/vsc";
 import { CategoryExerciseList } from "../categoryExercise/categoryExerciseList.page";
-import { ExerciseVinculateModalComponent } from "./modals/exerciseVinculate.page";
 
 type ExerciseEditParams = {
   id: string,
 };
 
-export type ExerciseForm = {
+type ExerciseForm = {
   name: string,
   active: boolean,
 };
@@ -33,161 +29,160 @@ export type ExerciseOnCategoryExerciseList = {
 };
 
 export function ExerciseEditPage() {
-  const history = useHistory();
-
   const { setPageTitle } = useContext(TitlePageContext);
-  
   const { id } = useParams<ExerciseEditParams>();
-
-  const [initialValues, setInitialValues] = useState<ExerciseForm>({
-    name: '',
-    active: true,
-  });
-
+  const history = useHistory();
+  const [show, setShow] = useState(false);
+  const [initialValues, setInitialValues] = useState<ExerciseForm>({ name: '', active: true });
   const [exerciseOnCategoryExercise, setExerciseOnCategoryExercise] = useState<ExerciseOnCategoryExerciseList[]>([]);
-
-  useEffect(() =>{
-    setPageTitle(id ? 'Editando Exercícios' : 'Cadastrando Exercícios');
-    setExerciseData();
-  },[]);
-
-  const setExerciseData = async () => {
-    if (id) {
-      const data = await getExerciseById(id);
-      setInitialValues({...data});
-      getExerciseOnCategoryExerciseData(id)
-    }
-  }
-
-  const getExerciseOnCategoryExerciseData = async (id: string) => {
-    const exerciseOnCategory = await getExerciseOnCategoryExerciseByExerciseId(id)
-      setExerciseOnCategoryExercise(exerciseOnCategory);
-  }
-
+  
   const userSchema = Yup.object().shape({
     name: Yup.string().required('Nome do Exercício é necessário!'),
   });
 
-  const handleDelete = async (id: string) => {
-    await deleteExerciseOnCategoryExerciseById(id);
-    await getExerciseOnCategoryExerciseData(id)
+  useEffect(() => {
+    setPageTitle(id ? 'Editando Exercícios' : 'Cadastrando Exercícios');
+    if (id) {
+      fetchExerciseData(id);
+    }
+  }, []);
+
+  const fetchExerciseData = async (exerciseId: string) => {
+    const data = await getExerciseById(exerciseId);
+    setInitialValues({...data});
+    const exerciseOnCategory = await getExerciseOnCategoryExerciseByExerciseId(exerciseId)
+    setExerciseOnCategoryExercise(exerciseOnCategory);
+  }
+
+  const handleDelete = async (ExerciseOnCategoryExerciseId: string) => {
+    await deleteExerciseOnCategoryExerciseById(ExerciseOnCategoryExerciseId);
+    if (id) {
+      await fetchExerciseData(id);
+    }
   };
 
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  
-  const openModalAssign = async (data: any) => {
-    if (!!id) {
-      handleShow();
-    } else {
-      emitWarnToast('O Exercício deve ser salvo antes de realizar os vínculos!')
-    }  
+  const handleClose = () => {
+    setShow(false);
+    if (id) {
+      fetchExerciseData(id);
+    }
+  }
+
+  const openModalAssign = () => {
+    if (!id) {
+      emitWarnToast('O Exercício deve ser salvo antes de realizar os vínculos!');
+      return;
+    }
+    handleShow();
   };
+
+  const handleSubmit = async (values: ExerciseForm, actions: any) => {
+    if (!userSchema.isValid(values)) {
+      emitWarnToast('Preencha os dados corretamente!');
+      return;
+    }
+    if(id){
+      await updateExercise(values);
+    } else {
+      await saveExercise(values);
+    }
+    history.push('/exercise');
+    actions.setSubmitting(true);
+  }
 
   return (
     <Formik
       initialValues={initialValues}
       enableReinitialize
       validationSchema={userSchema}
-      onSubmit={(values, actions) => {
-        userSchema
-          .isValid(values)
-          .then(valid => {
-            if(valid){
-              if(id){
-                updateExercise(values);
-              } else {
-                saveExercise(values);
-              }
-              history.push('/exercise');
-            } else {
-              emitWarnToast('Preencha os dados corretamente!');
-            }
-            actions.setSubmitting(true);
-          })
-      }}
+      onSubmit={handleSubmit}
     >
-      {({isSubmitting, errors, touched})=>(
-      <Form>
+      {({isSubmitting, errors, touched}) => (
+        <Form>
+          <ExerciseVinculateModalComponent show={show} exerciseId={id} handleClose={handleClose} exerciseOnCategoryExercise={exerciseOnCategoryExercise} />
 
-      <ExerciseVinculateModalComponent show={show} exerciseId={id} handleClose={handleClose} />
-            
-      <div className="form-row">
-        <SwitchCheckboxComponent name="active" description="Ativo" />
-      </div>
-    
-      <div className="form-row">
-        <div className="col-md-6 mb-3">
-          <InputForm 
-            name="name" 
-            label="Nome"
-            errors={errors}
-            touched={touched}
-          />
-        </div>
-      </div>
+          <div className="form-row">
+            <SwitchCheckboxComponent name="active" description="Ativo" />
+          </div>
 
-      <div className="form-row"> 
-        <div className="col-md-6 mb-3">
-          <div className="card">
-            <div className="card-header">
-              <h4 className="card-title">
-                <div className="col-sm-3">
-                  <div className="row">
-                      <button 
-                        type="button" 
-                        className="btn btn-outline-info bt-sm"
-                        onClick={() => openModalAssign(id)}
-                      >
-                        <VscPersonAdd size="18" style={{ marginRight: '3px' }} />
-                        Vincular
-                      </button>
-                  </div>
-                </div>  
-              </h4>
-            </div>
-            <div className="card-body">
-              <div className="table-responsive">
-                <table className="table table-hover">
-                  <thead className="text-primary">
-                    <tr>
-                      <th>Categorias Vinculadas</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  {exerciseOnCategoryExercise.length > 0 ?
-                    <tbody>
-                    { exerciseOnCategoryExercise.map(data => {
-                      return (
-                        <tr key={data.id}>
-                          <td>{data.categoryExercise.name}</td>
-                          <td>
-                            <div className="btn-group" role="group" aria-label="Basic example">
-                              <button
-                                  type="button"
-                                  className="btn btn-outline-info"
-                                  onClick={() => handleDelete(data.id)}
-                                >
-                                <VscRemove size="14" />
-                              </button>
-                            </div>  
-                          </td>
-                        </tr>
-                      )
-                    })}
-                  </tbody> : <tbody><tr><td>Nenhum dado encontrado...</td></tr></tbody>
-                  }
-                </table>
-              </div>
+          <div className="form-row">
+            <div className="col-md-6 mb-3">
+              <InputForm name="name" label="Nome" errors={errors} touched={touched} />
             </div>
           </div>
-        </div> 
-      </div>
-      <ButtonsFormComponent isSubmitting={isSubmitting} />
-    </Form>  
-    )} 
+
+          <ExerciseList
+            exerciseOnCategoryExercise={exerciseOnCategoryExercise}
+            openModalAssign={openModalAssign}
+            handleDelete={handleDelete}
+          />
+
+          <ButtonsFormComponent isSubmitting={isSubmitting} />
+        </Form>  
+      )} 
     </Formik>
   )
 }
+
+const ExerciseList = ({ exerciseOnCategoryExercise, openModalAssign, handleDelete }: any) => (
+  <div className="form-row">
+    <div className="col-md-6 mb-1">
+      <div className="card">
+        <div className="card-header">
+          <h4 className="card-title">
+            <div className="col-sm-3">
+              <div className="row">
+                <button 
+                  type="button" 
+                  className="btn btn-outline-info bt-sm"
+                  onClick={openModalAssign}
+                >
+                  <VscPersonAdd size="18" style={{ marginRight: '3px' }} />
+                  Vincular
+                </button>
+              </div>
+            </div>  
+          </h4>
+        </div>
+        <div className="card-body">
+          <div className="table-responsive">
+            <table className="table table-hover">
+              <thead className="text-primary">
+                <tr>
+                  <th>Categorias Vinculadas</th>
+                  <th></th>
+                </tr>
+              </thead>
+              {exerciseOnCategoryExercise.length > 0 ?
+                <ExerciseCategory exerciseOnCategoryExercise={exerciseOnCategoryExercise} handleDelete={handleDelete} />
+                : <tbody><tr><td>Nenhum dado encontrado...</td></tr></tbody>
+              }
+            </table>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </div>
+)
+
+const ExerciseCategory = ({ exerciseOnCategoryExercise, handleDelete }: any) => (
+  <tbody>
+    { exerciseOnCategoryExercise.map((data: any) => (
+      <tr key={data.id}>
+        <td>{data.categoryExercise.name}</td>
+        <td>
+          <div className="btn-group" role="group" aria-label="Basic example">
+            <button
+              type="button"
+              className="btn btn-outline-info"
+              onClick={() => handleDelete(data.id)}
+            >
+              <VscRemove size="14" />
+            </button>
+          </div>  
+        </td>
+      </tr>
+    ))}
+  </tbody>
+)
