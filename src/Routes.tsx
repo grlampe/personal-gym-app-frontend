@@ -11,6 +11,8 @@ import { CategoryExerciseListPage } from './pages/categoryExercise/categoryExerc
 import { CategoryExerciseEditPage } from './pages/categoryExercise/categoryExerciseEdit.page';
 import { ExerciseEditPage } from './pages/exercise/exerciseEdit.page';
 import { ExerciseListPage } from './pages/exercise/exerciseList.page';
+import { BodyMeasurementEditPage } from './pages/bodyMeasurement/bodyMeasurementEdit.page';
+import { BodyMeasurementListPage } from './pages/bodyMeasurement/bodyMeasurementList.page';
 
 const PrivateRoute = (rest: any) => (
   <Route
@@ -44,6 +46,11 @@ export function Routes() {
 
   return (
     <Switch>
+
+      {/*  Medidas Corporais  */}
+      <PrivateRoute exact path={'/bodyMeasurement/edit/:id'} comp={() => <BodyMeasurementEditPage/>}/>
+      <PrivateRoute exact path={'/bodyMeasurement/new'} comp={() =>  <BodyMeasurementEditPage/>}/>
+      <PrivateRoute exact path={'/bodyMeasurement'} comp={() => <BodyMeasurementListPage/>}/>
 
       {/*  Exercicio  */}
       <PrivateRoute exact path={'/exercise/edit/:id'} comp={() => <ExerciseEditPage/>}/>

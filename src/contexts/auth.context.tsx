@@ -40,7 +40,7 @@ export const AuthProvider = (props: AuthProvider) => {
   }
 
   async function setUserData(data: LoginData) {
-    if (!!data) {
+    if (data) {
       localStorage.setItem(storageTokenName, data.access_token);
       localStorage.setItem(storageCurrentUser, JSON.stringify(data.user));
       setCurrentUser(data.user);
