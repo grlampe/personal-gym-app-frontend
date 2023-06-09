@@ -115,14 +115,14 @@ function Table({ categoryExercise, handleCheckbox, sliderClasses } : any) {
   return (
     <table className="table">
       {categoryExercise.length > 0 
-        ? <CategoryExerciseList categoryExercise={categoryExercise} handleCheckbox={handleCheckbox} sliderClasses={sliderClasses} /> 
+        ? <TableCategoryExerciseList categoryExercise={categoryExercise} handleCheckbox={handleCheckbox} sliderClasses={sliderClasses} /> 
         : <NoDataFound />
       } 
     </table>
   );
 }
 
-function CategoryExerciseList({ categoryExercise, handleCheckbox, sliderClasses } : any) {
+function TableCategoryExerciseList({ categoryExercise, handleCheckbox, sliderClasses } : any) {
   return (
     <tbody>
       {categoryExercise.map((data: any) => (
