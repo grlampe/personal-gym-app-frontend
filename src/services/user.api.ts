@@ -5,7 +5,6 @@ import { api } from "./api";
 
 
 function handleError(error: any){
-  console.error(error);
   if(error.response.data.message){
     emitErrorToast(error.response.data.message);
   } else {

@@ -12,11 +12,11 @@ import { ButtonsFormComponent } from "../../components/buttonsForm/buttonsForm.c
 import { emitWarnToast } from "../../utils/toast.utils";
 import { CategoryExerciseList } from "../categoryExercise/categoryExerciseList.page";
 
-type ExerciseEditParams = {
+export type ExerciseEditParams = {
   id: string,
 };
 
-type ExerciseForm = {
+export type ExerciseForm = {
   name: string,
   active: boolean,
 };

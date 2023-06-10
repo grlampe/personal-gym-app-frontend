@@ -1,4 +1,4 @@
-import { ExerciseForm, ExerciseOnCategoryExerciseForm, ExerciseOnCategoryExerciseList } from "../pages/exercise/exerciseEdit.page";
+import { ExerciseForm, ExerciseOnCategoryExerciseList } from "../pages/exercise/exerciseEdit.page";
 import { ExerciseList } from "../pages/exercise/exerciseList.page";
 import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
 import { api } from "./api";
@@ -42,7 +42,7 @@ export async function deleteExerciseOnCategoryExerciseById(id: string) {
   });
 }
 
-export async function saveExerciseOnCategoryExercise(data: ExerciseOnCategoryExerciseForm){
+export async function saveExerciseOnCategoryExercise(data: any){
   await api.post('exerciseOnCategoryExercise', data).catch(error => {
     handleError(error);
   });

@@ -21,9 +21,9 @@ const MENU_ITEMS: MenuItem[] = [
   },
   {
     name: 'Movimentações',
-    items: ['medidas'],
-    routes: ['/bodyMeasurement'],
-    titles: ['Medidas Corporais'],
+    items: ['medidas', 'recebimentos'],
+    routes: ['/bodyMeasurement', '/receivingBills'],
+    titles: ['Medidas Corporais', 'Recebimentos'],
   },
 ];
 

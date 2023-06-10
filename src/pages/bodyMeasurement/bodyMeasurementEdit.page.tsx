@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-
 import { TitlePageContext } from "../../contexts/titlePage.context";
 import { searchBodyMeasurementById, saveBodyMeasurement, updateBodyMeasurement } from "../../services/bodyMeasurement";
 import { searchUsers } from "../../services/user.api";

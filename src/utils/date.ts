@@ -30,6 +30,6 @@ export class DateUtils {
             return '';
         }
 
-        return moment.utc(date).format('YYYY-MM-DD');
+        return moment.utc(date).format('YYYY-MM-DD').concat('T03:00:00');
     }
 }
