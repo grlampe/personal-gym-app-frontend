@@ -16,6 +16,8 @@ type BodyMeasurementEditParams = {
 type BodyMeasurementForm = {
   userId: string;
   description: string;
+  height: number;
+  weight: number;
   chestBust: number;
   leftArm: number;
   rightArm: number;
@@ -43,6 +45,8 @@ export function BodyMeasurementEditPage() {
   const [initialValues, setInitialValues] = useState<BodyMeasurementForm>({
     userId: "",
     description: "",
+    height: 0,
+    weight: 0,
     chestBust: 0,
     leftArm: 0,
     rightArm: 0,
@@ -75,6 +79,8 @@ export function BodyMeasurementEditPage() {
   const bodyMeasurementSchema = Yup.object().shape({
     userId: Yup.string().required("Usuário é necessário!"),
     description: Yup.string().required("Descrição é necessário!"),
+    height: Yup.number().required("Medida do Busto é necessário!").min(0.001, "Medida do Busto é necessário!"),
+    weight: Yup.number().required("Medida do Busto é necessário!").min(0.001, "Medida do Busto é necessário!"),
     chestBust: Yup.number().required("Medida do Busto é necessário!").min(0.001, "Medida do Busto é necessário!"),
     leftArm: Yup.number().required("Medida do Braço Esquerdo é necessária!").min(0.001, "Medida do Braço Esquerdo é necessária!"),
     rightArm: Yup.number().required("Medida do Braço Direito é necessário!").min(0.001, "Medida do Braço Direito é necessário!"),
@@ -144,6 +150,14 @@ export function BodyMeasurementEditPage() {
           <div className="form-row">
             <div className="col-md-6 mb-3">
               <InputForm name="description" label="Descrição" errors={errors} touched={touched} />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="col-md-3 mb-3">
+              <InputForm name="height" label="Altura" type="number" errors={errors} touched={touched} />
+            </div>
+            <div className="col-md-3 mb-3">
+              <InputForm name="weight" label="Peso" type="number" errors={errors} touched={touched} />
             </div>
           </div>
           <div className="form-row">
