@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { searchBodyMeasurementByUserId } from "../../../services/bodyMeasurement";
 import { handleError } from "../../../services/exercise";
 import { DateUtils } from "../../../utils/date";
-import styles from './BodyMeasurementModal.module.scss';
+import styles from "./BodyMeasurementModal.module.scss";
 
 interface BodyMeasurementModalComponentProps {
   show: boolean;
@@ -18,38 +18,45 @@ export type BodyMeasurementList = {
   id: string;
   description: string;
   createdAt: string;
-}
+};
 
 export function BodyMeasurementModalComponent({
   show,
   userId,
   handleClose,
 }: BodyMeasurementModalComponentProps) {
-  
-  const [bodyMeasurement, setBodyMeasurement] = useState<BodyMeasurementList[]>([]);
+  const [bodyMeasurement, setBodyMeasurement] = useState<BodyMeasurementList[]>(
+    []
+  );
 
   useEffect(() => {
-    if(show) {
+    if (show) {
       fetchData();
     }
   }, [show, bodyMeasurement]);
 
   const fetchData = async () => {
     try {
-      await searchBodyMeasurementByUserId(userId, (data:  BodyMeasurementList[]) => {        
-        setBodyMeasurement(data);
-      });
+      await searchBodyMeasurementByUserId(
+        userId,
+        (data: BodyMeasurementList[]) => {
+          setBodyMeasurement(data);
+        }
+      );
     } catch (error) {
       handleError(error);
     }
   };
 
-  const btnCancelClasses = classNames("btn btn-outline-danger", styles.buttonsForm);
-  
+  const btnCancelClasses = classNames(
+    "btn btn-outline-danger",
+    styles.buttonsForm
+  );
+
   if (!show) return null;
 
   return (
-    <div className="modal show" style={{ display: 'block' }}>
+    <div className="modal show" style={{ display: "block" }}>
       <div className="modal-dialog modal-dialog-centered-m">
         <div className="modal-content">
           <div className="modal-header" style={{ maxHeight: 60 }}>
@@ -57,17 +64,17 @@ export function BodyMeasurementModalComponent({
           </div>
           <div className="card card-plain">
             <div className="table-responsive" style={{ maxHeight: 400 }}>
-              <Table bodyMeasurement={bodyMeasurement}/>
+              <Table bodyMeasurement={bodyMeasurement} />
             </div>
           </div>
           <div className="modal-footer">
             <div className={styles.containerButtonsForm}>
-              <button 
+              <button
                 type="button"
                 className={btnCancelClasses}
                 onClick={handleClose}
               >
-                <ImCancelCircle className={styles.buttonIcons}/>
+                <ImCancelCircle className={styles.buttonIcons} />
                 Cancelar
               </button>
             </div>
@@ -78,18 +85,19 @@ export function BodyMeasurementModalComponent({
   );
 }
 
-function Table({ bodyMeasurement } : any) {
+function Table({ bodyMeasurement }: any) {
   return (
     <table className="table">
-      {bodyMeasurement.length > 0 
-        ? <BodyMeasurementListTable bodyMeasurement={bodyMeasurement}/> 
-        : <NoDataFound />
-      } 
+      {bodyMeasurement.length > 0 ? (
+        <BodyMeasurementListTable bodyMeasurement={bodyMeasurement} />
+      ) : (
+        <NoDataFound />
+      )}
     </table>
   );
 }
 
-function BodyMeasurementListTable({ bodyMeasurement } : any) {
+function BodyMeasurementListTable({ bodyMeasurement }: any) {
   return (
     <tbody>
       {bodyMeasurement.map((data: any) => (
@@ -98,12 +106,12 @@ function BodyMeasurementListTable({ bodyMeasurement } : any) {
           <td>{DateUtils.formatDateWithoutTime(data.createdAt)}</td>
           <td>
             <div className="btn-group" role="group">
-              <Link to={'bodyMeasurement/edit/:id'.replace(':id', data.id)}>
+              <Link to={"bodyMeasurement/edit/:id".replace(":id", data.id)}>
                 <button type="button" className="btn btn-outline-info">
-                  <VscEdit size="14"/>
+                  <VscEdit size="14" />
                 </button>
               </Link>
-            </div>  
+            </div>
           </td>
         </tr>
       ))}
