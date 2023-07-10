@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useState } from "react";
-import { LoginData, signInApi } from "../services/auth.api";
+import { LoginData, signInApi } from "../services/auth.service";
 import { storageCurrentUser, storageTokenName } from "../utils/consts";
 
 export const AuthContext = createContext({} as AuthContextData);

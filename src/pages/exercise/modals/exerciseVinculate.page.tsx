@@ -4,8 +4,8 @@ import { VscSave } from 'react-icons/vsc';
 import { ImCancelCircle } from 'react-icons/im';
 import classNames from 'classnames';
 import { emitSuccessToast } from '../../../utils/toast.utils';
-import { searchCategoryExercise } from '../../../services/categoryExercise';
-import { handleError, saveExerciseOnCategoryExercise } from '../../../services/exercise';
+import { searchCategoryExercise } from '../../../services/categoryExercise.service';
+import { handleError, saveExerciseOnCategoryExercise } from '../../../services/exercise.service';
 import { ExerciseOnCategoryExerciseList } from '../exerciseEdit.page';
 
 interface ExerciseVinculateModalComponentProps {

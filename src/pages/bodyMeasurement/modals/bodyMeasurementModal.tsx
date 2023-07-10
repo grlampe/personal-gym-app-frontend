@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { ImCancelCircle } from "react-icons/im";
 import { VscEdit } from "react-icons/vsc";
 import { Link } from "react-router-dom";
-import { searchBodyMeasurementByUserId } from "../../../services/bodyMeasurement";
-import { handleError } from "../../../services/exercise";
+import { searchBodyMeasurementByUserId } from "../../../services/bodyMeasurement.service";
+import { handleError } from "../../../services/exercise.service";
 import { DateUtils } from "../../../utils/date";
 import styles from "./BodyMeasurementModal.module.scss";
 

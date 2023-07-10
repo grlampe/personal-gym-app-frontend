@@ -3,7 +3,7 @@ import { TitlePageContext } from "../../contexts/titlePage.context";
 import { ButtonMenuContext } from "../../contexts/buttonMenu.context";
 import { StripedTableComponent } from "../../components/stripedTable/stripedTable.component";
 import { VscEdit } from "react-icons/vsc";
-import { searchUsersBodyMeasurement } from "../../services/bodyMeasurement";
+import { searchUsersBodyMeasurement } from "../../services/bodyMeasurement.service";
 import { BodyMeasurementModalComponent } from "./modals/bodyMeasurementModal";
 
 export type UserBodyMeasurementList = {

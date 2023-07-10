@@ -1,8 +1,7 @@
 import { UserForm } from "../pages/user/userEdit.page";
 import { UsersList } from "../pages/user/userList.page";
 import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
-import { api } from "./api";
-
+import { api } from "./api.service";
 
 function handleError(error: any){
   if(error.response.data.message){

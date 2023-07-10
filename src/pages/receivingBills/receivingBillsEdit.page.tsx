@@ -5,9 +5,9 @@ import {
   saveReceivingBills,
   searchReceivingBillsById,
   updateReceivingBills,
-} from "../../services/receivingBills";
+} from "../../services/receivingBills.service";
 import { DateUtils } from "../../utils/date";
-import { searchUsers } from "../../services/user.api";
+import { searchUsers } from "../../services/user.service";
 import * as Yup from "yup";
 import { emitWarnToast } from "../../utils/toast.utils";
 import { Form, Formik } from "formik";

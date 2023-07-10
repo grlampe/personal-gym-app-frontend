@@ -1,71 +1,63 @@
 import { useContext, useEffect, useState } from "react";
 import { TitlePageContext } from "../../contexts/titlePage.context";
 import { useParams } from "react-router";
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
 import { InputForm } from "../../components/inputForm/inputForm.component";
 import { SwitchCheckboxComponent } from "../../components/switchCheckbox/switchCheckbox.component";
 import { ButtonsFormComponent } from "../../components/buttonsForm/buttonsForm.component";
-import { useHistory } from 'react-router-dom';
-import * as Yup from 'yup';
 import { emitWarnToast } from "../../utils/toast.utils";
-import {
-  Formik,
-  Form,
-} from 'formik';
-import { getCategoryExerciseById, saveCategoryExercise, updateCategoryExercise } from "../../services/categoryExercise.service";
+import { useHistory } from 'react-router-dom';
+import { getPreWorkoutById, savePreWorkout, updatePreWorkout } from "../../services/preWorkout.service";
 
-type CategoryExerciseEditParams = {
+export type PreWorkoutEditParams = {
   id: string,
 };
 
-export type CategoryExerciseForm = {
-  name: string,
+export type PreWorkoutForm = {
+  description: string,
   active: boolean,
 };
 
-export function CategoryExerciseEditPage() {
+
+export function PreWorkoutEditPage() {
   const history = useHistory();
-
   const { setPageTitle } = useContext(TitlePageContext);
-  
-  const { id } = useParams<CategoryExerciseEditParams>();
+  const { id } = useParams<PreWorkoutEditParams>();
+  const [initialValues, setInitialValues] = useState<PreWorkoutForm>({ description: '', active: true });
 
-  const [initialValues, setInitialValues] = useState<CategoryExerciseForm>({
-    name: '',
-    active: true,
+  const preWorkoutSchema = Yup.object().shape({
+    description: Yup.string().required('Descrição do Pré-Treino é necessária!'),
   });
 
-  useEffect(() =>{
-    setPageTitle(id ? 'Editando Categoria de Exercícios' : 'Cadastrando Categoria de Exercícios');
-    setCategoryExerciseData();
-  },[]);
-
-  const setCategoryExerciseData = async () => {
+  useEffect(() => {
+    setPageTitle(id ? 'Editando Pré-Treino' : 'Cadastrando Pré-Treino');
     if (id) {
-      const data = await getCategoryExerciseById(id);
-      setInitialValues({...data});
+      fetchPreWorkoutData(id);
     }
-  }
+  }, []);
 
-  const userSchema = Yup.object().shape({
-    name: Yup.string().required('Categoria do Exercício é necessária!'),
-  });
+  const fetchPreWorkoutData = async (preWorkoutId: string) => {
+    const data = await getPreWorkoutById(preWorkoutId);
+    setInitialValues({...data});
+  }
 
   return (
     <Formik
       initialValues={initialValues}
       enableReinitialize
-      validationSchema={userSchema}
+      validationSchema={preWorkoutSchema}
       onSubmit={(values, actions) => {
-        userSchema
+        preWorkoutSchema
           .isValid(values)
           .then(valid => {
             if(valid){
               if(id){
-                updateCategoryExercise(values);
+                updatePreWorkout(values);
               } else {
-                saveCategoryExercise(values);
+                savePreWorkout(values);
               }
-              history.push('/categoryExercise');
+              history.push('/preWorkout');
             } else {
               emitWarnToast('Preencha os dados corretamente!');
             }
@@ -82,8 +74,8 @@ export function CategoryExerciseEditPage() {
           <div className="form-row">
             <div className="col-md-6 mb-3">
               <InputForm 
-                name="name" 
-                label="Nome"
+                name="description" 
+                label="Descrição"
                 errors={errors}
                 touched={touched}
               />

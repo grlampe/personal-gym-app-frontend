@@ -6,7 +6,7 @@ import { FcOk } from 'react-icons/fc';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { ButtonMenuContext } from "../../contexts/buttonMenu.context";
 import { Link } from "react-router-dom";
-import { searchUsers } from "../../services/user.api";
+import { searchUsers } from "../../services/user.service";
 
 export type UsersList = {
   id: string;

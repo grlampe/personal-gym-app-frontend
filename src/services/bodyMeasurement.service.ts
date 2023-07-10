@@ -1,9 +1,9 @@
-import { emitSuccessToast } from './../utils/toast.utils';
-import { BodyMeasurementForm } from './../pages/bodyMeasurement/bodyMeasurementEdit.page';
-import { BodyMeasurementList } from './../pages/bodyMeasurement/modals/bodyMeasurementModal';
-import { UserBodyMeasurementList } from './../pages/bodyMeasurement/bodyMeasurementList.page';
+import { emitSuccessToast } from '../utils/toast.utils';
+import { BodyMeasurementForm } from '../pages/bodyMeasurement/bodyMeasurementEdit.page';
+import { BodyMeasurementList } from '../pages/bodyMeasurement/modals/bodyMeasurementModal';
+import { UserBodyMeasurementList } from '../pages/bodyMeasurement/bodyMeasurementList.page';
 import { emitErrorToast } from "../utils/toast.utils";
-import { api } from "./api";
+import { api } from "./api.service";
 
 
 function handleError(error: any){

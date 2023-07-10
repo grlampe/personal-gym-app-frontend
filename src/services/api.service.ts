@@ -1,6 +1,6 @@
 import axios from "axios";
 import { emitErrorToast } from "../utils/toast.utils";
-import { getToken } from "./auth.api";
+import { getToken } from "./auth.service";
 
 const api = axios.create({
   baseURL: 'http://localhost:3001/'

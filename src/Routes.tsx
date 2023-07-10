@@ -3,7 +3,7 @@ import { UserListPage } from "./pages/user/userList.page";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { HomePage } from "./pages/home/home.page";
 import { UserEditPage } from "./pages/user/userEdit.page";
-import { isAuthenticated } from './services/auth.api';
+import { isAuthenticated } from './services/auth.service';
 import SignInPage from './pages/signIn/signIn.page';
 import { ContainerComponent } from './components/container/container.component';
 import { NotFoundPage } from './pages/notFound/notFound.page';
@@ -15,6 +15,8 @@ import { BodyMeasurementEditPage } from './pages/bodyMeasurement/bodyMeasurement
 import { BodyMeasurementListPage } from './pages/bodyMeasurement/bodyMeasurementList.page';
 import { ReceivingBillsListPage } from './pages/receivingBills/receivingBillsList.page';
 import { ReceivingBillsEditPage } from './pages/receivingBills/receivingBillsEdit.page';
+import { PreWorkoutListPage } from './pages/preWorkout/preWorkoutList.page';
+import { PreWorkoutEditPage } from './pages/preWorkout/preWorkoutEdit.page';
 
 const PrivateRoute = (rest: any) => (
   <Route
@@ -48,6 +50,11 @@ export function Routes() {
 
   return (
     <Switch>
+
+      {/*  Pré-Treino  */}
+      <PrivateRoute exact path={'/preWorkout/edit/:id'} comp={() => <PreWorkoutEditPage/>}/>
+      <PrivateRoute exact path={'/preWorkout/new'} comp={() =>  <PreWorkoutEditPage/>}/>
+      <PrivateRoute exact path={'/preWorkout'} comp={() => <PreWorkoutListPage/>}/>
 
       {/*  Contas a Receber  */}
       <PrivateRoute exact path={'/receivingBills/edit/:id'} comp={() => <ReceivingBillsEditPage/>}/>

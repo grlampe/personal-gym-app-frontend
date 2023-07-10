@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import { InputForm } from "../../components/inputForm/inputForm.component";
 import { SwitchCheckboxComponent } from "../../components/switchCheckbox/switchCheckbox.component";
 import { ButtonsFormComponent } from "../../components/buttonsForm/buttonsForm.component";
-import { getUserById, saveUser, updateUser } from "../../services/user.api";
+import { getUserById, saveUser, updateUser } from "../../services/user.service";
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import { emitWarnToast } from "../../utils/toast.utils";

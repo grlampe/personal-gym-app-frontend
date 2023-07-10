@@ -6,7 +6,7 @@ import { FcOk } from 'react-icons/fc';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { ButtonMenuContext } from "../../contexts/buttonMenu.context";
 import { Link } from "react-router-dom";
-import { searchExercise } from "../../services/exercise";
+import { searchExercise } from "../../services/exercise.service";
 
 export type ExerciseList = {
   id: string;

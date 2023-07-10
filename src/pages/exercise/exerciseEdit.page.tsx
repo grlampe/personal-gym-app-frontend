@@ -3,7 +3,7 @@ import { TitlePageContext } from "../../contexts/titlePage.context";
 import { useParams, useHistory } from "react-router";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { deleteExerciseOnCategoryExerciseById, getExerciseById, getExerciseOnCategoryExerciseByExerciseId, saveExercise, updateExercise } from "../../services/exercise";
+import { deleteExerciseOnCategoryExerciseById, getExerciseById, getExerciseOnCategoryExerciseByExerciseId, saveExercise, updateExercise } from "../../services/exercise.service";
 import { VscPersonAdd, VscRemove } from "react-icons/vsc";
 import { ExerciseVinculateModalComponent } from "./modals/exerciseVinculate.page";
 import { InputForm } from "../../components/inputForm/inputForm.component";

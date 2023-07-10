@@ -2,7 +2,7 @@ import { User } from "../contexts/auth.context";
 import { LoginForm } from "../pages/signIn/signIn.page";
 import { storageTokenName } from "../utils/consts";
 import { emitErrorToast } from "../utils/toast.utils";
-import { api } from "./api";
+import { api } from "./api.service";
 
 export type LoginData = {
   access_token: string;

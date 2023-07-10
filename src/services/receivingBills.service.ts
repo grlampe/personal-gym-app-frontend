@@ -1,8 +1,8 @@
-import { DateUtils } from './../utils/date';
-import { ReceivingBillsForm } from './../pages/receivingBills/receivingBillsEdit.page';
-import { ReceivingBillsList } from './../pages/receivingBills/receivingBillsList.page';
+import { DateUtils } from '../utils/date';
+import { ReceivingBillsForm } from '../pages/receivingBills/receivingBillsEdit.page';
+import { ReceivingBillsList } from '../pages/receivingBills/receivingBillsList.page';
 import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
-import { api } from "./api";
+import { api } from "./api.service";
 
 export function handleError(error: any){
   if(error.response.data.message){

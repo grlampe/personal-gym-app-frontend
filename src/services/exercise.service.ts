@@ -1,7 +1,7 @@
 import { ExerciseForm, ExerciseOnCategoryExerciseList } from "../pages/exercise/exerciseEdit.page";
 import { ExerciseList } from "../pages/exercise/exerciseList.page";
 import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
-import { api } from "./api";
+import { api } from "./api.service";
 
 
 export function handleError(error: any){

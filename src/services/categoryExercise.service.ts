@@ -1,11 +1,10 @@
 import { CategoryExerciseForm } from "../pages/categoryExercise/categoryExerciseEdit.page";
 import { CategoryExerciseList } from "../pages/categoryExercise/categoryExerciseList.page";
 import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
-import { api } from "./api";
+import { api } from "./api.service";
 
 
 function handleError(error: any){
-  console.error(error);
   if(error.response.data.message){
     emitErrorToast(error.response.data.message);
   } else {

@@ -6,32 +6,32 @@ import { FcOk } from 'react-icons/fc';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { ButtonMenuContext } from "../../contexts/buttonMenu.context";
 import { Link } from "react-router-dom";
-import { searchCategoryExercise } from "../../services/categoryExercise.service";
+import { searchPreWorkout } from "../../services/preWorkout.service";
 
-export type CategoryExerciseList = {
+export type PreWorkoutList = {
   id: string;
-  name: string;
+  description: string;
   active: boolean;
 }
 
-export function CategoryExerciseListPage() {
+export function PreWorkoutListPage() {
   const {setPageTitle} = useContext(TitlePageContext);
   const {searchPressed, setSearchPressed, setUrlToNew} = useContext(ButtonMenuContext);
 
-  const [categoryExercise, setCategoryExercise] = useState<CategoryExerciseList[]>([]);
+  const [preWorkout, setPreWorkout] = useState<PreWorkoutList[]>([]);
 
   useEffect(() =>{
-    setCategoryExercise([]);
-    setPageTitle('Categoria de Exercícios');
-    setUrlToNew('/categoryExercise/new');
+    setPreWorkout([]);
+    setPageTitle('Pré-Treino');
+    setUrlToNew('/preWorkout/new');
 
     executeOnPageLoad();
   },[]);
 
   useEffect(() =>{
     if(searchPressed){
-      searchCategoryExercise((data: CategoryExerciseList[]) => {
-        setCategoryExercise(data);
+      searchPreWorkout((data: PreWorkoutList[]) => {
+        setPreWorkout(data);
       });
 
       setSearchPressed(false);
@@ -40,8 +40,8 @@ export function CategoryExerciseListPage() {
   },[searchPressed]);
 
   const executeOnPageLoad = () => {
-    searchCategoryExercise((data: CategoryExerciseList[]) => {
-      setCategoryExercise(data);
+    searchPreWorkout((data: PreWorkoutList[]) => {
+      setPreWorkout(data);
     });
   };
 
@@ -55,20 +55,20 @@ export function CategoryExerciseListPage() {
             <th>Ação</th>
           </tr>
         </thead>
-        {categoryExercise.length > 0 ?
+        {preWorkout.length > 0 ?
           <tbody>
-          { categoryExercise.map(data => {
+          { preWorkout.map(data => {
             return (
               <tr key={data.id}>
-                <td>{data.name}</td>
+                <td>{data.description}</td>
                 <td>
                   {data.active? 
                     <FcOk size="24" /> : 
                     <AiFillCloseCircle size="24" style={{color:'#FF3F3F'}}/>}
                 </td>
                 <td>
-                  <div className="btn-group" role="group" aria-label="Basic example">
-                    <Link to={'categoryExercise/edit/:id'.replace(':id', data.id)}>
+                  <div className="btn-group" role="group">
+                    <Link to={'preWorkout/edit/:id'.replace(':id', data.id)}>
                       <button type="button" className="btn btn-outline-info">
                         <VscEdit size="14"/>
                       </button>

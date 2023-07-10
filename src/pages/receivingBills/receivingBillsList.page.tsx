@@ -4,7 +4,7 @@ import { TitlePageContext } from "../../contexts/titlePage.context";
 import { VscEdit } from "react-icons/vsc";
 import { ButtonMenuContext } from "../../contexts/buttonMenu.context";
 import { Link } from "react-router-dom";
-import { searchReceivingBills } from "../../services/receivingBills";
+import { searchReceivingBills } from "../../services/receivingBills.service";
 import { DateUtils } from "../../utils/date";
 
 export type ReceivingBillsList = {

@@ -3,8 +3,8 @@ import { useHistory, useParams } from "react-router-dom";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { TitlePageContext } from "../../contexts/titlePage.context";
-import { searchBodyMeasurementById, saveBodyMeasurement, updateBodyMeasurement } from "../../services/bodyMeasurement";
-import { searchUsers } from "../../services/user.api";
+import { searchBodyMeasurementById, saveBodyMeasurement, updateBodyMeasurement } from "../../services/bodyMeasurement.service";
+import { searchUsers } from "../../services/user.service";
 import { emitWarnToast } from "../../utils/toast.utils";
 import { InputForm } from "../../components/inputForm/inputForm.component";
 import { ButtonsFormComponent } from "../../components/buttonsForm/buttonsForm.component";
@@ -13,7 +13,7 @@ type BodyMeasurementEditParams = {
   id: string;
 };
 
-type BodyMeasurementForm = {
+export type BodyMeasurementForm = {
   userId: string;
   description: string;
   height: number;
