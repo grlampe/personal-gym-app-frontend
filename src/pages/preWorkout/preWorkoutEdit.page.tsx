@@ -80,7 +80,23 @@ export function PreWorkoutEditPage() {
                 touched={touched}
               />
             </div>
-          </div>
+            <div className="card-body">
+              <div className="table-responsive">
+                <table className="table table-hover">
+                  <thead className="text-primary">
+                    <tr>
+                      <th>Descricao</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><input name="myInput" /></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>          
           <ButtonsFormComponent isSubmitting={isSubmitting}/>
         </Form>
       )} 
