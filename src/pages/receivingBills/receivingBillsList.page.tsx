@@ -6,6 +6,7 @@ import { ButtonMenuContext } from "../../contexts/buttonMenu.context";
 import { Link } from "react-router-dom";
 import { searchReceivingBills } from "../../services/receivingBills.service";
 import { DateUtils } from "../../utils/date";
+import { ButtonMenuComponent } from "../../components/buttonMenu/buttonMenu.component";
 
 export type ReceivingBillsList = {
   id: string;
@@ -21,9 +22,8 @@ export type ReceivingBillsList = {
 
 export function ReceivingBillsListPage() {
   const { setPageTitle } = useContext(TitlePageContext);
-  const { searchPressed, setSearchPressed, setUrlToNew } =
-    useContext(ButtonMenuContext);
-
+  const { searchPressed, setSearchPressed, setUrlToNew } = useContext(ButtonMenuContext);
+  const [searchFilter, setSearchFilter] = useState<string>('');
   const [receivingBills, setReceivingBills] = useState<ReceivingBillsList[]>(
     []
   );
@@ -39,7 +39,7 @@ export function ReceivingBillsListPage() {
   useEffect(() => {
     if (searchPressed) {
       searchReceivingBills((data: ReceivingBillsList[]) => {
-        setReceivingBills(data);
+        setReceivingBills(data.filter((i) => searchFilter && i.user.name.toUpperCase().includes(searchFilter.toUpperCase()) || !searchFilter));
       });
 
       setSearchPressed(false);
@@ -54,6 +54,7 @@ export function ReceivingBillsListPage() {
 
   return (
     <>
+      <ButtonMenuComponent searchFilter={searchFilter} setSearchFilter={setSearchFilter}/>
       <StripedTableComponent>
         <thead className="text-primary">
           <tr>

@@ -7,6 +7,7 @@ import { AiFillCloseCircle } from 'react-icons/ai';
 import { ButtonMenuContext } from "../../contexts/buttonMenu.context";
 import { Link } from "react-router-dom";
 import { searchExercise } from "../../services/exercise.service";
+import { ButtonMenuComponent } from "../../components/buttonMenu/buttonMenu.component";
 
 export type ExerciseList = {
   id: string;
@@ -17,7 +18,7 @@ export type ExerciseList = {
 export function ExerciseListPage() {
   const {setPageTitle} = useContext(TitlePageContext);
   const {searchPressed, setSearchPressed, setUrlToNew} = useContext(ButtonMenuContext);
-
+  const [searchFilter, setSearchFilter] = useState<string>('');
   const [exercise, setExercise] = useState<ExerciseList[]>([]);
 
   useEffect(() =>{
@@ -31,7 +32,7 @@ export function ExerciseListPage() {
   useEffect(() =>{
     if(searchPressed){
       searchExercise((data: ExerciseList[]) => {
-        setExercise(data);
+        setExercise(data.filter((i) => searchFilter && i.name.toUpperCase().includes(searchFilter.toUpperCase()) || !searchFilter));
       });
 
       setSearchPressed(false);
@@ -47,6 +48,7 @@ export function ExerciseListPage() {
 
   return (
     <>
+      <ButtonMenuComponent searchFilter={searchFilter} setSearchFilter={setSearchFilter}/>
       <StripedTableComponent>
         <thead className="text-primary">
           <tr>

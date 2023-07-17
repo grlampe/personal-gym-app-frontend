@@ -9,6 +9,7 @@ import { ButtonsFormComponent } from "../../components/buttonsForm/buttonsForm.c
 import { emitWarnToast } from "../../utils/toast.utils";
 import { useHistory } from 'react-router-dom';
 import { getPreWorkoutById, savePreWorkout, updatePreWorkout } from "../../services/preWorkout.service";
+import { VscPersonAdd } from "react-icons/vsc";
 
 export type PreWorkoutEditParams = {
   id: string,
@@ -19,11 +20,10 @@ export type PreWorkoutForm = {
   active: boolean,
 };
 
-
 export function PreWorkoutEditPage() {
-  const history = useHistory();
   const { setPageTitle } = useContext(TitlePageContext);
   const { id } = useParams<PreWorkoutEditParams>();
+  const history = useHistory();
   const [initialValues, setInitialValues] = useState<PreWorkoutForm>({ description: '', active: true });
 
   const preWorkoutSchema = Yup.object().shape({
@@ -80,23 +80,43 @@ export function PreWorkoutEditPage() {
                 touched={touched}
               />
             </div>
-            <div className="card-body">
-              <div className="table-responsive">
-                <table className="table table-hover">
-                  <thead className="text-primary">
-                    <tr>
-                      <th>Descricao</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><input name="myInput" /></td>
-                    </tr>
-                  </tbody>
-                </table>
+          </div>   
+
+          <div className="form-row">
+            <div className="col-md-6 mb-1">
+              <div className="card">
+                <div className="card-header">
+                  <h4 className="card-title">
+                    <div className="col-sm-3">
+                      <div className="row">
+                        <button 
+                          type="button" 
+                          className="btn btn-outline-info bt-sm"
+                        >
+                          <VscPersonAdd size="18" style={{ marginRight: '3px' }} />
+                          Vincular
+                        </button>
+                      </div>
+                    </div>  
+                  </h4>
+                </div>
+                <div className="card-body">
+                  <div className="table-responsive">
+                    <table className="table table-hover">
+                      <thead className="text-primary">
+                        <tr>
+                          <th>Exercícios Vinculados</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                        <tbody><tr><td>Nenhum dado encontrado...</td></tr></tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>          
+            </div> 
+          </div>   
+                 
           <ButtonsFormComponent isSubmitting={isSubmitting}/>
         </Form>
       )} 

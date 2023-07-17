@@ -7,6 +7,7 @@ import { AiFillCloseCircle } from 'react-icons/ai';
 import { ButtonMenuContext } from "../../contexts/buttonMenu.context";
 import { Link } from "react-router-dom";
 import { searchPreWorkout } from "../../services/preWorkout.service";
+import { ButtonMenuComponent } from "../../components/buttonMenu/buttonMenu.component";
 
 export type PreWorkoutList = {
   id: string;
@@ -17,21 +18,20 @@ export type PreWorkoutList = {
 export function PreWorkoutListPage() {
   const {setPageTitle} = useContext(TitlePageContext);
   const {searchPressed, setSearchPressed, setUrlToNew} = useContext(ButtonMenuContext);
-
+  const [searchFilter, setSearchFilter] = useState<string>('');
   const [preWorkout, setPreWorkout] = useState<PreWorkoutList[]>([]);
 
   useEffect(() =>{
     setPreWorkout([]);
     setPageTitle('Pré-Treino');
     setUrlToNew('/preWorkout/new');
-
     executeOnPageLoad();
   },[]);
 
   useEffect(() =>{
     if(searchPressed){
       searchPreWorkout((data: PreWorkoutList[]) => {
-        setPreWorkout(data);
+        setPreWorkout(data.filter((i) => searchFilter && i.description.toUpperCase().includes(searchFilter.toUpperCase()) || !searchFilter));
       });
 
       setSearchPressed(false);
@@ -47,10 +47,11 @@ export function PreWorkoutListPage() {
 
   return (
     <>
+      <ButtonMenuComponent searchFilter={searchFilter} setSearchFilter={setSearchFilter}/>
       <StripedTableComponent>
         <thead className="text-primary">
           <tr>
-            <th>Nome</th>
+            <th>Descrição</th>
             <th>Ativo</th>
             <th>Ação</th>
           </tr>

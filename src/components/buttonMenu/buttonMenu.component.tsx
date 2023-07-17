@@ -6,7 +6,7 @@ import { ButtonMenuContext } from '../../contexts/buttonMenu.context';
 import { Link } from 'react-router-dom';
 
 
-export function ButtonMenuComponent() {
+export function ButtonMenuComponent(props: any) {
   const {urlToNew, setSearchPressed} = useContext(ButtonMenuContext);
 
 
@@ -17,39 +17,47 @@ export function ButtonMenuComponent() {
 
   return (
     <>
-      <div className="row">
-        <div className="col-sm-3">
-          <Link to={urlToNew}>
-            <button 
-              type="button" 
-              className="btn btn-outline-info bt-sm">
-              <VscPersonAdd size="18" style={{marginRight: '3px'}}/>
-              Novo
-            </button>
-
-          </Link>
-        </div>
-
-        <div className="col-sm-9">
-          <div className="input-group mb-3">
-            <input 
-              type="text" 
-              className={inputFilterClass} 
-              placeholder="Filtrar por..." 
-              aria-label="Filtrar por" 
-              aria-describedby="button-addon2" />
-            <div className="input-group-append">
+    <div className="card">
+      <div className="card-header">
+        <h4 className="card-title">
+        <div className="row">
+          <div className="col-sm-3">
+            <Link to={urlToNew}>
               <button 
-                onClick={()=> setSearchPressed(true)}
-                className={styles.filterButton} 
                 type="button" 
-                id="button-addon2">
-                <VscSearch size="18" style={{marginRight: '3px'}}/>
+                className="btn btn-outline-info bt-sm">
+                <VscPersonAdd size="18" style={{marginRight: '3px'}}/>
+                Novo
               </button>
+
+            </Link>
+          </div>
+
+          <div className="col-sm-9">
+            <div className="input-group mb-1">
+              <input 
+                type="text"
+                value={props.searchFilter} 
+                className={inputFilterClass} 
+                placeholder="Filtrar por..." 
+                aria-label="Filtrar por" 
+                aria-describedby="button-addon2" 
+                onChange={(e) => props.setSearchFilter(e.target.value)}/>
+              <div className="input-group-append">
+                <button 
+                  onClick={()=> setSearchPressed(true)}
+                  className={styles.filterButton} 
+                  type="button" 
+                  id="button-addon2">
+                  <VscSearch size="18" style={{marginRight: '3px'}}/>
+                </button>
+              </div>
             </div>
           </div>
         </div>
+        </h4>
       </div>
+    </div> 
     </>
   )
 }

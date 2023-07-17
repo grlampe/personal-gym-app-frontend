@@ -5,6 +5,7 @@ import { StripedTableComponent } from "../../components/stripedTable/stripedTabl
 import { VscEdit } from "react-icons/vsc";
 import { searchUsersBodyMeasurement } from "../../services/bodyMeasurement.service";
 import { BodyMeasurementModalComponent } from "./modals/bodyMeasurementModal";
+import { ButtonMenuComponent } from "../../components/buttonMenu/buttonMenu.component";
 
 export type UserBodyMeasurementList = {
   user: {
@@ -18,7 +19,7 @@ export function BodyMeasurementListPage() {
   const {searchPressed, setSearchPressed, setUrlToNew} = useContext(ButtonMenuContext);
   const [show, setShow] = useState(false);
   const [userId, setUserId] = useState('');
-
+  const [searchFilter, setSearchFilter] = useState<string>('');
   const [bodyMeasurement, setBodyMeasurement] = useState<UserBodyMeasurementList[]>([]);
 
   useEffect(() =>{
@@ -31,7 +32,7 @@ export function BodyMeasurementListPage() {
   useEffect(() =>{
     if(searchPressed){
       searchUsersBodyMeasurement((data: UserBodyMeasurementList[]) => {
-        setBodyMeasurement(data);
+        setBodyMeasurement(data.filter((i) => searchFilter && i.user.name.toUpperCase().includes(searchFilter.toUpperCase()) || !searchFilter));
       });
 
       setSearchPressed(false);
@@ -54,6 +55,7 @@ export function BodyMeasurementListPage() {
 
   return (
     <>
+      <ButtonMenuComponent searchFilter={searchFilter} setSearchFilter={setSearchFilter}/>
       <BodyMeasurementModalComponent show={show} userId={userId} handleClose={handleClose} />
 
       <StripedTableComponent>
