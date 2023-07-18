@@ -34,7 +34,7 @@ export async function searchBodyMeasurementByUserId(id: string, funcToExc: (data
 }
 
 export async function searchBodyMeasurementById(id: string) {   
-  const result = await api.get<BodyMeasurementForm>(`bodyMeasurement/id/${id}`)
+  const result = await api.get<BodyMeasurementForm>(`bodyMeasurement/${id}`)
   return result.data;
 }
 

@@ -32,7 +32,7 @@ export async function getExerciseOnCategoryExerciseByExerciseId(id: string) {
 }
 
 export async function deleteExerciseOnCategoryExerciseById(id: string) {
-  await api.delete(`exerciseOnCategoryExercise/${id}`).then( res => {
+  await api.delete(`exerciseOnCategoryExercise/exercideId/${id}`).then( res => {
     if(res.status){
       emitSuccessToast('Categoria de Exercício desnviculada!');
     }

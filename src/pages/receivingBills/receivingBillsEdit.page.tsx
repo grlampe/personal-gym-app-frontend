@@ -54,7 +54,7 @@ export function ReceivingBillsEditPage() {
 
   useEffect(() => {
     setPageTitle(
-      id ? "Editando Medidas Corporais" : "Cadastrando Medidas Corporais"
+      id ? "Editando Recebimentos" : "Cadastrando Recebimentos"
     );
     setReceivingBillsData();
   }, [id, setPageTitle]);
