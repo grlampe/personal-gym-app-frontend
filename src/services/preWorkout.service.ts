@@ -36,6 +36,16 @@ export async function updatePreWorkout(data: PreWorkoutForm){
   });
 }
 
+export async function updatePreWorkoutOnExercise(data: PreWorkoutOnExerciseList[]){ 
+  data.forEach((item) => {
+    delete item.exercise;
+  });
+  
+  await api.put('preWorkoutOnExercise', data).catch(error => {
+    handleError(error);
+  });
+}
+
 export async function savePreWorkout(data: PreWorkoutForm){
   await api.post('preWorkout', data).then( res => {
     if(res.status){

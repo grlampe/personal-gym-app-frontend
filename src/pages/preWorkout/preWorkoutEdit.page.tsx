@@ -8,7 +8,7 @@ import { SwitchCheckboxComponent } from "../../components/switchCheckbox/switchC
 import { ButtonsFormComponent } from "../../components/buttonsForm/buttonsForm.component";
 import { emitWarnToast } from "../../utils/toast.utils";
 import { useHistory } from 'react-router-dom';
-import { deletePreWorkoutOnExerciseById, getPreWorkoutById, getPreWorkoutOnExerciseByPreWorkoutId, savePreWorkout, updatePreWorkout } from "../../services/preWorkout.service";
+import { deletePreWorkoutOnExerciseById, getPreWorkoutById, getPreWorkoutOnExerciseByPreWorkoutId, savePreWorkout, updatePreWorkout, updatePreWorkoutOnExercise } from "../../services/preWorkout.service";
 import { VscPersonAdd, VscRemove } from "react-icons/vsc";
 import { ExerciseList } from "../exercise/exerciseList.page";
 import { PreWorkoutExerciseModalComponent } from "./modals/preWorkoutExercise.page";
@@ -26,7 +26,7 @@ export type PreWorkoutOnExerciseList = {
   id: string,
   preWorkoutId: string,
   exerciseId: string,
-  exercise: ExerciseList,
+  exercise?: ExerciseList,
   order:        number,
   restTime:     string,
   series:       number,
@@ -91,6 +91,9 @@ export function PreWorkoutEditPage() {
     }
     if(id){
       updatePreWorkout(values);
+      if (preWorkoutOnExercise.length > 0) {
+        updatePreWorkoutOnExercise(preWorkoutOnExercise)
+      }
     } else {
       savePreWorkout(values);
     }
