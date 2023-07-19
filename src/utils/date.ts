@@ -22,7 +22,7 @@ export class DateUtils {
             return '';
         }
 
-        return moment(date).format('YYYY-MM-DD');
+        return moment.utc(moment.utc(date).format('YYYY-MM-DD').concat('T03:00:00')).format('YYYY-MM-DD');
     }
 
     static formatUTCDateToBackend(date: string): string {
