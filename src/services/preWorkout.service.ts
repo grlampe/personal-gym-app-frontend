@@ -58,7 +58,12 @@ export async function savePreWorkout(data: PreWorkoutForm){
 }
 
 export async function savePreWorkoutOnExercise(data: PreWorkoutOnExerciseList) {
-  await api.post('preWorkoutOnExercise', data).catch(error => {
+  await api.post('preWorkoutOnExercise', data).then( res => {
+    if(res.status){
+      emitSuccessToast('Exercício vinculado!');
+    }
+  })
+  .catch(error => {
     handleError(error);
   });
 }
@@ -71,7 +76,7 @@ export async function getPreWorkoutOnExerciseByPreWorkoutId(preWorkoutId: string
 export async function deletePreWorkoutOnExerciseById(id: string) {
   await api.delete(`preWorkoutOnExercise/${id}`).then( res => {
     if(res.status){
-      emitSuccessToast('Exercício desnviculado!');
+      emitSuccessToast('Exercício desvinculado!');
     }
   })
   .catch(error => {

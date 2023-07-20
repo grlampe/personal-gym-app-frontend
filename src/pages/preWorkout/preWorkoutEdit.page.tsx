@@ -23,7 +23,7 @@ export type PreWorkoutForm = {
 };
 
 export type PreWorkoutOnExerciseList = {
-  id: string,
+  id?: string,
   preWorkoutId: string,
   exerciseId: string,
   exercise?: ExerciseList,

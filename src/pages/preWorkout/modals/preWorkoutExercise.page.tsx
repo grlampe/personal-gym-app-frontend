@@ -1,7 +1,6 @@
 import styles from './preWorkoutExercise.module.scss';
 import { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { emitSuccessToast } from '../../../utils/toast.utils';
 import { handleError, searchExercise } from '../../../services/exercise.service';
 import { PreWorkoutOnExerciseList } from '../preWorkoutEdit.page';
 import { VscSave } from 'react-icons/vsc';
@@ -54,6 +53,8 @@ export function PreWorkoutExerciseModalComponent({
   };
 
   const handleSave = async () => {
+    let countOrder = preWorkoutOnExercise.length + 1;
+
     try {
       await Promise.all(
         exerciseList
@@ -61,7 +62,7 @@ export function PreWorkoutExerciseModalComponent({
           .map(exercise => savePreWorkoutOnExercise({
             preWorkoutId, 
             exerciseId: exercise.id,
-            order: 0,
+            order: countOrder++,
             restTime: '0',
             series: 0,
             repetitions: '0',
@@ -70,7 +71,6 @@ export function PreWorkoutExerciseModalComponent({
           }))
       );
       handleClose();
-      emitSuccessToast('Exercícios Vinculados com sucesso!');
     } catch (error) {
       handleError(error);
     }

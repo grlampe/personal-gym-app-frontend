@@ -3,12 +3,14 @@ import { ToastOptions } from "react-toastify";
 //Toast Section
 export const toastConfig: ToastOptions = {
   position: "top-right",
-  autoClose: 5000,
+  autoClose: 2000,
   hideProgressBar: false,
-  closeOnClick: true,
-  pauseOnHover: true,
-  draggable: true,
+  closeOnClick: false,
+  pauseOnHover: false,
+  draggable: false,
   progress: undefined,
+  pauseOnFocusLoss: false,
+  closeButton: false
 }
 
 
