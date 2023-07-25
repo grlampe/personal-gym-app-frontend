@@ -22,7 +22,7 @@ const MENU_ITEMS: MenuItem[] = [
   {
     name: 'Movimentações',
     items: ['medidas', 'recebimentos', 'preWorkout', 'workout'],
-    routes: ['/bodyMeasurement', '/receivingBills', '/preWorkout', 'workout'],
+    routes: ['/bodyMeasurement', '/receivingBills', '/preWorkout', '/workout'],
     titles: ['Medidas Corporais', 'Recebimentos', 'Pré-Treino', 'Treino'],
   },
 ];
