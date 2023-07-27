@@ -6,6 +6,7 @@ import { UsersList } from "../user/userList.page";
 import { searchUsersWorkout } from "../../services/workout.service";
 import { StripedTableComponent } from "../../components/stripedTable/stripedTable.component";
 import { VscEdit } from "react-icons/vsc";
+import { WorkoutListModal } from "./modals/workoutListModal";
 
 export interface WorkoutUsersList {
   user: UsersList;
@@ -16,6 +17,8 @@ export function WorkoutListPage() {
   const {searchPressed, setSearchPressed, setUrlToNew} = useContext(ButtonMenuContext);
   const [searchFilter, setSearchFilter] = useState<string>('');
   const [workoutUsers, setWorkoutUsers] = useState<WorkoutUsersList[]>([]);
+  const [show, setShow] = useState(false);
+  const [userId, setUserId] = useState('');
 
   useEffect(() =>{
     setPageTitle('Treino');
@@ -40,10 +43,18 @@ export function WorkoutListPage() {
     });
   };
 
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const openModal = (userId: string) => () => {
+    setUserId(userId);
+    handleShow();
+  }
+
   return (
     <>
       <ButtonMenuComponent searchFilter={searchFilter} setSearchFilter={setSearchFilter}/>
-
+      <WorkoutListModal show={show} userId={userId} handleClose={handleClose} />
+      
       <StripedTableComponent>
         <thead className="text-primary">
           <tr>
@@ -59,7 +70,7 @@ export function WorkoutListPage() {
                 <td>{data.user.name}</td>
                 <td>
                   <div className="btn-group" role="group" aria-label="Basic example">
-                      <button type="button" className="btn btn-outline-info" onClick={() => {}}>
+                      <button type="button" className="btn btn-outline-info" onClick={openModal(data.user.id)}>
                         <VscEdit size="14"/>
                       </button>
                   </div>  

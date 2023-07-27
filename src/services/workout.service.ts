@@ -1,9 +1,10 @@
+import { WorkoutList } from "../pages/workout/modals/workoutListModal";
 import { WorkoutForm } from "../pages/workout/workoutEdit.page";
 import { WorkoutUsersList } from "../pages/workout/workoutList.page";
 import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
 import { api } from "./api.service";
 
-function handleError(error: any){
+export function handleError(error: any){
   console.error(error);
   if(error.response.data.message){
     emitErrorToast(error.response.data.message);
@@ -25,6 +26,16 @@ export async function searchWorkoutById(id: string) {
   const result = await api.get<WorkoutForm>(`workout/${id}`)
   return result.data;
 }
+
+export async function searchWorkoutByUserId(id: string, funcToExc: (data:WorkoutList[])=>void): Promise<void> {   
+  await api.get<WorkoutList[]>(`workout/user/${id}`).then((res)=>{
+    funcToExc(res.data);
+  })
+  .catch(error => {
+    handleError(error);
+  });
+}
+
 
 export async function updateWorkout(data: WorkoutForm){
   delete data.user;  
