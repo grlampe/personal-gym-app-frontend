@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { TitlePageContext } from "../../contexts/titlePage.context";
 import { useHistory, useParams } from "react-router-dom";
 import * as Yup from "yup";
@@ -57,11 +57,13 @@ export function WorkoutEditPage() {
       emitWarnToast('Preencha os dados corretamente!');
       return;
     }
+    
     if(id){
       updateWorkout(values);
     } else {
       saveWorkout(values);
     }
+    
     history.push('/workout');
     actions.setSubmitting(true);
   }
@@ -141,10 +143,42 @@ export function WorkoutEditPage() {
               </h3>
             </div> 
           </div>
-            
+          <MasterDetailGrid masterData={[]} detailData={[]}/>
           <ButtonsFormComponent isSubmitting={isSubmitting} />
         </Form>
       )}
     </Formik>
   )
 }
+
+function MasterDetailGrid({ masterData, detailData }: any) {
+  const [expandedRows, setExpandedRows] = useState([]);
+
+  const handleRowClick = (id: string) => {
+    const currentRowExpanded = expandedRows.includes(id);
+    const newExpandedRows = currentRowExpanded ?
+      expandedRows.filter(rowId => rowId !== id) :
+      [...expandedRows, id];
+    setExpandedRows(newExpandedRows);
+  };
+
+  return (
+    <div className="grid">
+      {masterData.map((row: any, index: any) => (
+        <React.Fragment key={row.id}>
+          <div className="master-row" onClick={() => handleRowClick(row.id)}>
+            {/* Render master row data */}
+            <div>{row.data}</div>
+          </div>
+          {expandedRows.includes(row?.id) && (
+            <div className="detail-row">
+              {detailData[row.id].map((detailRow, index) => (
+                <div key={index}>{detailRow.data}</div>
+              ))}
+            </div>
+          )}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+};
