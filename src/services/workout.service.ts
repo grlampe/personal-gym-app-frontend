@@ -1,5 +1,5 @@
 import { WorkoutList } from "../pages/workout/modals/workoutListModal";
-import { WorkoutForm } from "../pages/workout/workoutEdit.page";
+import { WorkoutForm, WorkoutOnCategory } from "../pages/workout/workoutEdit.page";
 import { WorkoutUsersList } from "../pages/workout/workoutList.page";
 import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
 import { api } from "./api.service";
@@ -59,5 +59,10 @@ export async function saveWorkout(data: WorkoutForm){
   .catch(error => {
     handleError(error);
   });
+}
+
+export async function searchWorkoutOnCategoryByWorkoutId(id: string) {   
+  const result = await api.get<WorkoutOnCategory[]>(`workoutOnCategory/workout/${id}`)
+  return result.data;
 }
 

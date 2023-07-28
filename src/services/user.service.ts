@@ -11,13 +11,9 @@ function handleError(error: any){
   }
 }
 
-export async function searchUsers(funcToExc: (data:UsersList[])=>void): Promise<void> {   
-  await api.get<UsersList[]>('user').then((res)=>{
-    funcToExc(res.data);
-  })
-  .catch(error => {
-    handleError(error);
-  });
+export async function searchUsers() {   
+  const result = await api.get<UsersList[]>('user')
+  return result.data;
 }
 
 export async function getUserById(id: string) {

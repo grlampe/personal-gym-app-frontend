@@ -62,7 +62,7 @@ export function WorkoutListModal({
       <div className="modal-dialog modal-dialog-centered-m">
         <div className="modal-content">
           <div className="modal-header" style={{ maxHeight: 60 }}>
-            <h5 className="text-primary">Medidas do Usuário</h5>
+            <h5 className="text-primary">Treinos do Usuário</h5>
           </div>
           <div className="card card-plain">
             <div className="table-responsive" style={{ maxHeight: 400 }}>

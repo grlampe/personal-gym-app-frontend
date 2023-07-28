@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TitlePageContext } from "../../contexts/titlePage.context";
 import { useHistory, useParams } from "react-router-dom";
 import * as Yup from "yup";
@@ -7,9 +7,9 @@ import { InputForm } from "../../components/inputForm/inputForm.component";
 import { ButtonsFormComponent } from "../../components/buttonsForm/buttonsForm.component";
 import { searchUsers } from "../../services/user.service";
 import { emitWarnToast } from "../../utils/toast.utils";
-import { saveWorkout, searchWorkoutById, updateWorkout } from "../../services/workout.service";
+import { saveWorkout, searchWorkoutById, searchWorkoutOnCategoryByWorkoutId, updateWorkout } from "../../services/workout.service";
 import { SwitchCheckboxComponent } from "../../components/switchCheckbox/switchCheckbox.component";
-import { VscPersonAdd } from "react-icons/vsc";
+import { VscEdit, VscPersonAdd, VscRemove } from "react-icons/vsc";
 
 interface WorkoutEditParams {
   id: string,
@@ -29,12 +29,25 @@ interface UsersList {
   name: string;
 };
 
+export interface WorkoutOnCategory {
+  id: string;
+  workoutId: string;
+  description: string;
+  active: boolean;
+}
+
+const workoutSchema = Yup.object().shape({
+  userId: Yup.string().required("Usuário é necessário!"),
+  description: Yup.string().required("Descrição é necessário!"),
+});
+
 export function WorkoutEditPage() {
   const { setPageTitle } = useContext(TitlePageContext);
   const { id } = useParams<WorkoutEditParams>();
   const history = useHistory();
   const [userList, setUserList] = useState<UsersList[]>([]);
   const [workout, setWorkout] = useState<WorkoutForm>({ userId: '', description: '', active: true });
+  const [workoutOnCategory, setWorkoutOnCategory] = useState<WorkoutOnCategory[]>([]);
 
   useEffect(() => {
     setPageTitle(id ? 'Editando Treino' : 'Cadastrando Treino');
@@ -42,13 +55,14 @@ export function WorkoutEditPage() {
   }, [id, setPageTitle]);
 
   const fetchWorkoutData = async () => {
-    searchUsers((data: UsersList[]) => {
-      setUserList(data);
-    });
+    const users = await searchUsers()
+    setUserList(users);
 
     if (id) {
       const workout = await searchWorkoutById(id);
       setWorkout(workout);
+      const workoutOnCategory = await searchWorkoutOnCategoryByWorkoutId(id)
+      setWorkoutOnCategory(workoutOnCategory);
     }
   };
 
@@ -68,10 +82,7 @@ export function WorkoutEditPage() {
     actions.setSubmitting(true);
   }
 
-  const workoutSchema = Yup.object().shape({
-    userId: Yup.string().required("Usuário é necessário!"),
-    description: Yup.string().required("Descrição é necessário!"),
-  });
+  
 
   return (
     <Formik
@@ -125,25 +136,58 @@ export function WorkoutEditPage() {
             </div>
           </div>
 
-          <div className="form-row">
-            <div className="col-md-6 mb-1">
-              <h3>
-                <div className="col-sm-3">
-                  <div className="row">
-                    <button 
-                      type="button" 
-                      className="btn btn-outline-info bt-sm"
-                      onClick={() => {}}
-                    >
-                      <VscPersonAdd size="18" style={{ marginRight: '3px' }} />
-                      Vincular
-                    </button>
-                  </div>
-                </div>  
-              </h3>
-            </div> 
+          <div className="form-row mb-0">
+            <h3 className="form-row mb-0">
+              <div className="col-md-5">
+                  <div className="col-sm">
+                    <div className="row">
+                      <button 
+                        type="button" 
+                        className="btn btn-outline-info bt-sm"
+                        onClick={() => {}}
+                      >
+                        <VscPersonAdd size="18" style={{ marginRight: '3px' }} />
+                        Adicionar
+                      </button>
+                    </div>
+                  </div> 
+              </div> 
+              <div className="col-md-5 mb-3">
+                  <div className="col-sm">
+                    <div className="row">
+                      <button 
+                        type="button" 
+                        className="btn btn-outline-info bt-sm"
+                        onClick={() => {}}
+                      >
+                        <VscPersonAdd size="18" style={{ marginRight: '3px' }} />
+                        Vincular
+                      </button>            
+                    </div>          
+                  </div>              
+              </div>
+            </h3> 
           </div>
-          <MasterDetailGrid masterData={[]} detailData={[]}/>
+          
+          <div className="card">
+            <div className="card-body">
+              <div className="table-responsive">
+                <table className="table table-hover">
+                  <thead className="text-primary">
+                    <tr>
+                      <th>Categorias de Treino</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  {workoutOnCategory.length > 0 ?
+                    <ExerciseCategory workoutOnCategory={workoutOnCategory} />
+                    : <tbody><tr><td>Nenhum dado encontrado...</td></tr></tbody>
+                  }
+                </table>
+              </div>
+            </div>
+          </div>
+          
           <ButtonsFormComponent isSubmitting={isSubmitting} />
         </Form>
       )}
@@ -151,34 +195,30 @@ export function WorkoutEditPage() {
   )
 }
 
-function MasterDetailGrid({ masterData, detailData }: any) {
-  const [expandedRows, setExpandedRows] = useState([]);
-
-  const handleRowClick = (id: string) => {
-    const currentRowExpanded = expandedRows.includes(id);
-    const newExpandedRows = currentRowExpanded ?
-      expandedRows.filter(rowId => rowId !== id) :
-      [...expandedRows, id];
-    setExpandedRows(newExpandedRows);
-  };
-
-  return (
-    <div className="grid">
-      {masterData.map((row: any, index: any) => (
-        <React.Fragment key={row.id}>
-          <div className="master-row" onClick={() => handleRowClick(row.id)}>
-            {/* Render master row data */}
-            <div>{row.data}</div>
-          </div>
-          {expandedRows.includes(row?.id) && (
-            <div className="detail-row">
-              {detailData[row.id].map((detailRow, index) => (
-                <div key={index}>{detailRow.data}</div>
-              ))}
-            </div>
-          )}
-        </React.Fragment>
-      ))}
-    </div>
-  );
-};
+const ExerciseCategory = ({ workoutOnCategory }: any) => (
+  <tbody>
+    { workoutOnCategory.map((data: any) => (
+      <tr key={data.id}>
+        <td>{data.description}</td>
+        <td>
+          <div className="btn-group p-1" role="group">
+            <button
+              type="button"
+              className="btn btn-outline-info"
+            >
+              <VscEdit size="14" />
+            </button>
+          </div> 
+          <div className="btn-group p-1" role="group">
+            <button
+              type="button"
+              className="btn btn-outline-info"
+            >
+              <VscRemove size="14" />
+            </button>
+          </div>  
+        </td>
+      </tr>
+    ))}
+  </tbody>
+)
