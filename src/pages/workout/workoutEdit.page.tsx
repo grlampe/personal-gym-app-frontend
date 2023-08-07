@@ -82,8 +82,6 @@ export function WorkoutEditPage() {
     actions.setSubmitting(true);
   }
 
-  
-
   return (
     <Formik
       initialValues={workout}
@@ -139,32 +137,32 @@ export function WorkoutEditPage() {
           <div className="form-row mb-0">
             <h3 className="form-row mb-0">
               <div className="col-md-5">
-                  <div className="col-sm">
-                    <div className="row">
-                      <button 
-                        type="button" 
-                        className="btn btn-outline-info bt-sm"
-                        onClick={() => {}}
-                      >
-                        <VscPersonAdd size="18" style={{ marginRight: '3px' }} />
-                        Adicionar
-                      </button>
-                    </div>
-                  </div> 
+                <div className="col-sm">
+                  <div className="row">
+                    <button 
+                      type="button" 
+                      className="btn btn-outline-info bt-sm"
+                      onClick={() => {}}
+                    >
+                      <VscPersonAdd size="18" style={{ marginRight: '3px' }} />
+                      Adicionar
+                    </button>
+                  </div>
+                </div> 
               </div> 
               <div className="col-md-5 mb-3">
-                  <div className="col-sm">
-                    <div className="row">
-                      <button 
-                        type="button" 
-                        className="btn btn-outline-info bt-sm"
-                        onClick={() => {}}
-                      >
-                        <VscPersonAdd size="18" style={{ marginRight: '3px' }} />
-                        Vincular
-                      </button>            
-                    </div>          
-                  </div>              
+                <div className="col-sm">
+                  <div className="row">
+                    <button 
+                      type="button" 
+                      className="btn btn-outline-info bt-sm"
+                      onClick={() => {}}
+                    >
+                      <VscPersonAdd size="18" style={{ marginRight: '3px' }} />
+                      Vincular
+                    </button>            
+                  </div>          
+                </div>              
               </div>
             </h3> 
           </div>
