@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { TitlePageContext } from "../../contexts/titlePage.context";
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { Form, Formik } from "formik";
 import { InputForm } from "../../components/inputForm/inputForm.component";
@@ -100,6 +100,15 @@ export function WorkoutEditPage() {
     handleShow();
   };
 
+  const goToNewWorkoutExercise = () => {
+    if (!id) {
+      emitWarnToast('O Cadastro deve ser salvo antes de realizar os vínculos!');
+      return;
+    } 
+    
+    history.push('/workout/edit/:workoutId/workoutExercise/new'.replace(':workoutId', id))
+  }
+
   const handleDelete = async (workoutOnCategoryId: string) => {
     await deleteWorkoutOnCategory(workoutOnCategoryId);
     if (id) {
@@ -168,7 +177,7 @@ export function WorkoutEditPage() {
                     <button 
                       type="button" 
                       className="btn btn-outline-info bt-sm"
-                      onClick={() => {}}
+                      onClick={goToNewWorkoutExercise}
                     >
                       <VscPersonAdd size="18" style={{ marginRight: '3px' }} />
                       Adicionar
@@ -226,12 +235,14 @@ const ExerciseCategory = ({ workoutOnCategory, handleDelete }: any) => (
         <td>{data.description}</td>
         <td>
           <div className="btn-group p-1" role="group">
-            <button
-              type="button"
-              className="btn btn-outline-info"
-            >
-              <VscEdit size="14" />
-            </button>
+            <Link to={'/workout/edit/:workoutId/workoutExercise/edit/:id'.replace(':workoutId', data.workoutId).replace(':id', data.id)}> 
+              <button
+                type="button"
+                className="btn btn-outline-info"
+              >
+                <VscEdit size="14" />
+              </button>
+            </Link>
           </div> 
           <div className="btn-group p-1" role="group">
             <button

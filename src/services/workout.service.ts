@@ -77,6 +77,17 @@ export async function saveWorkoutOnCategory(data: any){
   });
 }
 
+export async function updateWorkoutOnCategory(data: any){
+  await api.put('workoutOnCategory', data).then( res => {
+    if(res.status){
+      emitSuccessToast('Categoria de Treino atualizada!');
+    }
+  })
+  .catch(error => {
+    handleError(error);
+  });
+}
+
 export async function deleteWorkoutOnCategory(id: string) {
   await api.delete(`workoutOnCategory/${id}`).then( res => {
     if(res.status){
@@ -86,4 +97,9 @@ export async function deleteWorkoutOnCategory(id: string) {
   .catch(error => {
     handleError(error);
   });
+}
+
+export async function getWorkoutOnCategoryById(id: string) {   
+  const result = await api.get<WorkoutOnCategory>(`workoutOnCategory/${id}`)
+  return result.data;
 }

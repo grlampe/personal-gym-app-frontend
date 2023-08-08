@@ -19,6 +19,7 @@ import { PreWorkoutListPage } from './pages/preWorkout/preWorkoutList.page';
 import { PreWorkoutEditPage } from './pages/preWorkout/preWorkoutEdit.page';
 import { WorkoutEditPage } from './pages/workout/workoutEdit.page';
 import { WorkoutListPage } from './pages/workout/workoutList.page';
+import { WorkoutOnExercisePage } from './pages/workoutExercise/workoutExercise.page';
 
 const PrivateRoute = (rest: any) => (
   <Route
@@ -54,6 +55,8 @@ export function Routes() {
     <Switch>
 
       {/*  Treino  */}
+      <PrivateRoute exact path={'/workout/edit/:workoutId/workoutExercise/edit/:id'} comp={() => <WorkoutOnExercisePage/>}/>
+      <PrivateRoute exact path={'/workout/edit/:workoutId/workoutExercise/new'} comp={() => <WorkoutOnExercisePage/>}/>
       <PrivateRoute exact path={'/workout/edit/:id'} comp={() => <WorkoutEditPage/>}/>
       <PrivateRoute exact path={'/workout/new'} comp={() =>  <WorkoutEditPage/>}/>
       <PrivateRoute exact path={'/workout'} comp={() => <WorkoutListPage/>}/>
