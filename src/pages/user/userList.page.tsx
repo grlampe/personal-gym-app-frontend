@@ -31,19 +31,19 @@ export function UserListPage() {
     executeOnPageLoad();
   },[]);
 
-  useEffect(() =>{
+  useEffect(() => {
     if(searchPressed){
-      searchUsers((data: UsersList[]) => {
+      searchUsers().then((data) => {
         setUsers(data.filter((i) => searchFilter && i.name.toUpperCase().includes(searchFilter.toUpperCase()) || !searchFilter));
-      });
-
+      })
+     
       setSearchPressed(false);
     }
     
   },[searchPressed]);
 
   const executeOnPageLoad = () => {
-    searchUsers((data: UsersList[]) => {
+    searchUsers().then((data) => {
       setUsers(data);
     });
   };

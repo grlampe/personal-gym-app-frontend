@@ -6,7 +6,7 @@ import { UsersList } from "../user/userList.page";
 import { searchUsersWorkout } from "../../services/workout.service";
 import { StripedTableComponent } from "../../components/stripedTable/stripedTable.component";
 import { VscEdit } from "react-icons/vsc";
-import { WorkoutListModal } from "./modals/workoutListModal";
+import { WorkoutListModal } from "./modals/workoutList/workoutListModal";
 
 export interface WorkoutUsersList {
   user: UsersList;

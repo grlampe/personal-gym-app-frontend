@@ -7,9 +7,10 @@ import { InputForm } from "../../components/inputForm/inputForm.component";
 import { ButtonsFormComponent } from "../../components/buttonsForm/buttonsForm.component";
 import { searchUsers } from "../../services/user.service";
 import { emitWarnToast } from "../../utils/toast.utils";
-import { saveWorkout, searchWorkoutById, searchWorkoutOnCategoryByWorkoutId, updateWorkout } from "../../services/workout.service";
+import { deleteWorkoutOnCategory, saveWorkout, searchWorkoutById, searchWorkoutOnCategoryByWorkoutId, updateWorkout } from "../../services/workout.service";
 import { SwitchCheckboxComponent } from "../../components/switchCheckbox/switchCheckbox.component";
 import { VscEdit, VscPersonAdd, VscRemove } from "react-icons/vsc";
+import { WorkoutVinculateModalComponent } from "./modals/workoutVinculate/workoutVinculateModal";
 
 interface WorkoutEditParams {
   id: string,
@@ -48,6 +49,7 @@ export function WorkoutEditPage() {
   const [userList, setUserList] = useState<UsersList[]>([]);
   const [workout, setWorkout] = useState<WorkoutForm>({ userId: '', description: '', active: true });
   const [workoutOnCategory, setWorkoutOnCategory] = useState<WorkoutOnCategory[]>([]);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     setPageTitle(id ? 'Editando Treino' : 'Cadastrando Treino');
@@ -82,6 +84,29 @@ export function WorkoutEditPage() {
     actions.setSubmitting(true);
   }
 
+  const handleShow = () => setShow(true);
+  const handleClose = () => {
+    setShow(false);
+    if (id) {
+      fetchWorkoutData();
+    }
+  }
+
+  const openModalAssign = () => {
+    if (!id) {
+      emitWarnToast('O Cadastro deve ser salvo antes de realizar os vínculos!');
+      return;
+    }
+    handleShow();
+  };
+
+  const handleDelete = async (workoutOnCategoryId: string) => {
+    await deleteWorkoutOnCategory(workoutOnCategoryId);
+    if (id) {
+      await fetchWorkoutData();
+    }
+  };
+
   return (
     <Formik
       initialValues={workout}
@@ -91,6 +116,7 @@ export function WorkoutEditPage() {
     >
       {({ isSubmitting, errors, touched, values, setValues }) => (
         <Form>
+          <WorkoutVinculateModalComponent show={show} workoutId={id} handleClose={handleClose} workoutOnCategory={workoutOnCategory} />
           <div className="form-row">
             <SwitchCheckboxComponent name="active" description="Ativo" />
           </div>
@@ -156,7 +182,7 @@ export function WorkoutEditPage() {
                     <button 
                       type="button" 
                       className="btn btn-outline-info bt-sm"
-                      onClick={() => {}}
+                      onClick={openModalAssign}
                     >
                       <VscPersonAdd size="18" style={{ marginRight: '3px' }} />
                       Vincular
@@ -178,7 +204,7 @@ export function WorkoutEditPage() {
                     </tr>
                   </thead>
                   {workoutOnCategory.length > 0 ?
-                    <ExerciseCategory workoutOnCategory={workoutOnCategory} />
+                    <ExerciseCategory workoutOnCategory={workoutOnCategory} handleDelete={handleDelete}/>
                     : <tbody><tr><td>Nenhum dado encontrado...</td></tr></tbody>
                   }
                 </table>
@@ -193,7 +219,7 @@ export function WorkoutEditPage() {
   )
 }
 
-const ExerciseCategory = ({ workoutOnCategory }: any) => (
+const ExerciseCategory = ({ workoutOnCategory, handleDelete }: any) => (
   <tbody>
     { workoutOnCategory.map((data: any) => (
       <tr key={data.id}>
@@ -211,6 +237,7 @@ const ExerciseCategory = ({ workoutOnCategory }: any) => (
             <button
               type="button"
               className="btn btn-outline-info"
+              onClick={() => handleDelete(data.id)}
             >
               <VscRemove size="14" />
             </button>

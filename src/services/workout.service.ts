@@ -1,4 +1,4 @@
-import { WorkoutList } from "../pages/workout/modals/workoutListModal";
+import { WorkoutList } from "../pages/workout/modals/workoutList/workoutListModal";
 import { WorkoutForm, WorkoutOnCategory } from "../pages/workout/workoutEdit.page";
 import { WorkoutUsersList } from "../pages/workout/workoutList.page";
 import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
@@ -13,7 +13,7 @@ export function handleError(error: any){
   }
 }
 
-export async function searchUsersWorkout(funcToExc: (data:WorkoutUsersList[]) => void): Promise<void> {   
+export async function searchUsersWorkout(funcToExc: (data: WorkoutUsersList[]) => void): Promise<void> {   
   await api.get<WorkoutUsersList[]>('workout/user').then((res)=>{
     funcToExc(res.data);
   })
@@ -27,7 +27,7 @@ export async function searchWorkoutById(id: string) {
   return result.data;
 }
 
-export async function searchWorkoutByUserId(id: string, funcToExc: (data:WorkoutList[])=>void): Promise<void> {   
+export async function searchWorkoutByUserId(id: string, funcToExc: (data: WorkoutList[])=>void): Promise<void> {   
   await api.get<WorkoutList[]>(`workout/user/${id}`).then((res)=>{
     funcToExc(res.data);
   })
@@ -66,3 +66,24 @@ export async function searchWorkoutOnCategoryByWorkoutId(id: string) {
   return result.data;
 }
 
+export async function saveWorkoutOnCategory(data: any){
+  await api.post('workoutOnCategory', data).then( res => {
+    if(res.status){
+      emitSuccessToast('Categoria de Treino adicionada!');
+    }
+  })
+  .catch(error => {
+    handleError(error);
+  });
+}
+
+export async function deleteWorkoutOnCategory(id: string) {
+  await api.delete(`workoutOnCategory/${id}`).then( res => {
+    if(res.status){
+      emitSuccessToast('Categoria de Treino desnviculada!');
+    }
+  })
+  .catch(error => {
+    handleError(error);
+  });
+}

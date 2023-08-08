@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { handleError, searchWorkoutByUserId } from "../../../services/workout.service";
 import classNames from "classnames";
 import styles from "./workoutListModal.module.scss";
 import { ImCancelCircle } from "react-icons/im";
@@ -7,6 +6,7 @@ import { Link } from "react-router-dom";
 import { VscEdit } from "react-icons/vsc";
 import { FcOk } from "react-icons/fc";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { handleError, searchWorkoutByUserId } from "../../../../services/workout.service";
 
 type WorkoutListModalProps = {
   show: boolean;
@@ -112,7 +112,7 @@ function WorkoutListTable({ workoutList }: any) {
           </td>
           <td>
             <div className="btn-group" role="group">
-              <Link to={"workout/edit/:id".replace(":id", data.id)}>
+              <Link to={"workout/edit/:id".replace(":id", data.id) }>
                 <button type="button" className="btn btn-outline-info">
                   <VscEdit size="14" />
                 </button>

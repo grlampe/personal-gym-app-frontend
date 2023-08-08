@@ -66,7 +66,7 @@ export function BodyMeasurementEditPage() {
   }, [id, setPageTitle]);
 
   const setBodyMeasurementData = async () => {
-    searchUsers((data: UsersList[]) => {
+    searchUsers().then((data) => {
       setUserList(data);
     });
 

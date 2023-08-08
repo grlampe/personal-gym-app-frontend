@@ -60,7 +60,7 @@ export function ReceivingBillsEditPage() {
   }, [id, setPageTitle]);
 
   const setReceivingBillsData = async () => {
-    searchUsers((data: UsersList[]) => {
+    searchUsers().then((data) => {
       setUserList(data);
     });
 
