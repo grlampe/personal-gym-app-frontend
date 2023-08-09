@@ -1,6 +1,7 @@
 import { WorkoutList } from "../pages/workout/modals/workoutList/workoutListModal";
 import { WorkoutForm, WorkoutOnCategory } from "../pages/workout/workoutEdit.page";
 import { WorkoutUsersList } from "../pages/workout/workoutList.page";
+import { WorkoutOnExerciseList } from "../pages/workoutExercise/workoutExercise.page";
 import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
 import { api } from "./api.service";
 
@@ -101,5 +102,42 @@ export async function deleteWorkoutOnCategory(id: string) {
 
 export async function getWorkoutOnCategoryById(id: string) {   
   const result = await api.get<WorkoutOnCategory>(`workoutOnCategory/${id}`)
+  return result.data;
+}
+
+export async function saveWorkoutOnExercise(data: WorkoutOnExerciseList) {
+  await api.post('workoutOnExercise', data).then( res => {
+    if(res.status){
+      emitSuccessToast('Exercício vinculado!');
+    }
+  })
+  .catch(error => {
+    handleError(error);
+  });
+}
+
+export async function updateWorkoutOnExercise(data: WorkoutOnExerciseList[]){ 
+  data.forEach((item) => {
+    delete item.exercise;
+  });
+  
+  await api.put('workoutOnExercise', data).catch(error => {
+    handleError(error);
+  });
+}
+
+export async function deleteWorkoutOnExerciseById(id: string) {
+  await api.delete(`workoutOnExercise/${id}`).then( res => {
+    if(res.status){
+      emitSuccessToast('Exercício desvinculado!');
+    }
+  })
+  .catch(error => {
+    handleError(error);
+  });
+}
+
+export async function getWorkoutOnExerciseByWorkoutCategoryId(workoutCategoryId: string) {
+  const result = await api.get<WorkoutOnExerciseList[]>(`workoutOnExercise/workoutCategory/${workoutCategoryId}`);
   return result.data;
 }

@@ -10,7 +10,8 @@ import { emitWarnToast } from "../../utils/toast.utils";
 import { useHistory } from 'react-router-dom';
 import { VscPersonAdd, VscRemove } from "react-icons/vsc";
 import { ExerciseList } from "../exercise/exerciseList.page";
-import { getWorkoutOnCategoryById, saveWorkoutOnCategory, updateWorkoutOnCategory } from "../../services/workout.service";
+import { deleteWorkoutOnExerciseById, getWorkoutOnCategoryById, getWorkoutOnExerciseByWorkoutCategoryId, saveWorkoutOnCategory, updateWorkoutOnCategory, updateWorkoutOnExercise } from "../../services/workout.service";
+import { WorkoutAddExerciseModalComponent } from "./modals/workoutAddExercise.page";
 
 export type WorkoutOnExerciseParams = {
   workoutId: string,
@@ -58,23 +59,23 @@ export function WorkoutOnExercisePage() {
   const fetchFullWorkoutData = async (id: string) => {
     const data = await getWorkoutOnCategoryById(id);
     setInitialValues({...data});
-    // const preWorkoutOnExercise = await getPreWorkoutOnExerciseByPreWorkoutId(preWorkoutId)
-    // setPreWorkoutOnExercise(preWorkoutOnExercise);
+    const workoutOnExercise = await getWorkoutOnExerciseByWorkoutCategoryId(id)
+    setWorkoutOnExercise(workoutOnExercise);
   }
 
-  const handleDelete = async (preWorkoutOnExerciseId: string) => {
-    // await deletePreWorkoutOnExerciseById(preWorkoutOnExerciseId);
-    // if (id) {
-    //   await fetchPreWorkoutData(id);
-    // }
+  const handleDelete = async (workoutOnExerciseId: string) => {
+    await deleteWorkoutOnExerciseById(workoutOnExerciseId);
+    if (id) {
+      await fetchFullWorkoutData(id);
+    }
   };
 
   const handleShow = () => setShow(true);
   const handleClose = () => {
-    // setShow(false);
-    // if (id) {
-    //   fetchPreWorkoutData(id);
-    // }
+    setShow(false);
+    if (id) {
+      fetchFullWorkoutData(id);
+    }
   }
 
   const openModalAssign = () => {
@@ -92,20 +93,22 @@ export function WorkoutOnExercisePage() {
     }
     if(id){
       updateWorkoutOnCategory(values);
-      // if (workoutOnExercise.length > 0) {
-      //   updatePreWorkoutOnExercise(workoutOnExercise)
-      // }
+      if (workoutOnExercise.length > 0) {
+        updateWorkoutOnExercise(workoutOnExercise)
+      }
     } else {
       saveWorkoutOnCategory(values);
     }
-
+    
     actions.setSubmitting(true);
+
+    fetchFullWorkoutData(id);
   }
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>, index: number, field: keyof WorkoutOnExerciseList) => {
-    // const newData = [...workoutOnExercise]
-    // newData[index][field] = typeof(newData[index][field]) === 'number' ? Number(event.target.value) : event.target.value
-    // setPreWorkoutOnExercise(newData);
+    const newData = [...workoutOnExercise]
+    newData[index][field] = typeof(newData[index][field]) === 'number' ? Number(event.target.value) : event.target.value
+    setWorkoutOnExercise(newData);
   }
 
   return (
@@ -117,7 +120,7 @@ export function WorkoutOnExercisePage() {
     >
       {({isSubmitting, errors, touched})=>(
         <Form>
-          {/* <PreWorkoutExerciseModalComponent show={show} preWorkoutId={id} handleClose={handleClose} preWorkoutOnExercise={workoutOnExercise} /> */}
+          <WorkoutAddExerciseModalComponent show={show} workoutOnCategoryId={id} handleClose={handleClose} workoutOnExercise={workoutOnExercise} />
 
           <div className="form-row">
             <SwitchCheckboxComponent name="active" description="Ativo" />
@@ -174,7 +177,7 @@ const WorkoutOnExerciseList = ({ workoutOnExercise, openModalAssign, handleDelet
               <thead className="text-primary">
                 <tr>
                   <th>Exercícios</th>
-                  <th >Ordem</th>
+                  <th>Ordem</th>
                   <th>Descanso</th>
                   <th>Series</th>
                   <th>Repetições</th>
