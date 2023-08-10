@@ -11,10 +11,13 @@ import { emitWarnToast } from "../../utils/toast.utils";
 import {
   Formik,
   Form,
-  Field,
+  Field
 } from 'formik';
 import { DateUtils } from "../../utils/date";
 import styles from '../../components/inputForm/inputFormStyle.module.scss';
+import InputMask from 'react-input-mask';
+import { states } from "../../utils/consts";
+import { fetchAddressByCEP } from "../../utils/buscaCep";
 
 type UserEditParams = {
   id: string,
@@ -87,7 +90,7 @@ export function UserEditPage() {
       then: Yup.string().required('Confirme a senha por gentileza.').oneOf([Yup.ref('password'), null], 'As senhas não são identicas!'),
       otherwise: Yup.string(),
     }),
-    cpf: Yup.string().required('CPF é necessário!'),
+    cpf: Yup.string().required('CPF é necessário!').min(14, 'CPF Inválido!').max(14, 'CPF Inválido!'),
     birthDate: Yup.string().required('Data Nascimento é necessária!'),
     addressZipCode: Yup.string().required('CEP é necessário!'),
     addressStreet: Yup.string().required('Logradouro é necessário!'),
@@ -97,30 +100,28 @@ export function UserEditPage() {
     addressState: Yup.string().required('Estado é necessária!'),
   });
 
+  const handleSubmit = async (values: UserForm, actions: any) => {
+    if (!userSchema.isValid(values)) {
+      emitWarnToast('Preencha os dados corretamente!');
+      return;
+    }
+    if(id){
+      await updateUser(values);
+    } else {
+      await saveUser(values);
+    }
+    history.push('/user');
+    actions.setSubmitting(true);
+  }
+
   return (
     <Formik
       initialValues={initialValues}
       enableReinitialize
       validationSchema={userSchema}
-      onSubmit={(values, actions) => {
-        userSchema
-          .isValid(values)
-          .then(valid => {
-            if(valid){
-              if(id){
-                updateUser(values);
-              } else {
-                saveUser(values);
-              }
-              history.push('/user');
-            } else {
-              emitWarnToast('Preencha os dados corretamente!');
-            }
-            actions.setSubmitting(true);
-          })
-      }}
+      onSubmit={handleSubmit}
     >
-      {({isSubmitting, errors, touched})=>(
+      {({isSubmitting, errors, touched, setFieldValue, values})=>(
         <Form>
           <div className="form-row">
             <SwitchCheckboxComponent name="active" description="Ativo" />
@@ -178,23 +179,49 @@ export function UserEditPage() {
             </div>
             <div className="col-md-3 mb-3">
               <label>CPF</label>
-              <Field 
-                className={`form-control form-control-sm ${errors.cpf && touched.cpf ? styles.errorField : ''}`}
-                name="cpf"
-                maxLength={11}
-              />
-              {touched.cpf && errors.cpf && (
-               <div className={styles.error}>{errors.cpf}</div>
-              )}
+              <Field name="cpf">
+                {({ field, meta, form }: any) => (
+                  <>
+                    <InputMask 
+                      {...field}
+                      className={`form-control form-control-sm ${meta.touched && meta.error ? styles.errorField : ''}`}
+                      mask="999.999.999-99"
+                      maskChar=""
+                      onChange={e => {
+                        form.setFieldValue("cpf", e.target.value);
+                      }}
+                      onBlur={() => form.setFieldTouched('cpf', true)}
+                    />
+                    {meta.touched && meta.error && <div className={styles.error}>{meta.error}</div>}
+                  </>
+                )}
+              </Field>
             </div>
           </div>
           <div className="form-row">
             <div className="col-md-2 mb-3">
-            <label>CEP</label>
-              <Field 
+              <label>CEP</label>
+              <InputMask 
                 className={`form-control form-control-sm ${errors.addressZipCode && touched.addressZipCode ? styles.errorField : ''}`}
                 name="addressZipCode"
-                maxLength={8}
+                value={values.addressZipCode}
+                mask="99999-999"
+                maskChar=""
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setFieldValue("addressZipCode", value);
+                }}
+                onBlur={async (e) => {
+                  const cep = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                  if (cep.length === 8) {
+                    const addressData = await fetchAddressByCEP(cep);
+                    if (addressData) {
+                      for (let key in addressData) {
+                        setFieldValue(key, addressData[key]);
+                      }
+                    }
+                  }
+                }}
               />
               {touched.addressZipCode && errors.addressZipCode && (
                 <div className={styles.error}>{errors.addressZipCode}</div>
@@ -237,13 +264,19 @@ export function UserEditPage() {
             </div>
             <div className="form-row">
               <div className="col-md-2 mb-3">
-                <InputForm 
-                  name="addressState" 
-                  label="Estado"
-                  errors={errors}
-                  touched={touched}
-                />
-              </div>  
+                <label>Estado</label>
+                <Field name="addressState" as="select" className={`form-control form-control-sm ${errors.addressState && touched.addressState ? styles.errorField : ''}`}>
+                  <option value="" label="Selecione um estado" />
+                  {states.map(state => (
+                    <option key={state.value} value={state.value}>
+                      {state.label}
+                    </option>
+                  ))}
+                </Field>
+                {touched.addressState && errors.addressState && (
+                  <div className={styles.error}>{errors.addressState}</div>
+                )}
+              </div>
               <div className="col-md-4 mb-3">
                 <InputForm 
                   name="addressComplement" 

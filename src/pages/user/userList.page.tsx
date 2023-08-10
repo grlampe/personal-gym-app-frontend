@@ -20,7 +20,6 @@ export function UserListPage() {
   const {setPageTitle} = useContext(TitlePageContext);
   const {searchPressed, setSearchPressed, setUrlToNew} = useContext(ButtonMenuContext);
   const [searchFilter, setSearchFilter] = useState<string>('');
-
   const [users, setUsers] = useState<UsersList[]>([]);
 
   useEffect(() =>{
@@ -33,8 +32,8 @@ export function UserListPage() {
 
   useEffect(() => {
     if(searchPressed){
-      searchUsers().then((data) => {
-        setUsers(data.filter((i) => searchFilter && i.name.toUpperCase().includes(searchFilter.toUpperCase()) || !searchFilter));
+      searchUsers().then((data: UsersList[]) => {
+        setUsers(data.filter((i) => searchFilter && (i.name.toUpperCase().includes(searchFilter.toUpperCase()) || i.email.toUpperCase().includes(searchFilter.toUpperCase())) || !searchFilter));
       })
      
       setSearchPressed(false);
@@ -43,7 +42,7 @@ export function UserListPage() {
   },[searchPressed]);
 
   const executeOnPageLoad = () => {
-    searchUsers().then((data) => {
+    searchUsers().then((data: UsersList[]) => {
       setUsers(data);
     });
   };
