@@ -50,28 +50,28 @@ export function CategoryExerciseEditPage() {
     name: Yup.string().required('Categoria do Exercício é necessária!'),
   });
 
+  const handleSubmit = async (values: CategoryExerciseForm, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
+    try {
+      await userSchema.validate(values);
+      if (id) {
+        await updateCategoryExercise(values);
+      } else {
+        await saveCategoryExercise(values);
+      }
+    } catch (error) {
+      emitWarnToast("Preencha os dados corretamente!");
+    }
+    
+    history.push('/categoryExercise');
+    setSubmitting(true);
+  };
+
   return (
     <Formik
       initialValues={initialValues}
       enableReinitialize
       validationSchema={userSchema}
-      onSubmit={(values, actions) => {
-        userSchema
-          .isValid(values)
-          .then(valid => {
-            if(valid){
-              if(id){
-                updateCategoryExercise(values);
-              } else {
-                saveCategoryExercise(values);
-              }
-              history.push('/categoryExercise');
-            } else {
-              emitWarnToast('Preencha os dados corretamente!');
-            }
-            actions.setSubmitting(true);
-          })
-      }}
+      onSubmit={handleSubmit}
     >
       {({isSubmitting, errors, touched})=>(
         <Form>
