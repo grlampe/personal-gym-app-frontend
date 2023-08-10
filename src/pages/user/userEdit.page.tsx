@@ -16,8 +16,11 @@ import {
 import { DateUtils } from "../../utils/date";
 import styles from '../../components/inputForm/inputFormStyle.module.scss';
 import InputMask from 'react-input-mask';
+<<<<<<< HEAD
 import { states } from "../../utils/consts";
 import { fetchAddressByCEP } from "../../utils/buscaCep";
+=======
+>>>>>>> 2a03155538554cb725899eabc6e2fe1c522e9170
 
 type UserEditParams = {
   id: string,
