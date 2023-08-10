@@ -106,11 +106,7 @@ export async function getWorkoutOnCategoryById(id: string) {
 }
 
 export async function saveWorkoutOnExercise(data: WorkoutOnExerciseList) {
-  await api.post('workoutOnExercise', data).then( res => {
-    if(res.status){
-      emitSuccessToast('Exercício vinculado!');
-    }
-  })
+  await api.post('workoutOnExercise', data)
   .catch(error => {
     handleError(error);
   });
