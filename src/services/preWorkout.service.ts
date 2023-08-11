@@ -49,7 +49,7 @@ export async function updatePreWorkoutOnExercise(data: PreWorkoutOnExerciseList[
 export async function savePreWorkout(data: PreWorkoutForm){
   await api.post('preWorkout', data).then( res => {
     if(res.status){
-      emitSuccessToast('Pré-treino  adicionado!');
+      emitSuccessToast('Pré-treino adicionado!');
     }
   })
   .catch(error => {
@@ -77,6 +77,16 @@ export async function deletePreWorkoutOnExerciseById(id: string) {
   await api.delete(`preWorkoutOnExercise/${id}`).then( res => {
     if(res.status){
       emitSuccessToast('Exercício desvinculado!');
+    }
+  })
+  .catch(error => {
+    handleError(error);
+  });
+}
+export async function deletePreWorkout(id: string) {
+  await api.delete(`preWorkout/${id}`).then( res => {
+    if(res.status){
+      emitSuccessToast('Pré-treino removido!');
     }
   })
   .catch(error => {

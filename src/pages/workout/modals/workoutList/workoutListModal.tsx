@@ -3,10 +3,10 @@ import classNames from "classnames";
 import styles from "./workoutListModal.module.scss";
 import { ImCancelCircle } from "react-icons/im";
 import { Link } from "react-router-dom";
-import { VscEdit } from "react-icons/vsc";
+import { VscEdit, VscTrash } from "react-icons/vsc";
 import { FcOk } from "react-icons/fc";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { handleError, searchWorkoutByUserId } from "../../../../services/workout.service";
+import { deleteWorkout, handleError, searchWorkoutByUserId } from "../../../../services/workout.service";
 
 type WorkoutListModalProps = {
   show: boolean;
@@ -50,6 +50,12 @@ export function WorkoutListModal({
     }
   };
 
+  const handleDelete = (id: string) => {
+    deleteWorkout(id).then(() => {
+      fetchData();   
+    })
+  }
+
   const btnCancelClasses = classNames(
     "btn btn-outline-danger",
     styles.buttonsForm
@@ -66,7 +72,7 @@ export function WorkoutListModal({
           </div>
           <div className="card card-plain">
             <div className="table-responsive" style={{ maxHeight: 400 }}>
-              <Table workoutList={workoutList} />
+              <Table workoutList={workoutList} handleDelete={handleDelete} />
             </div>
           </div>
           <div className="modal-footer">
@@ -87,11 +93,11 @@ export function WorkoutListModal({
   );
 }
 
-function Table({ workoutList }: any) {
+function Table({ workoutList, handleDelete }: any) {
   return (
     <table className="table">
       {workoutList.length > 0 ? (
-        <WorkoutListTable workoutList={workoutList} />
+        <WorkoutListTable workoutList={workoutList} handleDelete={handleDelete} />
       ) : (
         <NoDataFound />
       )}
@@ -99,7 +105,7 @@ function Table({ workoutList }: any) {
   );
 }
 
-function WorkoutListTable({ workoutList }: any) {
+function WorkoutListTable({ workoutList, handleDelete }: any) {
   return (
     <tbody>
       {workoutList.map((data: any) => (
@@ -117,6 +123,9 @@ function WorkoutListTable({ workoutList }: any) {
                   <VscEdit size="14" />
                 </button>
               </Link>
+              <button type="button" className="btn btn-outline-danger ml-1" onClick={() => handleDelete(data.id)}>
+                <VscTrash size="14"/>
+              </button>
             </div>
           </td>
         </tr>

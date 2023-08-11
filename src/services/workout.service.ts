@@ -100,6 +100,17 @@ export async function deleteWorkoutOnCategory(id: string) {
   });
 }
 
+export async function deleteWorkout(id: string) {
+  await api.delete(`workout/${id}`).then( res => {
+    if(res.status){
+      emitSuccessToast('Treino removido!');
+    }
+  })
+  .catch(error => {
+    handleError(error);
+  });
+}
+
 export async function getWorkoutOnCategoryById(id: string) {   
   const result = await api.get<WorkoutOnCategory>(`workoutOnCategory/${id}`)
   return result.data;

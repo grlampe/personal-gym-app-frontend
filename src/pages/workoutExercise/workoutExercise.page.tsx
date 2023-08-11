@@ -198,7 +198,7 @@ const WorkoutOnExerciseList = ({ workoutOnExercise, openModalAssign, handleDelet
 const WorkoutOnExercise = ({ workoutOnExercise, handleDelete, handleInputChange }: any) => (
   <tbody>
     { workoutOnExercise.map((data: WorkoutOnExerciseList , index: number )=> (
-      <tr key={index}>
+      <tr key={index} style={{ color: !data.exercise?.active ? 'red' : 'none'}}>
         <td>{data.exercise?.name}</td>
         <td>
           <input
