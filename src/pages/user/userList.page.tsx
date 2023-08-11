@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { StripedTableComponent } from "../../components/stripedTable/stripedTable.component";
 import { TitlePageContext } from "../../contexts/titlePage.context";
-import { VscEdit } from 'react-icons/vsc';
+import { VscEdit, VscTrash } from 'react-icons/vsc';
 import { FcOk } from 'react-icons/fc';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { ButtonMenuContext } from "../../contexts/buttonMenu.context";
 import { Link } from "react-router-dom";
-import { searchUsers } from "../../services/user.service";
+import { deleteUser, searchUsers } from "../../services/user.service";
 import { ButtonMenuComponent } from "../../components/buttonMenu/buttonMenu.component";
 
 export type UsersList = {
@@ -47,6 +47,12 @@ export function UserListPage() {
     });
   };
 
+  const handleDelete = (id: string) => {
+    deleteUser(id).then(() => {
+      executeOnPageLoad();   
+    })
+  }
+
   return (
     <>
       <ButtonMenuComponent searchFilter={searchFilter} setSearchFilter={setSearchFilter}/>
@@ -72,12 +78,15 @@ export function UserListPage() {
                     <AiFillCloseCircle size="24" style={{color:'#FF3F3F'}}/>}
                 </td>
                 <td>
-                  <div className="btn-group" role="group" aria-label="Basic example">
+                  <div className="btn-group" role="group">
                     <Link to={'user/edit/:id'.replace(':id', data.id)}>
                       <button type="button" className="btn btn-outline-info">
                         <VscEdit size="14"/>
                       </button>
                     </Link>
+                    <button type="button" className="btn btn-outline-danger ml-1" onClick={() => handleDelete(data.id)}>
+                      <VscTrash size="14"/>
+                    </button>
                   </div>  
                 </td>
               </tr>

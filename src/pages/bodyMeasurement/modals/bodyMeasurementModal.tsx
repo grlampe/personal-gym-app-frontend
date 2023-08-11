@@ -1,9 +1,9 @@
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { ImCancelCircle } from "react-icons/im";
-import { VscEdit } from "react-icons/vsc";
+import { VscEdit, VscTrash } from "react-icons/vsc";
 import { Link } from "react-router-dom";
-import { searchBodyMeasurementByUserId } from "../../../services/bodyMeasurement.service";
+import { deleteBodyMeasurement, searchBodyMeasurementByUserId } from "../../../services/bodyMeasurement.service";
 import { handleError } from "../../../services/exercise.service";
 import { DateUtils } from "../../../utils/date";
 import styles from "./BodyMeasurementModal.module.scss";
@@ -35,9 +35,9 @@ export function BodyMeasurementModalComponent({
     }
   }, [show, bodyMeasurement]);
 
-  const fetchData = async () => {
+  const fetchData = () => {
     try {
-      await searchBodyMeasurementByUserId(
+      searchBodyMeasurementByUserId(
         userId,
         (data: BodyMeasurementList[]) => {
           setBodyMeasurement(data);
@@ -47,6 +47,12 @@ export function BodyMeasurementModalComponent({
       handleError(error);
     }
   };
+
+  const handleDelete = (id: string) => {
+    deleteBodyMeasurement(id).then(() => {
+      fetchData();
+    })
+  }
 
   const btnCancelClasses = classNames(
     "btn btn-outline-danger",
@@ -64,7 +70,7 @@ export function BodyMeasurementModalComponent({
           </div>
           <div className="card card-plain">
             <div className="table-responsive" style={{ maxHeight: 400 }}>
-              <Table bodyMeasurement={bodyMeasurement} />
+              <Table bodyMeasurement={bodyMeasurement} handleDelete={handleDelete}/>
             </div>
           </div>
           <div className="modal-footer">
@@ -85,11 +91,20 @@ export function BodyMeasurementModalComponent({
   );
 }
 
-function Table({ bodyMeasurement }: any) {
+function Table({ bodyMeasurement, handleDelete }: any) {
   return (
     <table className="table">
       {bodyMeasurement.length > 0 ? (
-        <BodyMeasurementListTable bodyMeasurement={bodyMeasurement} />
+        <>
+        <thead className="text-primary">
+          <tr>
+            <th>Descrição</th>
+            <th>Dt. Medição</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <BodyMeasurementListTable bodyMeasurement={bodyMeasurement} handleDelete={handleDelete}/>
+        </>
       ) : (
         <NoDataFound />
       )}
@@ -97,7 +112,7 @@ function Table({ bodyMeasurement }: any) {
   );
 }
 
-function BodyMeasurementListTable({ bodyMeasurement }: any) {
+function BodyMeasurementListTable({ bodyMeasurement, handleDelete }: any) {
   return (
     <tbody>
       {bodyMeasurement.map((data: any) => (
@@ -111,6 +126,9 @@ function BodyMeasurementListTable({ bodyMeasurement }: any) {
                   <VscEdit size="14" />
                 </button>
               </Link>
+              <button type="button" className="btn btn-outline-danger ml-1" onClick={() => handleDelete(data.id)}>
+                <VscTrash size="14"/>
+              </button>
             </div>
           </td>
         </tr>

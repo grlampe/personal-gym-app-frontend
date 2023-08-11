@@ -92,7 +92,7 @@ export function UserEditPage() {
     }),
     cpf: Yup.string().required('CPF é necessário!').min(14, 'CPF Inválido!').max(14, 'CPF Inválido!'),
     birthDate: Yup.string().required('Data Nascimento é necessária!'),
-    addressZipCode: Yup.string().required('CEP é necessário!'),
+    addressZipCode: Yup.string().required('CEP é necessário!').min(10, 'CEP Inválido!').max(10, 'CEP Inválido!'),
     addressStreet: Yup.string().required('Logradouro é necessário!'),
     addressNumber: Yup.string().required('Número é necessário!'),
     addressDistrict: Yup.string().required('Bairro é necessário!'),
@@ -100,15 +100,15 @@ export function UserEditPage() {
     addressState: Yup.string().required('Estado é necessária!'),
   });
 
-  const handleSubmit = async (values: UserForm, actions: any) => {
+  const handleSubmit = (values: UserForm, actions: any) => {
     if (!userSchema.isValid(values)) {
       emitWarnToast('Preencha os dados corretamente!');
       return;
     }
     if(id){
-      await updateUser(values);
+      updateUser(values);
     } else {
-      await saveUser(values);
+      saveUser(values);
     }
     history.push('/user');
     actions.setSubmitting(true);
@@ -205,7 +205,7 @@ export function UserEditPage() {
                 className={`form-control form-control-sm ${errors.addressZipCode && touched.addressZipCode ? styles.errorField : ''}`}
                 name="addressZipCode"
                 value={values.addressZipCode}
-                mask="99999-999"
+                mask="99.999-999"
                 maskChar=""
                 onChange={(e) => {
                   const value = e.target.value;

@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { StripedTableComponent } from "../../components/stripedTable/stripedTable.component";
 import { TitlePageContext } from "../../contexts/titlePage.context";
-import { VscEdit } from 'react-icons/vsc';
+import { VscEdit, VscTrash } from 'react-icons/vsc';
 import { FcOk } from 'react-icons/fc';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { ButtonMenuContext } from "../../contexts/buttonMenu.context";
 import { Link } from "react-router-dom";
-import { searchCategoryExercise } from "../../services/categoryExercise.service";
+import { deleteCategoryExercise, searchCategoryExercise } from "../../services/categoryExercise.service";
 import { ButtonMenuComponent } from "../../components/buttonMenu/buttonMenu.component";
 
 export type CategoryExerciseList = {
@@ -46,6 +46,12 @@ export function CategoryExerciseListPage() {
     });
   };
 
+  const handleDelete = (id: string) => {
+    deleteCategoryExercise(id).then(() => {
+      executeOnPageLoad();   
+    })
+  }
+
   return (
     <>
       <ButtonMenuComponent searchFilter={searchFilter} setSearchFilter={setSearchFilter}/>
@@ -75,6 +81,9 @@ export function CategoryExerciseListPage() {
                         <VscEdit size="14"/>
                       </button>
                     </Link>
+                    <button type="button" className="btn btn-outline-danger ml-1" onClick={() => handleDelete(data.id)}>
+                      <VscTrash size="14"/>
+                    </button>
                   </div>  
                 </td>
               </tr>

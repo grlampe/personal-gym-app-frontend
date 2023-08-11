@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { StripedTableComponent } from "../../components/stripedTable/stripedTable.component";
 import { TitlePageContext } from "../../contexts/titlePage.context";
-import { VscEdit } from "react-icons/vsc";
+import { VscEdit, VscTrash } from "react-icons/vsc";
 import { ButtonMenuContext } from "../../contexts/buttonMenu.context";
 import { Link } from "react-router-dom";
-import { searchReceivingBills } from "../../services/receivingBills.service";
+import { deleteReceivingBillsById, searchReceivingBills } from "../../services/receivingBills.service";
 import { DateUtils } from "../../utils/date";
 import { ButtonMenuComponent } from "../../components/buttonMenu/buttonMenu.component";
 
@@ -52,6 +52,12 @@ export function ReceivingBillsListPage() {
     });
   };
 
+  const handleDelete = (id: string) => {
+    deleteReceivingBillsById(id).then(() => {
+      executeOnPageLoad()
+    })
+  }
+
   return (
     <>
       <ButtonMenuComponent searchFilter={searchFilter} setSearchFilter={setSearchFilter}/>
@@ -63,6 +69,7 @@ export function ReceivingBillsListPage() {
             <th>Valor</th>
             <th>Dt. Vencimento</th>
             <th>Dt. Pagamento</th>
+            <th>Ação</th>
           </tr>
         </thead>
         {receivingBills.length > 0 ? (
@@ -88,6 +95,9 @@ export function ReceivingBillsListPage() {
                           <VscEdit size="14" />
                         </button>
                       </Link>
+                      <button type="button" className="btn btn-outline-danger ml-1" onClick={() => handleDelete(data.id)}>
+                      <VscTrash size="14"/>
+                    </button>
                     </div>
                   </td>
                 </tr>

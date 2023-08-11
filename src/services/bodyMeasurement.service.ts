@@ -7,7 +7,6 @@ import { api } from "./api.service";
 
 
 function handleError(error: any){
-  console.error(error);
   if(error.response.data.message){
     emitErrorToast(error.response.data.message);
   } else {
@@ -55,6 +54,17 @@ export async function updateBodyMeasurement(data: BodyMeasurementForm){
   await api.put('bodyMeasurement', data).then( res => {
     if(res.status){
       emitSuccessToast('Medida atualizada!');
+    }
+  })
+  .catch(error => {
+    handleError(error);
+  });
+}
+
+export async function deleteBodyMeasurement(bodyMeasurementId: string){
+  api.delete(`bodyMeasurement/${bodyMeasurementId}`).then(res => {
+    if(res.status){
+      emitSuccessToast('Medida excluída!');
     }
   })
   .catch(error => {

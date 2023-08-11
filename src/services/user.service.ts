@@ -44,3 +44,14 @@ export async function saveUser(data: UserForm){
     handleError(error);
   });
 }
+
+export async function deleteUser(userId: string){
+  await api.delete(`user/${userId}`).then(res => {
+    if(res.status){
+      emitSuccessToast('Usuário excluído!');
+    }
+  })
+  .catch(error => {
+    handleError(error);
+  });
+}

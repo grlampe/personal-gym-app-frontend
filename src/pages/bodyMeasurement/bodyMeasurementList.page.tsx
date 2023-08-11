@@ -56,8 +56,7 @@ export function BodyMeasurementListPage() {
   return (
     <>
       <ButtonMenuComponent searchFilter={searchFilter} setSearchFilter={setSearchFilter}/>
-      <BodyMeasurementModalComponent show={show} userId={userId} handleClose={handleClose} />
-
+      <BodyMeasurementModalComponent show={show} userId={userId} handleClose={handleClose}/>
       <StripedTableComponent>
         <thead className="text-primary">
           <tr>

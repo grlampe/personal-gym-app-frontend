@@ -69,3 +69,14 @@ export async function saveExercise(data: ExerciseForm){
     handleError(error);
   });
 }
+
+export async function deleteExercise(exerciseId: string){
+  await api.delete(`exercise/${exerciseId}`).then(res => {
+    if(res.status){
+      emitSuccessToast('Exercício excluído!');
+    }
+  })
+  .catch(error => {
+    handleError(error);
+  });
+}

@@ -61,7 +61,7 @@ export function ReceivingBillsEditPage() {
 
   const setReceivingBillsData = async () => {
     searchUsers().then((data) => {
-      setUserList(data);
+      setUserList(data.filter(user => user.active === true));
     });
 
     if (id) {

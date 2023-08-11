@@ -47,3 +47,14 @@ export async function saveCategoryExercise(data: CategoryExerciseForm){
     handleError(error);
   });
 }
+
+export async function deleteCategoryExercise(categoryExerciseId: string){
+  await api.delete(`categoryExercise/${categoryExerciseId}`).then(res => {
+    if(res.status){
+      emitSuccessToast('Categoria de Exercício excluído!');
+    }
+  })
+  .catch(error => {
+    handleError(error);
+  });
+}
