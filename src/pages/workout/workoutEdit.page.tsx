@@ -11,6 +11,8 @@ import { deleteWorkoutOnCategory, saveWorkout, searchWorkoutById, searchWorkoutO
 import { SwitchCheckboxComponent } from "../../components/switchCheckbox/switchCheckbox.component";
 import { VscEdit, VscPersonAdd, VscRemove } from "react-icons/vsc";
 import { WorkoutVinculateModalComponent } from "./modals/workoutVinculate/workoutVinculateModal";
+import { FcOk } from "react-icons/fc";
+import { AiFillCloseCircle } from "react-icons/ai";
 
 interface WorkoutEditParams {
   id: string,
@@ -58,7 +60,7 @@ export function WorkoutEditPage() {
 
   const fetchWorkoutData = async () => {
     const users = await searchUsers()
-    setUserList(users);
+    setUserList(users.filter(user => user.active === true));
 
     if (id) {
       const workout = await searchWorkoutById(id);
@@ -209,7 +211,8 @@ export function WorkoutEditPage() {
                   <thead className="text-primary">
                     <tr>
                       <th>Categorias de Treino</th>
-                      <th></th>
+                      <th>Ativo</th>
+                      <th>Ação</th>
                     </tr>
                   </thead>
                   {workoutOnCategory.length > 0 ?
@@ -233,6 +236,11 @@ const ExerciseCategory = ({ workoutOnCategory, handleDelete }: any) => (
     { workoutOnCategory.map((data: any) => (
       <tr key={data.id}>
         <td>{data.description}</td>
+        <td>
+          {data.active? 
+            <FcOk size="24" /> : 
+            <AiFillCloseCircle size="24" style={{color:'#FF3F3F'}}/>}
+        </td>
         <td>
           <div className="btn-group p-1" role="group">
             <Link to={'/workout/edit/:workoutId/workoutExercise/edit/:id'.replace(':workoutId', data.workoutId).replace(':id', data.id)}> 

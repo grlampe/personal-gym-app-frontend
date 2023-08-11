@@ -17,6 +17,7 @@ interface PreWorkoutExerciseModalComponentProps {
 export type ExerciseList = {
   id: string;
   name: string;
+  active: boolean;
   toAdd?: boolean;
 }
 
@@ -38,7 +39,7 @@ export function WorkoutAddExerciseModalComponent({
   const fetchData = async () => {
     try {
       await searchExercise((data:  ExerciseList[]) => {
-        const resp = data.map(item => ({...item, toAdd: false}))
+        const resp = data.filter(item => item.active === true).map(item => ({...item, toAdd: false}))
         const result = resp.filter(a => !workoutOnExercise.some(b => b.exerciseId === a.id));
         
         setExerciseList(result);

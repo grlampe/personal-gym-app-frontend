@@ -51,7 +51,7 @@ export function ExerciseEditPage() {
     const data = await getExerciseById(exerciseId);
     setInitialValues({...data});
     const exerciseOnCategory = await getExerciseOnCategoryExerciseByExerciseId(exerciseId)
-    setExerciseOnCategoryExercise(exerciseOnCategory);
+    setExerciseOnCategoryExercise(exerciseOnCategory.filter(exercise => exercise.categoryExercise.active === true));
   }
 
   const handleDelete = async (ExerciseOnCategoryExerciseId: string) => {

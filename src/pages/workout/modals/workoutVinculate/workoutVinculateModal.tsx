@@ -18,6 +18,7 @@ interface WorkoutVinculateModalComponentProps {
 export type PreWorkoutList = {
   id: string;
   description: string;
+  active: boolean;
   toAdd?: boolean;
 }
 
@@ -39,7 +40,7 @@ export function WorkoutVinculateModalComponent({
   const fetchData = async () => {
     try {
       await searchPreWorkout((data:  PreWorkoutList[]) => {
-        const resp = data.map(item => ({...item, toAdd: false}))
+        const resp = data.filter(preWorkout => preWorkout.active === true).map(item => ({...item, toAdd: false}))
         const result = resp.filter(a => !workoutOnCategory.some(b => b.description === a.description));
         
         setPreWorkoutList(result);

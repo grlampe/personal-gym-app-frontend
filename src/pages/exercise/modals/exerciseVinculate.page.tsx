@@ -18,6 +18,7 @@ interface ExerciseVinculateModalComponentProps {
 export type CategoryExerciseList = {
   id: string;
   name: string;
+  active: boolean;
   toAdd?: boolean;
 }
 
@@ -39,7 +40,7 @@ export function ExerciseVinculateModalComponent({
   const fetchData = async () => {
     try {
       await searchCategoryExercise((data:  CategoryExerciseList[]) => {
-        const resp = data.map(item => ({...item, toAdd: false}))
+        const resp = data.filter(category => category.active === true).map(item => ({...item, toAdd: false}))
         const result = resp.filter(category => !exerciseOnCategoryExercise.some(exercise => exercise.categoryExerciseId === category.id));
         
         setCategoryExercise(result);
