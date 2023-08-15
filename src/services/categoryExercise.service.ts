@@ -1,24 +1,12 @@
 import { CategoryExerciseForm } from "../pages/categoryExercise/categoryExerciseEdit.page";
 import { CategoryExerciseList } from "../pages/categoryExercise/categoryExerciseList.page";
-import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
+import { emitSuccessToast } from "../utils/toast.utils";
 import { api } from "./api.service";
-
-
-function handleError(error: any){
-  if(error.response.data.message){
-    emitErrorToast(error.response.data.message);
-  } else {
-    emitErrorToast(error.message);
-  }
-}
 
 export async function searchCategoryExercise(funcToExc: (data:CategoryExerciseList[])=>void): Promise<void> {   
   await api.get<CategoryExerciseList[]>('categoryExercise').then((res)=>{
     funcToExc(res.data);
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function getCategoryExerciseById(id: string) {
@@ -32,9 +20,6 @@ export async function updateCategoryExercise(data: CategoryExerciseForm){
       emitSuccessToast('Categoria de Exercício atualizada!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function saveCategoryExercise(data: CategoryExerciseForm){
@@ -43,9 +28,6 @@ export async function saveCategoryExercise(data: CategoryExerciseForm){
       emitSuccessToast('Categoria de Exercício  adicionada!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function deleteCategoryExercise(categoryExerciseId: string){
@@ -54,7 +36,4 @@ export async function deleteCategoryExercise(categoryExerciseId: string){
       emitSuccessToast('Categoria de Exercício excluído!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }

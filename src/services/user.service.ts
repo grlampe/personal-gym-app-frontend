@@ -1,15 +1,7 @@
 import { UserForm } from "../pages/user/userEdit.page";
 import { UsersList } from "../pages/user/userList.page";
-import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
+import { emitSuccessToast } from "../utils/toast.utils";
 import { api } from "./api.service";
-
-function handleError(error: any){
-  if(error.response.data.message){
-    emitErrorToast(error.response.data.message);
-  } else {
-    emitErrorToast(error.message);
-  }
-}
 
 export async function searchUsers() {   
   const result = await api.get<UsersList[]>('user')
@@ -28,9 +20,6 @@ export async function updateUser(data: UserForm){
       emitSuccessToast('Usuário atualizado!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function saveUser(data: UserForm){
@@ -40,9 +29,6 @@ export async function saveUser(data: UserForm){
       emitSuccessToast('Usuário adicionado!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function deleteUser(userId: string){
@@ -51,7 +37,4 @@ export async function deleteUser(userId: string){
       emitSuccessToast('Usuário excluído!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }

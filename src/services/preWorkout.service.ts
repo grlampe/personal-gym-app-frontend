@@ -1,23 +1,12 @@
 import { PreWorkoutForm, PreWorkoutOnExerciseList } from "../pages/preWorkout/preWorkoutEdit.page";
 import { PreWorkoutList } from "../pages/preWorkout/preWorkoutList.page";
-import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
+import { emitSuccessToast } from "../utils/toast.utils";
 import { api } from "./api.service";
-
-export function handleError(error: any){
-  if(error.response.data.message){
-    emitErrorToast(error.response.data.message);
-  } else {
-    emitErrorToast(error.message);
-  }
-}
 
 export async function searchPreWorkout(funcToExc: (data: PreWorkoutList[])=>void): Promise<void> {   
   await api.get<PreWorkoutList[]>('preWorkout').then((res)=>{
     funcToExc(res.data);
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function getPreWorkoutById(id: string) {
@@ -31,9 +20,6 @@ export async function updatePreWorkout(data: PreWorkoutForm){
       emitSuccessToast('Pré-treino atualizado!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function updatePreWorkoutOnExercise(data: PreWorkoutOnExerciseList[]){ 
@@ -41,9 +27,7 @@ export async function updatePreWorkoutOnExercise(data: PreWorkoutOnExerciseList[
     delete item.exercise;
   });
   
-  await api.put('preWorkoutOnExercise', data).catch(error => {
-    handleError(error);
-  });
+  await api.put('preWorkoutOnExercise', data)
 }
 
 export async function savePreWorkout(data: PreWorkoutForm){
@@ -52,9 +36,6 @@ export async function savePreWorkout(data: PreWorkoutForm){
       emitSuccessToast('Pré-treino adicionado!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function savePreWorkoutOnExercise(data: PreWorkoutOnExerciseList) {
@@ -63,9 +44,6 @@ export async function savePreWorkoutOnExercise(data: PreWorkoutOnExerciseList) {
       emitSuccessToast('Exercício vinculado!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function getPreWorkoutOnExerciseByPreWorkoutId(preWorkoutId: string) {
@@ -79,9 +57,6 @@ export async function deletePreWorkoutOnExerciseById(id: string) {
       emitSuccessToast('Exercício desvinculado!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 export async function deletePreWorkout(id: string) {
   await api.delete(`preWorkout/${id}`).then( res => {
@@ -89,7 +64,4 @@ export async function deletePreWorkout(id: string) {
       emitSuccessToast('Pré-treino removido!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { VscEdit, VscTrash } from "react-icons/vsc";
 import { FcOk } from "react-icons/fc";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { deleteWorkout, handleError, searchWorkoutByUserId } from "../../../../services/workout.service";
+import { deleteWorkout, searchWorkoutByUserId } from "../../../../services/workout.service";
 
 type WorkoutListModalProps = {
   show: boolean;
@@ -38,16 +38,12 @@ export function WorkoutListModal({
   }, [show, workoutList]);
 
   const fetchData = async () => {
-    try {
-      await searchWorkoutByUserId(
-        userId,
-        (data: WorkoutList[]) => {
-          setWorkoutList(data);
-        }
-      );
-    } catch (error) {
-      handleError(error);
-    }
+    await searchWorkoutByUserId(
+      userId,
+      (data: WorkoutList[]) => {
+        setWorkoutList(data);
+      }
+    );
   };
 
   const handleDelete = (id: string) => {

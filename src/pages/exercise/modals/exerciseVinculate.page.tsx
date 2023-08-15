@@ -5,7 +5,7 @@ import { ImCancelCircle } from 'react-icons/im';
 import classNames from 'classnames';
 import { emitSuccessToast } from '../../../utils/toast.utils';
 import { searchCategoryExercise } from '../../../services/categoryExercise.service';
-import { handleError, saveExerciseOnCategoryExercise } from '../../../services/exercise.service';
+import { saveExerciseOnCategoryExercise } from '../../../services/exercise.service';
 import { ExerciseOnCategoryExerciseList } from '../exerciseEdit.page';
 
 interface ExerciseVinculateModalComponentProps {
@@ -38,16 +38,12 @@ export function ExerciseVinculateModalComponent({
   }, [show, exerciseOnCategoryExercise]);
 
   const fetchData = async () => {
-    try {
-      await searchCategoryExercise((data:  CategoryExerciseList[]) => {
-        const resp = data.filter(category => category.active === true).map(item => ({...item, toAdd: false}))
-        const result = resp.filter(category => !exerciseOnCategoryExercise.some(exercise => exercise.categoryExerciseId === category.id));
-        
-        setCategoryExercise(result);
-      });
-    } catch (error) {
-      handleError(error);
-    }
+    await searchCategoryExercise((data:  CategoryExerciseList[]) => {
+      const resp = data.filter(category => category.active === true).map(item => ({...item, toAdd: false}))
+      const result = resp.filter(category => !exerciseOnCategoryExercise.some(exercise => exercise.categoryExerciseId === category.id));
+      
+      setCategoryExercise(result);
+    });
   };
 
   const handleCheckbox = (toAdd: boolean, id: string) => {
@@ -55,17 +51,13 @@ export function ExerciseVinculateModalComponent({
   };
 
   const handleSave = async () => {
-    try {
-      await Promise.all(
-        categoryExercise
-          .filter(category => category.toAdd)
-          .map(category => saveExerciseOnCategoryExercise({ exerciseId, categoryExerciseId: category.id }))
-      );
-      handleClose();
-      emitSuccessToast('Categorias Vinculadas com sucesso!');
-    } catch (error) {
-      handleError(error);
-    }
+    await Promise.all(
+      categoryExercise
+        .filter(category => category.toAdd)
+        .map(category => saveExerciseOnCategoryExercise({ exerciseId, categoryExerciseId: category.id }))
+    );
+    handleClose();
+    emitSuccessToast('Categorias Vinculadas com sucesso!');
   }
 
   const btnSaveClasses = classNames("btn btn-outline-success", styles.buttonsForm);

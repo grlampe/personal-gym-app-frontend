@@ -1,24 +1,12 @@
 import { ExerciseForm, ExerciseOnCategoryExerciseList } from "../pages/exercise/exerciseEdit.page";
 import { ExerciseList } from "../pages/exercise/exerciseList.page";
-import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
+import { emitSuccessToast } from "../utils/toast.utils";
 import { api } from "./api.service";
-
-
-export function handleError(error: any){
-  if(error.response.data.message){
-    emitErrorToast(error.response.data.message);
-  } else {
-    emitErrorToast(error.message);
-  }
-}
 
 export async function searchExercise(funcToExc: (data:ExerciseList[])=>void): Promise<void> {   
   await api.get<ExerciseList[]>('exercise').then((res)=>{
     funcToExc(res.data);
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function getExerciseById(id: string) {
@@ -37,15 +25,10 @@ export async function deleteExerciseOnCategoryExerciseById(id: string) {
       emitSuccessToast('Categoria de Exercício desnviculada!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function saveExerciseOnCategoryExercise(data: any){
-  await api.post('exerciseOnCategoryExercise', data).catch(error => {
-    handleError(error);
-  });
+  await api.post('exerciseOnCategoryExercise', data)
 }
 
 export async function updateExercise(data: ExerciseForm){ 
@@ -54,9 +37,6 @@ export async function updateExercise(data: ExerciseForm){
       emitSuccessToast('Categoria de Exercício atualizada!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function saveExercise(data: ExerciseForm){
@@ -65,9 +45,6 @@ export async function saveExercise(data: ExerciseForm){
       emitSuccessToast('Categoria de Exercício  adicionada!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function deleteExercise(exerciseId: string){
@@ -76,7 +53,4 @@ export async function deleteExercise(exerciseId: string){
       emitSuccessToast('Exercício excluído!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }

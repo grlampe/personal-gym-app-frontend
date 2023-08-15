@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { VscSave } from 'react-icons/vsc';
 import { ImCancelCircle } from 'react-icons/im';
-import { handleError, saveWorkoutOnCategory, saveWorkoutOnExercise } from '../../../../services/workout.service';
+import { saveWorkoutOnCategory, saveWorkoutOnExercise } from '../../../../services/workout.service';
 import { getPreWorkoutOnExerciseByPreWorkoutId, searchPreWorkout } from '../../../../services/preWorkout.service';
 import { WorkoutOnCategory } from '../../workoutEdit.page';
 import { v4 as uuidv4 } from 'uuid';
@@ -38,16 +38,12 @@ export function WorkoutVinculateModalComponent({
   }, [show, workoutOnCategory]);
 
   const fetchData = async () => {
-    try {
-      await searchPreWorkout((data:  PreWorkoutList[]) => {
-        const resp = data.filter(preWorkout => preWorkout.active === true).map(item => ({...item, toAdd: false}))
-        const result = resp.filter(a => !workoutOnCategory.some(b => b.description === a.description));
-        
-        setPreWorkoutList(result);
-      });
-    } catch (error) {
-      handleError(error);
-    }
+    await searchPreWorkout((data:  PreWorkoutList[]) => {
+      const resp = data.filter(preWorkout => preWorkout.active === true).map(item => ({...item, toAdd: false}))
+      const result = resp.filter(a => !workoutOnCategory.some(b => b.description === a.description));
+      
+      setPreWorkoutList(result);
+    });
   };
 
   const handleCheckbox = (toAdd: boolean, id: string) => {
@@ -55,38 +51,34 @@ export function WorkoutVinculateModalComponent({
   };
 
   const handleSave = async () => {
-    try {
-      preWorkoutList
-      .filter(preWorkout => preWorkout.toAdd)
-      .map(async preWorkout => {
-        const workoutCategoryId = uuidv4()
-        saveWorkoutOnCategory({
-          id: workoutCategoryId,
-          workoutId, 
-          description: preWorkout.description
-        })
-
-        const preWorkoutOnExercise = await getPreWorkoutOnExerciseByPreWorkoutId(preWorkout.id)
-
-        if (preWorkoutOnExercise) {
-          preWorkoutOnExercise.map(preWorkoutExercise => 
-            saveWorkoutOnExercise({
-              workoutOnCategoryId: workoutCategoryId,
-              exerciseId : preWorkoutExercise.exerciseId,
-              order : preWorkoutExercise.order,
-              restTime : preWorkoutExercise.restTime,
-              series : preWorkoutExercise.series,
-              repetitions : preWorkoutExercise.repetitions,
-              weight : preWorkoutExercise.weight,
-              observation : preWorkoutExercise.observation
-            })
-          )
-        }
+    preWorkoutList
+    .filter(preWorkout => preWorkout.toAdd)
+    .map(async preWorkout => {
+      const workoutCategoryId = uuidv4()
+      saveWorkoutOnCategory({
+        id: workoutCategoryId,
+        workoutId, 
+        description: preWorkout.description
       })
-      handleClose();
-    } catch (error) {
-      handleError(error);
-    }
+
+      const preWorkoutOnExercise = await getPreWorkoutOnExerciseByPreWorkoutId(preWorkout.id)
+
+      if (preWorkoutOnExercise) {
+        preWorkoutOnExercise.map(preWorkoutExercise => 
+          saveWorkoutOnExercise({
+            workoutOnCategoryId: workoutCategoryId,
+            exerciseId : preWorkoutExercise.exerciseId,
+            order : preWorkoutExercise.order,
+            restTime : preWorkoutExercise.restTime,
+            series : preWorkoutExercise.series,
+            repetitions : preWorkoutExercise.repetitions,
+            weight : preWorkoutExercise.weight,
+            observation : preWorkoutExercise.observation
+          })
+        )
+      }
+    })
+    handleClose();
   }
 
   const btnSaveClasses = classNames("btn btn-outline-success", styles.buttonsForm);

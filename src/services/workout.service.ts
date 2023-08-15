@@ -2,25 +2,13 @@ import { WorkoutList } from "../pages/workout/modals/workoutList/workoutListModa
 import { WorkoutForm, WorkoutOnCategory } from "../pages/workout/workoutEdit.page";
 import { WorkoutUsersList } from "../pages/workout/workoutList.page";
 import { WorkoutOnExerciseList } from "../pages/workoutExercise/workoutExercise.page";
-import { emitErrorToast, emitSuccessToast } from "../utils/toast.utils";
+import { emitSuccessToast } from "../utils/toast.utils";
 import { api } from "./api.service";
-
-export function handleError(error: any){
-  console.error(error);
-  if(error.response.data.message){
-    emitErrorToast(error.response.data.message);
-  } else {
-    emitErrorToast(error.message);
-  }
-}
 
 export async function searchUsersWorkout(funcToExc: (data: WorkoutUsersList[]) => void): Promise<void> {   
   await api.get<WorkoutUsersList[]>('workout/user').then((res)=>{
     funcToExc(res.data);
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function searchWorkoutById(id: string) {   
@@ -32,9 +20,6 @@ export async function searchWorkoutByUserId(id: string, funcToExc: (data: Workou
   await api.get<WorkoutList[]>(`workout/user/${id}`).then((res)=>{
     funcToExc(res.data);
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 
@@ -45,9 +30,6 @@ export async function updateWorkout(data: WorkoutForm){
       emitSuccessToast('Treino atualizado!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function saveWorkout(data: WorkoutForm){
@@ -57,9 +39,6 @@ export async function saveWorkout(data: WorkoutForm){
       emitSuccessToast('Treino adicionado!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function searchWorkoutOnCategoryByWorkoutId(id: string) {   
@@ -73,9 +52,6 @@ export async function saveWorkoutOnCategory(data: any){
       emitSuccessToast('Categoria de Treino adicionada!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function updateWorkoutOnCategory(data: any){
@@ -84,9 +60,6 @@ export async function updateWorkoutOnCategory(data: any){
       emitSuccessToast('Categoria de Treino atualizada!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function deleteWorkoutOnCategory(id: string) {
@@ -95,9 +68,6 @@ export async function deleteWorkoutOnCategory(id: string) {
       emitSuccessToast('Categoria de Treino desnviculada!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function deleteWorkout(id: string) {
@@ -106,9 +76,6 @@ export async function deleteWorkout(id: string) {
       emitSuccessToast('Treino removido!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function getWorkoutOnCategoryById(id: string) {   
@@ -118,9 +85,6 @@ export async function getWorkoutOnCategoryById(id: string) {
 
 export async function saveWorkoutOnExercise(data: WorkoutOnExerciseList) {
   await api.post('workoutOnExercise', data)
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function updateWorkoutOnExercise(data: WorkoutOnExerciseList[]){ 
@@ -128,9 +92,7 @@ export async function updateWorkoutOnExercise(data: WorkoutOnExerciseList[]){
     delete item.exercise;
   });
   
-  await api.put('workoutOnExercise', data).catch(error => {
-    handleError(error);
-  });
+  await api.put('workoutOnExercise', data)
 }
 
 export async function deleteWorkoutOnExerciseById(id: string) {
@@ -139,9 +101,6 @@ export async function deleteWorkoutOnExerciseById(id: string) {
       emitSuccessToast('Exercício desvinculado!');
     }
   })
-  .catch(error => {
-    handleError(error);
-  });
 }
 
 export async function getWorkoutOnExerciseByWorkoutCategoryId(workoutCategoryId: string) {

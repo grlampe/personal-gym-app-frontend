@@ -4,7 +4,6 @@ import { ImCancelCircle } from "react-icons/im";
 import { VscEdit, VscTrash } from "react-icons/vsc";
 import { Link } from "react-router-dom";
 import { deleteBodyMeasurement, searchBodyMeasurementByUserId } from "../../../services/bodyMeasurement.service";
-import { handleError } from "../../../services/exercise.service";
 import { DateUtils } from "../../../utils/date";
 import styles from "./BodyMeasurementModal.module.scss";
 
@@ -36,16 +35,12 @@ export function BodyMeasurementModalComponent({
   }, [show, bodyMeasurement]);
 
   const fetchData = () => {
-    try {
-      searchBodyMeasurementByUserId(
-        userId,
-        (data: BodyMeasurementList[]) => {
-          setBodyMeasurement(data);
-        }
-      );
-    } catch (error) {
-      handleError(error);
-    }
+    searchBodyMeasurementByUserId(
+      userId,
+      (data: BodyMeasurementList[]) => {
+        setBodyMeasurement(data);
+      }
+    );
   };
 
   const handleDelete = (id: string) => {

@@ -1,7 +1,7 @@
 import styles from './workoutAddExercise.module.scss';
 import { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { handleError, searchExercise } from '../../../services/exercise.service';
+import { searchExercise } from '../../../services/exercise.service';
 import { VscSave } from 'react-icons/vsc';
 import { ImCancelCircle } from 'react-icons/im';
 import { WorkoutOnExerciseList } from '../workoutExercise.page';
@@ -44,16 +44,12 @@ export function WorkoutAddExerciseModalComponent({
   }, [show, workoutOnExercise]);
 
   const fetchData = async () => {
-    try {
-      await searchExercise((data:  ExerciseList[]) => {
-        const resp = data.filter(item => item.active === true).map(item => ({...item, toAdd: false}))
-        const result = resp.filter(a => !workoutOnExercise.some(b => b.exerciseId === a.id));
-        
-        setExerciseList(result);
-      });
-    } catch (error) {
-      handleError(error);
-    }
+    await searchExercise((data:  ExerciseList[]) => {
+      const resp = data.filter(item => item.active === true).map(item => ({...item, toAdd: false}))
+      const result = resp.filter(a => !workoutOnExercise.some(b => b.exerciseId === a.id));
+      
+      setExerciseList(result);
+    });
   };
 
   const fetchDataCategory = () => {
@@ -71,25 +67,21 @@ export function WorkoutAddExerciseModalComponent({
   const handleSave = async () => {
     let countOrder = workoutOnExercise.length + 1;
 
-    try {
-      await Promise.all(
-        exerciseList
-          .filter(exercise => exercise.toAdd)
-          .map(exercise => saveWorkoutOnExercise({
-            workoutOnCategoryId, 
-            exerciseId: exercise.id,
-            order: countOrder++,
-            restTime: '0',
-            series: 0,
-            repetitions: '0',
-            weight: 0,
-            observation: ''
-          }))
-      );
-      handleClose();
-    } catch (error) {
-      handleError(error);
-    }
+    await Promise.all(
+      exerciseList
+        .filter(exercise => exercise.toAdd)
+        .map(exercise => saveWorkoutOnExercise({
+          workoutOnCategoryId, 
+          exerciseId: exercise.id,
+          order: countOrder++,
+          restTime: '0',
+          series: 0,
+          repetitions: '0',
+          weight: 0,
+          observation: ''
+        }))
+    );
+    handleClose();
   }
 
   const onChangeFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
