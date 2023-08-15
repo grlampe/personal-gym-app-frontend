@@ -6,6 +6,9 @@ import { VscSave } from 'react-icons/vsc';
 import { ImCancelCircle } from 'react-icons/im';
 import { WorkoutOnExerciseList } from '../workoutExercise.page';
 import { saveWorkoutOnExercise } from '../../../services/workout.service';
+import { ExerciseOnCategoryExerciseList } from '../../exercise/exerciseEdit.page';
+import { searchCategoryExercise } from '../../../services/categoryExercise.service';
+import { CategoryExerciseList } from '../../categoryExercise/categoryExerciseList.page';
 
 interface PreWorkoutExerciseModalComponentProps {
   show: boolean;
@@ -14,10 +17,11 @@ interface PreWorkoutExerciseModalComponentProps {
   workoutOnExercise: WorkoutOnExerciseList[]
 }
 
-export type ExerciseList = {
+type ExerciseList = {
   id: string;
   name: string;
-  active: boolean;
+  active: boolean
+  ExerciseOnCategoryExercise?: ExerciseOnCategoryExerciseList[];
   toAdd?: boolean;
 }
 
@@ -29,10 +33,13 @@ export function WorkoutAddExerciseModalComponent({
 }: PreWorkoutExerciseModalComponentProps) {
   
   const [exerciseList, setExerciseList] = useState<ExerciseList[]>([]);
+  const [filteredCategoryId, setFilteredCategoryId] = useState("");
+  const [categoryExerciseList, setCategoryExerciseList] = useState<CategoryExerciseList[]>([]);
 
   useEffect(() => {
     if(show) {
       fetchData();
+      fetchDataCategory();
     }
   }, [show, workoutOnExercise]);
 
@@ -48,6 +55,14 @@ export function WorkoutAddExerciseModalComponent({
       handleError(error);
     }
   };
+
+  const fetchDataCategory = () => {
+    searchCategoryExercise((data: CategoryExerciseList[]) => {
+      const result = data.filter(item => item.active === true);
+
+      setCategoryExerciseList(result)
+    })
+  }
 
   const handleCheckbox = (toAdd: boolean, id: string) => {
     setExerciseList(prev => prev.map(exercise => exercise.id === id ? { ...exercise, toAdd } : exercise));
@@ -77,6 +92,11 @@ export function WorkoutAddExerciseModalComponent({
     }
   }
 
+  const onChangeFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const categoryId = event.target.value;
+    setFilteredCategoryId(categoryId);
+  };
+
   const btnSaveClasses = classNames("btn btn-outline-success", styles.buttonsForm);
   const btnCancelClasses = classNames("btn btn-outline-danger", styles.buttonsForm);
   const sliderClasses = classNames(styles.slider, styles.round);
@@ -89,11 +109,17 @@ export function WorkoutAddExerciseModalComponent({
         <div className="modal-dialog modal-dialog-centered-m">
           <div className="modal-content">
             <div className="modal-header" style={{ maxHeight: 60 }}>
-              <h5 className="text-primary">Categoria de Exercício</h5>
+              <h5 className="text-primary">Exercícios</h5>
             </div>
             <div className="card card-plain">
               <div className="table-responsive" style={{ maxHeight: 400 }}>
-                <Table exerciseList={exerciseList} handleCheckbox={handleCheckbox} sliderClasses={sliderClasses} />
+                <Table 
+                  exerciseList={exerciseList} 
+                  handleCheckbox={handleCheckbox} 
+                  sliderClasses={sliderClasses} 
+                  categoryExerciseList={categoryExerciseList}
+                  onChangeFilter={onChangeFilter}
+                  filteredCategoryId={filteredCategoryId} />
               </div>
             </div>
             <div className="modal-footer">
@@ -123,28 +149,42 @@ export function WorkoutAddExerciseModalComponent({
   )
 }
 
-function Table({ exerciseList, handleCheckbox, sliderClasses } : any) {
+function Table({ exerciseList, handleCheckbox, sliderClasses, categoryExerciseList, onChangeFilter, filteredCategoryId }: any) {
+  const filteredExercises = exerciseList.filter((exercise: any) =>
+    !filteredCategoryId || exercise.ExerciseOnCategoryExercise?.some((categoryExercise: any) => categoryExercise.categoryExerciseId === filteredCategoryId)
+  );
+
   return (
-    <table className="table">
-      {exerciseList.length > 0 
-        ? <tbody>
-            {exerciseList.map((data: any) => (
-              <tr key={data.id}>
-                <td>
-                  <div className={styles.checkboxContainer}>
-                    <label className={styles.switch}>
-                      <input type="checkbox" name="toAdd" checked={data.toAdd} onChange={() => handleCheckbox(!data.toAdd, data.id)}/>
-                      <span className={sliderClasses}></span>
-                    </label>
-                    <span className={styles.description}>{data.name}</span>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody> 
+    <>
+      <select className='w-full' style={{textAlign: 'center'}} onChange={(event) => onChangeFilter(event)}>
+        <option value="">Selecione a Categoria para Filtrar</option>
+        {categoryExerciseList.map((category : CategoryExerciseList) => (
+          <option key={category.id} value={category.id}>
+            {category.name}
+          </option>
+        ))}
+      </select>
+      <table className="table">
+      {filteredExercises.length > 0 ? 
+        <tbody>
+          {filteredExercises.map((data: any) => (
+            <tr key={data.id}>
+              <td>
+                <div className={styles.checkboxContainer}>
+                  <label className={styles.switch}>
+                    <input type="checkbox" name="toAdd" checked={data.toAdd} onChange={() => handleCheckbox(!data.toAdd, data.id)}/>
+                    <span className={sliderClasses}></span>
+                  </label>
+                  <span className={styles.description}>{data.name}</span>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody> 
         : <NoDataFound />
       } 
-    </table>
+      </table>
+    </>
   );
 }
 

@@ -13,6 +13,7 @@ export type ExerciseList = {
   id: string;
   name: string;
   active: boolean;
+  ExerciseOnCategoryExercise?: any[];
 }
 
 export function ExerciseListPage() {

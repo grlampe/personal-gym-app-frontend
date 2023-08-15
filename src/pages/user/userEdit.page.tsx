@@ -212,7 +212,7 @@ export function UserEditPage() {
                   setFieldValue("addressZipCode", value);
                 }}
                 onBlur={async (e) => {
-                  const cep = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                  const cep = e.target.value.replace(/[^0-9]/g, '');
                   if (cep.length === 8) {
                     const addressData = await fetchAddressByCEP(cep);
                     if (addressData) {
