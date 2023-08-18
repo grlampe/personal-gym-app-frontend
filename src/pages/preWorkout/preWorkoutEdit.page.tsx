@@ -102,9 +102,9 @@ export function PreWorkoutEditPage() {
 
     setSubmitting(true);
     
-    if (!id) {
+    if (!id || preWorkoutOnExercise.length > 0) {
       history.push('/preWorkout');
-    }
+    } 
   }
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>, index: number, field: keyof PreWorkoutOnExerciseList) => {
