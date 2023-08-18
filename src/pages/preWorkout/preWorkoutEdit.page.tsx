@@ -97,8 +97,12 @@ export function PreWorkoutEditPage() {
     } else {
       savePreWorkout(values);
     }
-    history.push('/preWorkout');
+
     actions.setSubmitting(true);
+    
+    if (!id) {
+      history.push('/preWorkout');
+    }
   }
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>, index: number, field: keyof PreWorkoutOnExerciseList) => {

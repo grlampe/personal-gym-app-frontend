@@ -62,8 +62,11 @@ export function CategoryExerciseEditPage() {
       emitWarnToast("Preencha os dados corretamente!");
     }
     
-    history.push('/categoryExercise');
     setSubmitting(true);
+
+    if (!id) {
+      history.push('/categoryExercise');
+    }
   };
 
   return (

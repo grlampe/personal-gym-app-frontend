@@ -87,8 +87,12 @@ export function ExerciseEditPage() {
     } else {
       await saveExercise(values);
     }
-    history.push('/exercise');
+
     actions.setSubmitting(true);
+
+    if (!id) {
+      history.push('/categoryExercise');
+    }
   }
 
   return (

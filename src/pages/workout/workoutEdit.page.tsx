@@ -81,9 +81,12 @@ export function WorkoutEditPage() {
     } else {
       saveWorkout(values);
     }
-    
-    history.push('/workout');
+
     actions.setSubmitting(true);
+
+    if (!id) {
+      history.push("/workout");
+    }
   }
 
   const handleShow = () => setShow(true);

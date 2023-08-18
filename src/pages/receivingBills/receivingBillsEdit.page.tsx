@@ -102,11 +102,16 @@ export function ReceivingBillsEditPage() {
       } else {
         await saveReceivingBills(values);
       }
-      history.push("/receivingBills");
+      
     } catch (error) {
       emitWarnToast("Preencha os dados corretamente!");
     }
-    setSubmitting(false);
+
+    setSubmitting(true);
+
+    if (!id) {
+      history.push("/receivingBills");
+    }
   };
 
   return (

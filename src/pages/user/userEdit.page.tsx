@@ -110,8 +110,12 @@ export function UserEditPage() {
     } else {
       saveUser(values);
     }
-    history.push('/user');
+
     actions.setSubmitting(true);
+
+    if (!id) {
+      history.push("/user");
+    }
   }
 
   return (

@@ -99,11 +99,16 @@ export function BodyMeasurementEditPage() {
       } else {
         await saveBodyMeasurement(values);
       }
-      history.push("/bodyMeasurement");
+      
     } catch (error) {
       emitWarnToast("Preencha os dados corretamente!");
     }
-    setSubmitting(false);
+
+    setSubmitting(true);
+
+    if (!id) {
+      history.push("/bodyMeasurement");
+    }
   };
 
   return (
