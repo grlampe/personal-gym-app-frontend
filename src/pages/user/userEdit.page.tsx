@@ -100,18 +100,19 @@ export function UserEditPage() {
     addressState: Yup.string().required('Estado é necessária!'),
   });
 
-  const handleSubmit = (values: UserForm, actions: any) => {
-    if (!userSchema.isValid(values)) {
-      emitWarnToast('Preencha os dados corretamente!');
-      return;
-    }
-    if(id){
-      updateUser(values);
-    } else {
-      saveUser(values);
+  const handleSubmit = async (values: UserForm, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
+    try {
+      await userSchema.validate(values);
+      if (id) {
+        await updateUser(values);
+      } else {
+        await saveUser(values);
+      }
+    } catch (error) {
+      emitWarnToast("Preencha os dados corretamente!");
     }
 
-    actions.setSubmitting(true);
+    setSubmitting(true);
 
     if (!id) {
       history.push("/user");

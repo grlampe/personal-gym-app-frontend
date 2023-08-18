@@ -84,21 +84,23 @@ export function PreWorkoutEditPage() {
     handleShow();
   };
 
-  const handleSubmit = async (values: PreWorkoutForm, actions: any) => {
-    if (!preWorkoutSchema.isValid(values)) {
-      emitWarnToast('Preencha os dados corretamente!');
-      return;
-    }
-    if(id){
-      updatePreWorkout(values);
-      if (preWorkoutOnExercise.length > 0) {
-        updatePreWorkoutOnExercise(preWorkoutOnExercise)
+  const handleSubmit = async (values: PreWorkoutForm, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
+    try {
+      await preWorkoutSchema.validate(values);
+
+      if(id){
+        updatePreWorkout(values);
+        if (preWorkoutOnExercise.length > 0) {
+          updatePreWorkoutOnExercise(preWorkoutOnExercise)
+        }
+      } else {
+        savePreWorkout(values);
       }
-    } else {
-      savePreWorkout(values);
+    } catch (error) {
+      emitWarnToast("Preencha os dados corretamente!");
     }
 
-    actions.setSubmitting(true);
+    setSubmitting(true);
     
     if (!id) {
       history.push('/preWorkout');

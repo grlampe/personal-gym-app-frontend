@@ -91,7 +91,7 @@ export function ExerciseEditPage() {
     actions.setSubmitting(true);
 
     if (!id) {
-      history.push('/categoryExercise');
+      history.push('/exercise');
     }
   }
 

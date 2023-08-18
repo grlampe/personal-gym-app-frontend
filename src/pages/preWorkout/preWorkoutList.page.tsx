@@ -25,19 +25,23 @@ export function PreWorkoutListPage() {
     setPreWorkout([]);
     setPageTitle('Pré-Treino');
     setUrlToNew('/preWorkout/new');
-    executeOnPageLoad();
+    
   },[]);
 
   useEffect(() =>{
-    if(searchPressed){
+    if (searchPressed) {
       searchPreWorkout((data: PreWorkoutList[]) => {
         setPreWorkout(data.filter((i) => searchFilter && i.description.toUpperCase().includes(searchFilter.toUpperCase()) || !searchFilter));
       });
 
       setSearchPressed(false);
-    }
+    } 
     
   },[searchPressed]);
+
+  useEffect(() =>{
+    executeOnPageLoad();
+  });
 
   const executeOnPageLoad = () => {
     searchPreWorkout((data: PreWorkoutList[]) => {
