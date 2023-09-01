@@ -76,7 +76,7 @@ export function BodyMeasurementModalComponent({
                 onClick={handleClose}
               >
                 <ImCancelCircle className={styles.buttonIcons} />
-                Cancelar
+                Fechar
               </button>
             </div>
           </div>

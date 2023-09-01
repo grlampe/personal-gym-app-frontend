@@ -159,42 +159,42 @@ export function BodyMeasurementEditPage() {
           </div>
           <div className="form-row">
             <div className="col-md-3 mb-3">
-              <InputForm name="height" label="Altura" type="number" errors={errors} touched={touched} />
+              <InputForm name="height" label="Altura (cm)" type="number" errors={errors} touched={touched} />
             </div>
             <div className="col-md-3 mb-3">
-              <InputForm name="weight" label="Peso" type="number" errors={errors} touched={touched} />
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="col-md-3 mb-3">
-              <InputForm name="chestBust" label="Medida do Busto" type="number" errors={errors} touched={touched} />
+              <InputForm name="weight" label="Peso (Kg)" type="number" errors={errors} touched={touched} />
             </div>
           </div>
           <div className="form-row">
             <div className="col-md-3 mb-3">
-              <InputForm name="leftArm" label="Medida do Braço Esquerdo" type="number" errors={errors} touched={touched} />
-            </div>
-            <div className="col-md-3 mb-3">
-              <InputForm name="rightArm" label="Medida do Braço Direito" type="number" errors={errors} touched={touched} />
+              <InputForm name="chestBust" label="Medida do Busto (cm)" type="number" errors={errors} touched={touched} />
             </div>
           </div>
           <div className="form-row">
             <div className="col-md-3 mb-3">
-              <InputForm name="abdomen" label="Medida do Abdômen" type="number" errors={errors} touched={touched} />
+              <InputForm name="leftArm" label="Medida do Braço Esquerdo (cm)" type="number" errors={errors} touched={touched} />
             </div>
             <div className="col-md-3 mb-3">
-              <InputForm name="waist" label="Medida da Cintura" type="number" errors={errors} touched={touched} />
-            </div>
-            <div className="col-md-3 mb-3">
-              <InputForm name="hips" label="Medida do Quadril" type="number" errors={errors} touched={touched} />
+              <InputForm name="rightArm" label="Medida do Braço Direito (cm)" type="number" errors={errors} touched={touched} />
             </div>
           </div>
           <div className="form-row">
             <div className="col-md-3 mb-3">
-              <InputForm name="leftThigh" label="Medida da Coxa Esquerda" type="number" errors={errors} touched={touched} />
+              <InputForm name="abdomen" label="Medida do Abdômen (cm)" type="number" errors={errors} touched={touched} />
             </div>
             <div className="col-md-3 mb-3">
-              <InputForm name="rightThigh" label="Medida da Coxa Direita" type="number" errors={errors} touched={touched} />
+              <InputForm name="waist" label="Medida da Cintura (cm)" type="number" errors={errors} touched={touched} />
+            </div>
+            <div className="col-md-3 mb-3">
+              <InputForm name="hips" label="Medida do Quadril (cm)" type="number" errors={errors} touched={touched} />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="col-md-3 mb-3">
+              <InputForm name="leftThigh" label="Medida da Coxa Esquerda (cm)" type="number" errors={errors} touched={touched} />
+            </div>
+            <div className="col-md-3 mb-3">
+              <InputForm name="rightThigh" label="Medida da Coxa Direita (cm)" type="number" errors={errors} touched={touched} />
             </div>
           </div>
           <ButtonsFormComponent isSubmitting={isSubmitting} />
