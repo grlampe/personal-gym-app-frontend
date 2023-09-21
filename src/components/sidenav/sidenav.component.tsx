@@ -25,6 +25,12 @@ const MENU_ITEMS: MenuItem[] = [
     routes: ['/bodyMeasurement', '/receivingBills', '/preWorkout', '/workout'],
     titles: ['Medidas Corporais', 'Recebimentos', 'Pré-Treino', 'Treino'],
   },
+  {
+    name: 'Relatórios',
+    items: ['consulta medidas'],
+    routes: ['/bodyMeasurementReport/',],
+    titles: ['Consulta Medidas',],
+  },
 ];
 
 export function SideNavComponent() {

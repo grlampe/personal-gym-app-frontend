@@ -23,6 +23,7 @@ export async function searchBodyMeasurementById(id: string) {
 
 export async function saveBodyMeasurement(data: BodyMeasurementForm){
   delete data.user
+  delete data?.workout
   await api.post('bodyMeasurement', data).then( res => {
     if(res.status){
       emitSuccessToast('Medida adicionada!');
@@ -32,6 +33,7 @@ export async function saveBodyMeasurement(data: BodyMeasurementForm){
 
 export async function updateBodyMeasurement(data: BodyMeasurementForm){
   delete data.user
+  delete data?.workout
   await api.put('bodyMeasurement', data).then( res => {
     if(res.status){
       emitSuccessToast('Medida atualizada!');
@@ -45,4 +47,12 @@ export async function deleteBodyMeasurement(bodyMeasurementId: string){
       emitSuccessToast('Medida excluída!');
     }
   })
+}
+
+export async function getBodyMeasurementReport(data: any) {
+  const result = await api.post('reports/bodyMeasurement/xlsx', data, {
+    responseType: 'arraybuffer' as 'json'
+  })
+  
+  return result.data
 }

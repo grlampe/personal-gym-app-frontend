@@ -8,6 +8,8 @@ import { searchUsers } from "../../services/user.service";
 import { emitWarnToast } from "../../utils/toast.utils";
 import { InputForm } from "../../components/inputForm/inputForm.component";
 import { ButtonsFormComponent } from "../../components/buttonsForm/buttonsForm.component";
+import { WorkoutList } from "../workout/modals/workoutList/workoutListModal";
+import { searchWorkoutByUserId } from "../../services/workout.service";
 
 type BodyMeasurementEditParams = {
   id: string;
@@ -15,6 +17,7 @@ type BodyMeasurementEditParams = {
 
 export type BodyMeasurementForm = {
   userId: string;
+  workoutId?: string;
   description: string;
   height: number;
   weight: number;
@@ -29,6 +32,9 @@ export type BodyMeasurementForm = {
   user?: {
     name: string;
   };
+  workout?: {
+    description: string;
+  };
 };
 
 type UsersList = {
@@ -42,8 +48,10 @@ export function BodyMeasurementEditPage() {
 
   const { id } = useParams<BodyMeasurementEditParams>();
   const [userList, setUserList] = useState<UsersList[]>([]);
+  const [workoutList, setWorkoutList] = useState<WorkoutList[]>([]);
   const [initialValues, setInitialValues] = useState<BodyMeasurementForm>({
     userId: "",
+    workoutId: undefined,
     description: "",
     height: 0,
     weight: 0,
@@ -73,8 +81,18 @@ export function BodyMeasurementEditPage() {
     if (id) {
       const bodyMeasurement = await searchBodyMeasurementById(id);
       setInitialValues(bodyMeasurement);
+      setWorkoutData(bodyMeasurement.userId)
     }
   };
+
+  const setWorkoutData = async (userId: string) => {
+    await searchWorkoutByUserId(
+      userId,
+      (data: WorkoutList[]) => {
+        setWorkoutList(data);
+      }
+    );
+  }
 
   const bodyMeasurementSchema = Yup.object().shape({
     userId: Yup.string().required("Usuário é necessário!"),
@@ -127,8 +145,9 @@ export function BodyMeasurementEditPage() {
                 className={`form-control ${touched.userId && errors.userId ? "is-invalid" : ""}`}
                 name="userId"
                 value={values.userId}
-                onChange={(e) => {
+                onChange={async (e) => {
                   const selectedUserId = e.target.value;
+                  await setWorkoutData(selectedUserId);
                   const selectedUser = userList.find((user) => user.id === selectedUserId);
                   const updatedValues = {
                     ...values,
@@ -146,6 +165,35 @@ export function BodyMeasurementEditPage() {
                 {userList.map((user) => (
                   <option key={user.id} value={user.id}>
                     {user.name}
+                  </option>
+                ))}
+              </select>
+              {touched.userId && errors.userId && <div className="invalid-feedback">{errors.userId}</div>}
+            </div>
+            <div className="col-md-4 mb-3">
+              <p>Treino</p>
+              <select
+                className={`form-control ${touched.workoutId && errors.workoutId ? "is-invalid" : ""}`}
+                name="workoutId"
+                value={values.workoutId}
+                onChange={(e) => {
+                  const selectedWorkoutId = e.target.value;
+                  const selectedWorkout = workoutList.find((workout) => workout.id === selectedWorkoutId);
+                  const updatedValues = {
+                    ...values,
+                    workoutId: selectedWorkoutId,
+                    workout: {
+                      description: selectedWorkout?.description || "",
+                    },
+                  };
+                  setValues(updatedValues);
+                }}
+                disabled={!!id}
+              >
+                <option value="">Selecione o Treino</option>
+                {workoutList.map((workout) => (
+                  <option key={workout.id} value={workout.id}>
+                    {workout.description}
                   </option>
                 ))}
               </select>
