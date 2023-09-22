@@ -29,7 +29,7 @@ export function BodyMeasurementReportPage() {
   const [userList, setUserList] = useState<UsersList[]>([]);
   const [workoutList, setWorkoutList] = useState<WorkoutList[]>([]);
   const [initialValues, setInitialValues] = useState<BodyMeasurementReportForm>({
-    userId: "0",
+    userId: "",
     workoutId: "0",
     startDate: "",
     endDate: "",
@@ -57,13 +57,13 @@ export function BodyMeasurementReportPage() {
     userId: Yup.string().required("Usuário é necessário!"),
     workoutId: Yup.string().notRequired(),
     startDate: Yup.string().when('workoutId', (workoutId, schema) => {
-      if (!workoutId) {
+      if (workoutId === '0') {
         return schema.required("Data Inicial é necessária!")
       }
       return schema
     }),
     endDate: Yup.string().when('workoutId', (workoutId, schema) => {
-      if (!workoutId) {
+      if (workoutId === '0') {
         return schema.required("Data Final é necessária!")
       }
       return schema
