@@ -13,6 +13,7 @@ import { DateUtils } from "../../../utils/date";
 import moment from "moment";
 import { getBodyMeasurementReport } from "../../../services/bodyMeasurement.service";
 import { saveAs } from 'file-saver';
+import { emitErrorToast } from "../../../utils/toast.utils";
 
 export type BodyMeasurementReportForm = {
   userId: string;
@@ -28,8 +29,8 @@ export function BodyMeasurementReportPage() {
   const [userList, setUserList] = useState<UsersList[]>([]);
   const [workoutList, setWorkoutList] = useState<WorkoutList[]>([]);
   const [initialValues, setInitialValues] = useState<BodyMeasurementReportForm>({
-    userId: "",
-    workoutId: "",
+    userId: "0",
+    workoutId: "0",
     startDate: "",
     endDate: "",
   })
@@ -41,7 +42,7 @@ export function BodyMeasurementReportPage() {
       setUserList(data.filter(user => user.active === true));
     });
 
-  }, [userList]);
+  }, []);
 
   const setWorkoutData = async (userId: string) => {
     await searchWorkoutByUserId(
@@ -73,24 +74,19 @@ export function BodyMeasurementReportPage() {
     try {
       await bodyMeasurementReportSchema.validate(values);
 
-      if (!!values?.workoutId) {
+      if (!!values?.workoutId && values.workoutId !== '0') {
         values.startDate = DateUtils.formatDateToBackend(moment().toString());
         values.endDate = DateUtils.formatDateToBackend(moment().toString());
       }
 
-      if (!values?.workoutId) {
-        values.workoutId = '0'
-      }
-
-      
       await getBodyMeasurementReport(values).then((buffer: any) => {
         const blob = new Blob([buffer], { type: 'application/octet-stream' });
 
         const dateTimeStr = moment(new Date()).format('DDMMYYYYHHmm');
         saveAs(blob, `consulta-medidas-${dateTimeStr}.xlsx`)
       })
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      emitErrorToast(error.message);
     }
 
     setSubmitting(true);
@@ -123,7 +119,7 @@ export function BodyMeasurementReportPage() {
                   setValues(updatedValues);
                 }}
               >
-                <option value="">Selecione o usuário</option>
+                <option value="0">Selecione o usuário</option>
                 {userList.map((user) => (
                   <option key={user.id} value={user.id}>
                     {user.name}
@@ -148,7 +144,7 @@ export function BodyMeasurementReportPage() {
                   setValues(updatedValues);
                 }}
               >
-                <option value="">Selecione o Treino</option>
+                <option value="0">Selecione o Treino</option>
                 {workoutList.map((workout) => (
                   <option key={workout.id} value={workout.id}>
                     {workout.description}

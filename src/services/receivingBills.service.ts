@@ -59,3 +59,11 @@ export async function searchReceivingBillsById(id: string) {
   const result = await api.get<ReceivingBillsForm>(`receivingBills/${id}`);
   return result.data;
 }
+
+export async function getReceivingBillsReport(data: any) {
+  const result = await api.post('reports/receivingBills/xlsx', data, {
+    responseType: 'arraybuffer' as 'json'
+  })
+  
+  return result.data
+}

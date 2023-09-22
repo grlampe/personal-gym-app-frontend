@@ -27,9 +27,9 @@ const MENU_ITEMS: MenuItem[] = [
   },
   {
     name: 'Relatórios',
-    items: ['consulta medidas'],
-    routes: ['/bodyMeasurementReport/',],
-    titles: ['Consulta Medidas',],
+    items: ['bodyMeasurementReport', 'simpleUserReport', 'receivingBillsReport', 'workoutReport'],
+    routes: ['/bodyMeasurementReport', '/simpleUserReport', '/receivingBillsReport', '/workoutReport'],
+    titles: ['Consulta Medidas', 'Rel. de Clientes', 'Rel. Recebimentos', 'Consulta Treinos'],
   },
 ];
 

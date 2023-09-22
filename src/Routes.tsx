@@ -21,6 +21,8 @@ import { WorkoutEditPage } from './pages/workout/workoutEdit.page';
 import { WorkoutListPage } from './pages/workout/workoutList.page';
 import { WorkoutOnExercisePage } from './pages/workoutExercise/workoutExercise.page';
 import { BodyMeasurementReportPage } from './pages/reports/bodyMeasurementReport/bodyMeasurementReport.page';
+import { SimpleUserReportPage } from './pages/reports/simpleUserReport/simpleUserReport.page';
+import { ReceivingBillsReportPage } from './pages/reports/receivingBillsReport/receivingBillsReport.page';
 
 const PrivateRoute = (rest: any) => (
   <Route
@@ -56,6 +58,9 @@ export function Routes() {
     <Switch>
       {/*  Relatórios  */}
       <PrivateRoute exact path={'/bodyMeasurementReport'} comp={() => <BodyMeasurementReportPage />} />
+      <PrivateRoute exact path={'/simpleUserReport'} comp={() => <SimpleUserReportPage />} />
+      <PrivateRoute exact path={'/receivingBillsReport'} comp={() => <ReceivingBillsReportPage />} />
+      <PrivateRoute exact path={'/workoutReport'} comp={() => <SimpleUserReportPage />} />
       
       {/*  Treino  */}
       <PrivateRoute exact path={'/workout/edit/:workoutId/workoutExercise/edit/:id'} comp={() => <WorkoutOnExercisePage/>}/>

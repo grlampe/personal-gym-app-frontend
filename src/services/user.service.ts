@@ -38,3 +38,11 @@ export async function deleteUser(userId: string){
     }
   })
 }
+
+export async function getSimpleUserReport(data: any) {
+  const result = await api.post('reports/simpleUser/xlsx', data, {
+    responseType: 'arraybuffer' as 'json'
+  })
+  
+  return result.data
+}
