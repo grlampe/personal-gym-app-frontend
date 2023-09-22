@@ -107,3 +107,11 @@ export async function getWorkoutOnExerciseByWorkoutCategoryId(workoutCategoryId:
   const result = await api.get<WorkoutOnExerciseList[]>(`workoutOnExercise/workoutCategory/${workoutCategoryId}`);
   return result.data;
 }
+
+export async function getWorkoutReport(data: any) {
+  const result = await api.post('reports/workout/xlsx', data, {
+    responseType: 'arraybuffer' as 'json'
+  })
+  
+  return result.data
+}
