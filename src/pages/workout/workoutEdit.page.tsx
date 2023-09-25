@@ -9,7 +9,7 @@ import { searchUsers } from "../../services/user.service";
 import { emitWarnToast } from "../../utils/toast.utils";
 import { deleteWorkoutOnCategory, saveWorkout, searchWorkoutById, searchWorkoutOnCategoryByWorkoutId, updateWorkout } from "../../services/workout.service";
 import { SwitchCheckboxComponent } from "../../components/switchCheckbox/switchCheckbox.component";
-import { VscEdit, VscPersonAdd, VscRemove } from "react-icons/vsc";
+import { VscEdit, VscPersonAdd, VscTrash } from "react-icons/vsc";
 import { WorkoutVinculateModalComponent } from "./modals/workoutVinculate/workoutVinculateModal";
 import { FcOk } from "react-icons/fc";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -258,10 +258,10 @@ const ExerciseCategory = ({ workoutOnCategory, handleDelete }: any) => (
           <div className="btn-group p-1" role="group">
             <button
               type="button"
-              className="btn btn-outline-info"
+              className="btn btn-outline-danger"
               onClick={() => handleDelete(data.id)}
             >
-              <VscRemove size="14" />
+              <VscTrash size="14" />
             </button>
           </div>  
         </td>

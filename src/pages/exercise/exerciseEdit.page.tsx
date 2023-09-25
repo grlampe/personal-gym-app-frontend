@@ -4,7 +4,7 @@ import { useParams, useHistory } from "react-router";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { deleteExerciseOnCategoryExerciseById, getExerciseById, getExerciseOnCategoryExerciseByExerciseId, saveExercise, updateExercise } from "../../services/exercise.service";
-import { VscPersonAdd, VscRemove } from "react-icons/vsc";
+import { VscPersonAdd, VscTrash } from "react-icons/vsc";
 import { ExerciseVinculateModalComponent } from "./modals/exerciseVinculate.page";
 import { InputForm } from "../../components/inputForm/inputForm.component";
 import { SwitchCheckboxComponent } from "../../components/switchCheckbox/switchCheckbox.component";
@@ -179,10 +179,10 @@ const ExerciseCategory = ({ exerciseOnCategoryExercise, handleDelete }: any) => 
           <div className="btn-group" role="group" aria-label="Basic example">
             <button
               type="button"
-              className="btn btn-outline-info"
+              className="btn btn-outline-danger"
               onClick={() => handleDelete(data.id)}
             >
-              <VscRemove size="14" />
+              <VscTrash size="14" />
             </button>
           </div>  
         </td>

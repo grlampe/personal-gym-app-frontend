@@ -8,7 +8,7 @@ import { SwitchCheckboxComponent } from "../../components/switchCheckbox/switchC
 import { ButtonsFormComponent } from "../../components/buttonsForm/buttonsForm.component";
 import { emitWarnToast } from "../../utils/toast.utils";
 import { useHistory } from 'react-router-dom';
-import { VscPersonAdd, VscRemove } from "react-icons/vsc";
+import { VscPersonAdd, VscTrash } from "react-icons/vsc";
 import { ExerciseList } from "../exercise/exerciseList.page";
 import { deleteWorkoutOnExerciseById, getWorkoutOnCategoryById, getWorkoutOnExerciseByWorkoutCategoryId, saveWorkoutOnCategory, updateWorkoutOnCategory, updateWorkoutOnExercise } from "../../services/workout.service";
 import { WorkoutAddExerciseModalComponent } from "./modals/workoutAddExercise.page";
@@ -251,10 +251,10 @@ const WorkoutOnExercise = ({ workoutOnExercise, handleDelete, handleInputChange 
           <div className="btn-group" role="group" aria-label="Basic example">
             <button
               type="button"
-              className="btn btn-outline-info"
+              className="btn btn-outline-danger"
               onClick={() => handleDelete(data.id)}
             >
-              <VscRemove size="14" />
+              <VscTrash size="14" />
             </button>
           </div>  
         </td>

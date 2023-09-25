@@ -9,7 +9,7 @@ import { ButtonsFormComponent } from "../../components/buttonsForm/buttonsForm.c
 import { emitWarnToast } from "../../utils/toast.utils";
 import { useHistory } from 'react-router-dom';
 import { deletePreWorkoutOnExerciseById, getPreWorkoutById, getPreWorkoutOnExerciseByPreWorkoutId, savePreWorkout, updatePreWorkout, updatePreWorkoutOnExercise } from "../../services/preWorkout.service";
-import { VscPersonAdd, VscRemove } from "react-icons/vsc";
+import { VscPersonAdd, VscTrash } from "react-icons/vsc";
 import { ExerciseList } from "../exercise/exerciseList.page";
 import { PreWorkoutExerciseModalComponent } from "./modals/preWorkoutExercise.page";
 
@@ -91,20 +91,22 @@ export function PreWorkoutEditPage() {
       if(id){
         updatePreWorkout(values);
         if (preWorkoutOnExercise.length > 0) {
-          updatePreWorkoutOnExercise(preWorkoutOnExercise)
+          await updatePreWorkoutOnExercise(preWorkoutOnExercise)
         }
       } else {
-        savePreWorkout(values);
+        await savePreWorkout(values);
       }
-    } catch (error) {
-      emitWarnToast("Preencha os dados corretamente!");
-    }
 
-    setSubmitting(true);
+      setSubmitting(true);
     
-    if (!id || preWorkoutOnExercise.length > 0) {
-      history.push('/preWorkout');
-    } 
+      if (!id || preWorkoutOnExercise.length > 0) {
+        history.push('/preWorkout');
+      } 
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        emitWarnToast('Preencha os dados corretamente!');
+      }
+    }
   }
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>, index: number, field: keyof PreWorkoutOnExerciseList) => {
@@ -255,10 +257,10 @@ const PreWorkoutOnExercise = ({ preWorkoutOnExercise, handleDelete, handleInputC
           <div className="btn-group" role="group" aria-label="Basic example">
             <button
               type="button"
-              className="btn btn-outline-info"
+              className="btn btn-outline-danger"
               onClick={() => handleDelete(data.id)}
             >
-              <VscRemove size="14" />
+              <VscTrash size="14" />
             </button>
           </div>  
         </td>

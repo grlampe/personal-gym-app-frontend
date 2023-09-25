@@ -64,9 +64,7 @@ export function CategoryExerciseEditPage() {
     
     setSubmitting(true);
 
-    if (!id) {
-      history.push('/categoryExercise');
-    }
+    history.push('/categoryExercise');
   };
 
   return (

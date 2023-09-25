@@ -23,6 +23,10 @@ export function WorkoutListPage() {
   useEffect(() =>{
     setPageTitle('Treino');
     setUrlToNew('/workout/new');
+    executeOnPageLoad()
+  }, []);
+  
+  useEffect(() =>{
     executeOnPageLoad();
   },[]);
 
@@ -44,7 +48,10 @@ export function WorkoutListPage() {
   };
 
   const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    executeOnPageLoad()
+  }
   const openModal = (userId: string) => () => {
     setUserId(userId);
     handleShow();
