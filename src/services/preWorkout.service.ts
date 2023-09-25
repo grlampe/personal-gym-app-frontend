@@ -17,7 +17,7 @@ export async function getPreWorkoutById(id: string) {
 export async function updatePreWorkout(data: PreWorkoutForm){ 
   await api.put('preWorkout', data).then( res => {
     if(res.status){
-      emitSuccessToast('Pré-treino atualizado!');
+      emitSuccessToast('Treino Padrão atualizado!');
     }
   })
 }
@@ -33,7 +33,7 @@ export async function updatePreWorkoutOnExercise(data: PreWorkoutOnExerciseList[
 export async function savePreWorkout(data: PreWorkoutForm){
   await api.post('preWorkout', data).then( res => {
     if(res.status){
-      emitSuccessToast('Pré-treino adicionado!');
+      emitSuccessToast('Treino Padrão adicionado!');
     }
   })
 }
@@ -61,7 +61,7 @@ export async function deletePreWorkoutOnExerciseById(id: string) {
 export async function deletePreWorkout(id: string) {
   await api.delete(`preWorkout/${id}`).then( res => {
     if(res.status){
-      emitSuccessToast('Pré-treino removido!');
+      emitSuccessToast('Treino Padrão removido!');
     }
   })
 }

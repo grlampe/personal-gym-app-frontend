@@ -15,21 +15,21 @@ interface MenuItem {
 const MENU_ITEMS: MenuItem[] = [
   {
     name: 'Cadastros',
-    items: ['usuarios', 'categoriaExercicios', 'exercicios'],
-    routes: ['/user', '/categoryExercise', '/exercise'],
-    titles: ['Usuários', 'Categ. de Exercícios', 'Exercícios'],
+    items: ['usuarios', 'categoriaExercicios', 'exercicios', 'simpleUserReport'],
+    routes: ['/user', '/categoryExercise', '/exercise', '/simpleUserReport'],
+    titles: ['Usuários', 'Categ. de Exercícios', 'Exercícios', 'Rel. de Clientes'],
+  },
+  {
+    name: 'Financeiro',
+    items: ['recebimentos', 'receivingBillsReport'],
+    routes: ['/receivingBills', '/receivingBillsReport'],
+    titles: ['Recebimentos', 'Rel. Recebimentos'],
   },
   {
     name: 'Movimentações',
-    items: ['medidas', 'recebimentos', 'preWorkout', 'workout'],
-    routes: ['/bodyMeasurement', '/receivingBills', '/preWorkout', '/workout'],
-    titles: ['Medidas Corporais', 'Recebimentos', 'Pré-Treino', 'Treino'],
-  },
-  {
-    name: 'Relatórios',
-    items: ['bodyMeasurementReport', 'simpleUserReport', 'receivingBillsReport', 'workoutReport'],
-    routes: ['/bodyMeasurementReport', '/simpleUserReport', '/receivingBillsReport', '/workoutReport'],
-    titles: ['Consulta Medidas', 'Rel. de Clientes', 'Rel. Recebimentos', 'Consulta Treinos'],
+    items: ['medidas', 'preWorkout', 'workout', 'bodyMeasurementReport', 'workoutReport'],
+    routes: ['/bodyMeasurement','/preWorkout', '/workout', '/bodyMeasurementReport', '/workoutReport'],
+    titles: ['Medidas Corporais', 'Treinos Padrões', 'Treino', 'Rel. Medidas', 'Rel. Treinos'],
   },
 ];
 

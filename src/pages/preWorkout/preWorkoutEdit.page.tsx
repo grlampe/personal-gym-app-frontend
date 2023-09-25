@@ -44,11 +44,11 @@ export function PreWorkoutEditPage() {
   const [preWorkoutOnExercise, setPreWorkoutOnExercise] = useState<PreWorkoutOnExerciseList[]>([]);
 
   const preWorkoutSchema = Yup.object().shape({
-    description: Yup.string().required('Descrição do Pré-Treino é necessária!'),
+    description: Yup.string().required('Descrição do Treino Padrão é necessária!'),
   });
 
   useEffect(() => {
-    setPageTitle(id ? 'Editando Pré-Treino' : 'Cadastrando Pré-Treino');
+    setPageTitle(id ? 'Editando Treino Padrão' : 'Cadastrando Treino Padrão');
     if (id) {
       fetchPreWorkoutData(id);
     }

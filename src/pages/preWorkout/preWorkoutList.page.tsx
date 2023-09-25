@@ -23,7 +23,7 @@ export function PreWorkoutListPage() {
 
   useEffect(() =>{
     setPreWorkout([]);
-    setPageTitle('Pré-Treino');
+    setPageTitle('Treino Padrão');
     setUrlToNew('/preWorkout/new');
     
   },[]);

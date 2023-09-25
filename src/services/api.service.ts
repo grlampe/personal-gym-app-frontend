@@ -26,8 +26,8 @@ function clearAuthentication() {
 }
 
 function redirectToLogin() {
-  delay(3200).then(()=> {
-    window.location.href = '/login';
+  delay(2600).then(()=> {
+    window.location.href = '/';
   })
 }
 

@@ -25,12 +25,16 @@ function SignInPage() {
 
   const loginSchema = yup.object().shape({
     username: yup.string().email('Email inválido!').required('O email é necessário!'),
-    password: yup
-      .string()
-      .required('A senha é necessária!')
-      .min(6, 'A senha deve ter pelo menos 6 caracteres!')
-      .max(8, 'A senha deve ter no máximo 8 caracteres!'),
+    password: yup.string().required('A senha é necessária!')
   });
+
+  const handleSubmit = async (values: any, { setSubmitting }: any) => {
+    await signIn(values);
+   
+    setSubmitting(true);
+
+    history.push('/home');
+  }; 
 
   return (
     <>
@@ -50,13 +54,7 @@ function SignInPage() {
                             initialValues={initialValues}
                             validationSchema={loginSchema}
                             enableReinitialize
-                            onSubmit={(values, actions) => {
-                              loginSchema.isValid(values).then(async () => {
-                                await signIn(values);
-                                history.push('/home');
-                                actions.setSubmitting(false);
-                              });
-                            }}
+                            onSubmit={handleSubmit}
                           >
                             {({isSubmitting, errors, touched})=>(
                               <Form className="login100-form validate-form"> 

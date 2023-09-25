@@ -70,7 +70,7 @@ export function Routes() {
       <PrivateRoute exact path={'/workout/new'} comp={() =>  <WorkoutEditPage/>}/>
       <PrivateRoute exact path={'/workout'} comp={() => <WorkoutListPage/>}/>
 
-      {/*  Pré-Treino  */}
+      {/*  Treino Padrão  */}
       <PrivateRoute exact path={'/preWorkout/edit/:id'} comp={() => <PreWorkoutEditPage/>}/>
       <PrivateRoute exact path={'/preWorkout/new'} comp={() =>  <PreWorkoutEditPage/>}/>
       <PrivateRoute exact path={'/preWorkout'} comp={() => <PreWorkoutListPage/>}/>
