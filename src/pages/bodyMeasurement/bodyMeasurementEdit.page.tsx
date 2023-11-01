@@ -124,9 +124,7 @@ export function BodyMeasurementEditPage() {
 
     setSubmitting(true);
 
-    if (!id) {
-      history.push("/bodyMeasurement");
-    }
+    history.push("/bodyMeasurement");
   };
 
   return (

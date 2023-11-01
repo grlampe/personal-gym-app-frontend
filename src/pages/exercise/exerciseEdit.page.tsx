@@ -90,9 +90,7 @@ export function ExerciseEditPage() {
 
     actions.setSubmitting(true);
 
-    if (!id) {
-      history.push('/exercise');
-    }
+    history.push('/exercise');
   }
 
   return (

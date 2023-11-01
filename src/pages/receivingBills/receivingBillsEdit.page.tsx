@@ -109,9 +109,7 @@ export function ReceivingBillsEditPage() {
 
     setSubmitting(true);
 
-    if (!id) {
-      history.push("/receivingBills");
-    }
+    history.push("/receivingBills");
   };
 
   return (

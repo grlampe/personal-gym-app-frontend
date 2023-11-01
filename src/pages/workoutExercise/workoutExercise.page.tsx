@@ -100,7 +100,9 @@ export function WorkoutOnExercisePage() {
       saveWorkoutOnCategory(values);
     }
     
-    history.goBack()
+    if (!id || workoutOnExercise.length > 0) {
+      history.goBack()
+    }  
   }
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>, index: number, field: keyof WorkoutOnExerciseList) => {

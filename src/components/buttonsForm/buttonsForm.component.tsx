@@ -6,6 +6,7 @@ import { ConfirmModalComponent } from '../modals/confirmModal.component';
 
 type ButtonsFormProps = {
   isSubmitting: boolean,
+  funcToExc?: any
 }
 
 export function ButtonsFormComponent(props: ButtonsFormProps) {
@@ -33,7 +34,7 @@ export function ButtonsFormComponent(props: ButtonsFormProps) {
         <button 
           type="button"
           data-toggle="modal" 
-          data-target="#backToUserList" 
+          data-target="#backToList" 
           className={btnCancelClasses}>
           <ImCancelCircle className={styles.buttonIcons}/>
           Cancelar
@@ -41,8 +42,8 @@ export function ButtonsFormComponent(props: ButtonsFormProps) {
       </div>
 
       <ConfirmModalComponent
-        funcToExc={undefined}
-        idModal="backToUserList"
+        funcToExc={props.funcToExc}
+        idModal="backToList"
         description="Deseja realmente cancelar esta operação?"
         confirmButtonDescription="Sim"
         cancelButtonDescription="Não"
